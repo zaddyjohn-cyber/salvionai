@@ -1,0 +1,1431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Salvion AI — Human Signal Intelligence</title>
+<meta name="description" content="Salvion AI turns any camera into a clinical-grade health screening platform. 50+ health markers from a single 30-second face scan. No wearables required." />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+<style>
+/* ============================================================
+   SALVION AI — Design System
+   ============================================================ */
+:root{
+  --bg:#05070d;
+  --bg-2:#080b14;
+  --panel:rgba(18,24,40,.55);
+  --panel-solid:#0d1220;
+  --stroke:rgba(120,160,255,.12);
+  --stroke-strong:rgba(120,200,255,.28);
+  --text:#eaf0ff;
+  --text-dim:#9aa7c7;
+  --text-faint:#69748f;
+  --cyan:#34e3ff;
+  --teal:#23d5c8;
+  --violet:#8b6bff;
+  --pink:#ff5fa8;
+  --green:#3ef0a2;
+  --amber:#ffb24d;
+  --grad-hero:linear-gradient(120deg,#34e3ff 0%,#8b6bff 55%,#ff5fa8 100%);
+  --grad-cyan:linear-gradient(120deg,#34e3ff,#23d5c8);
+  --grad-violet:linear-gradient(120deg,#8b6bff,#34e3ff);
+  --radius:22px;
+  --radius-sm:14px;
+  --shadow-soft:0 30px 80px -30px rgba(0,0,0,.8);
+  --shadow-glow:0 0 60px -10px rgba(52,227,255,.45);
+  --maxw:1180px;
+  --ease:cubic-bezier(.16,1,.3,1);
+}
+
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Inter',system-ui,sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  overflow-x:hidden;
+  line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3,h4,.display{font-family:'Space Grotesk',sans-serif;line-height:1.05;letter-spacing:-.02em}
+a{color:inherit;text-decoration:none}
+img,svg{display:block;max-width:100%}
+::selection{background:rgba(139,107,255,.4);color:#fff}
+
+/* ---------- Backdrop / ambient ---------- */
+.bg-fx{position:fixed;inset:0;z-index:-2;pointer-events:none;overflow:hidden}
+.bg-fx .blob{position:absolute;border-radius:50%;filter:blur(120px);opacity:.5;mix-blend-mode:screen}
+.b1{width:620px;height:620px;background:#1c5cff;top:-180px;left:-160px;animation:drift 22s var(--ease) infinite}
+.b2{width:560px;height:560px;background:#8b2bff;top:30%;right:-200px;animation:drift 28s var(--ease) infinite reverse}
+.b3{width:520px;height:520px;background:#00b3a4;bottom:-160px;left:30%;animation:drift 25s var(--ease) infinite}
+@keyframes drift{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(60px,40px) scale(1.1)}66%{transform:translate(-40px,30px) scale(.95)}}
+.grid-overlay{position:fixed;inset:0;z-index:-1;pointer-events:none;
+  background-image:linear-gradient(rgba(120,160,255,.045) 1px,transparent 1px),linear-gradient(90deg,rgba(120,160,255,.045) 1px,transparent 1px);
+  background-size:64px 64px;
+  mask-image:radial-gradient(ellipse 80% 60% at 50% 0%,#000 30%,transparent 80%);
+}
+.noise{position:fixed;inset:0;z-index:-1;pointer-events:none;opacity:.035;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");}
+
+/* ---------- Layout ---------- */
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 26px}
+section{position:relative;padding:120px 0}
+.eyebrow{display:inline-flex;align-items:center;gap:9px;font-family:'Space Grotesk';font-size:12.5px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--cyan);padding:7px 15px;border:1px solid var(--stroke-strong);border-radius:100px;background:rgba(52,227,255,.06);backdrop-filter:blur(8px)}
+.eyebrow .dot{width:6px;height:6px;border-radius:50%;background:var(--cyan);box-shadow:0 0 12px var(--cyan);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.7)}}
+.sec-head{max-width:760px;margin-bottom:64px}
+.sec-head h2{font-size:clamp(30px,4.4vw,52px);margin:22px 0 18px;font-weight:600}
+.sec-head .lede{font-size:clamp(16px,1.5vw,19px);color:var(--text-dim);max-width:620px}
+.grad-text{background:var(--grad-hero);-webkit-background-clip:text;background-clip:text;color:transparent}
+.grad-text-cyan{background:var(--grad-cyan);-webkit-background-clip:text;background-clip:text;color:transparent}
+
+/* ---------- Buttons ---------- */
+.btn{display:inline-flex;align-items:center;gap:10px;font-family:'Space Grotesk';font-weight:600;font-size:15px;padding:14px 26px;border-radius:100px;cursor:pointer;border:1px solid transparent;transition:transform .4s var(--ease),box-shadow .4s var(--ease),background .3s;position:relative;overflow:hidden}
+.btn svg{width:17px;height:17px}
+.btn-primary{background:var(--grad-hero);color:#05070d;box-shadow:0 10px 40px -10px rgba(139,107,255,.6)}
+.btn-primary:hover{transform:translateY(-3px);box-shadow:0 18px 50px -10px rgba(52,227,255,.7)}
+.btn-ghost{background:rgba(255,255,255,.03);border-color:var(--stroke-strong);color:var(--text);backdrop-filter:blur(8px)}
+.btn-ghost:hover{transform:translateY(-3px);border-color:var(--cyan);box-shadow:0 0 30px -8px rgba(52,227,255,.5)}
+
+/* ---------- Glass card base ---------- */
+.glass{background:var(--panel);border:1px solid var(--stroke);border-radius:var(--radius);backdrop-filter:blur(18px);position:relative;overflow:hidden}
+.glass::before{content:"";position:absolute;inset:0;border-radius:inherit;padding:1px;background:linear-gradient(140deg,rgba(255,255,255,.18),transparent 40%);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none;opacity:.7}
+
+/* ============================================================
+   NAV
+   ============================================================ */
+header.nav{position:fixed;top:0;left:0;right:0;z-index:100;transition:all .4s var(--ease)}
+.nav-inner{max-width:var(--maxw);margin:14px auto;padding:12px 22px;display:flex;align-items:center;justify-content:space-between;border-radius:100px;border:1px solid transparent;transition:all .4s var(--ease)}
+.nav.scrolled .nav-inner{background:rgba(8,11,20,.7);border-color:var(--stroke);backdrop-filter:blur(20px);box-shadow:0 20px 50px -25px rgba(0,0,0,.9)}
+.logo{display:flex;align-items:center;gap:11px;font-family:'Space Grotesk';font-weight:700;font-size:19px;letter-spacing:-.01em}
+.logo .mark{width:34px;height:34px}
+.nav-links{display:flex;gap:6px}
+.nav-links a{font-size:14.5px;color:var(--text-dim);padding:8px 14px;border-radius:100px;transition:.25s;font-weight:500}
+.nav-links a:hover{color:var(--text);background:rgba(255,255,255,.05)}
+.nav-cta{display:flex;align-items:center;gap:10px}
+.burger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:8px}
+.burger span{width:22px;height:2px;background:var(--text);border-radius:2px;transition:.3s}
+
+/* ============================================================
+   HERO
+   ============================================================ */
+.hero{min-height:100vh;display:flex;align-items:center;padding-top:120px;padding-bottom:60px;overflow:hidden}
+#hero-canvas{position:absolute;inset:0;width:100%;height:100%;z-index:0}
+.hero-grid{position:relative;z-index:2;display:grid;grid-template-columns:1.05fr .95fr;gap:40px;align-items:center;width:100%}
+.hero-copy .badge{margin-bottom:26px}
+.hero-copy h1{font-size:clamp(40px,6.2vw,74px);font-weight:700;margin-bottom:24px}
+.hero-copy h1 .l2{display:block}
+.hero-copy p.sub{font-size:clamp(16px,1.7vw,20px);color:var(--text-dim);max-width:500px;margin-bottom:36px}
+.hero-actions{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:48px}
+.hero-stats{display:flex;gap:34px;flex-wrap:wrap}
+.hero-stats .stat .n{font-family:'Space Grotesk';font-size:30px;font-weight:700;background:var(--grad-cyan);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero-stats .stat .l{font-size:12.5px;color:var(--text-faint);text-transform:uppercase;letter-spacing:.08em;margin-top:2px}
+/* floating vitals cards over the 3D scene */
+.hero-visual{position:relative;height:520px}
+/* animated live-scan video screen */
+.hero-screen{position:absolute;top:50%;left:50%;width:112%;max-width:560px;aspect-ratio:16/9;border-radius:20px;overflow:hidden;background:#04060c;box-shadow:var(--shadow-soft),0 0 90px -22px rgba(52,227,255,.55);z-index:1;animation:screenFloat 9s var(--ease) infinite;opacity:0;transform:translate(-50%,-50%) perspective(1200px) rotateY(-9deg) rotateX(4deg)}
+.hero-screen.in{animation:screenIn 1.1s var(--ease) forwards,screenFloat 9s var(--ease) 1.1s infinite}
+.hero-screen video{width:100%;height:100%;object-fit:cover;display:block;filter:saturate(1.12) contrast(1.05)}
+.hero-screen .vignette{position:absolute;inset:0;z-index:2;pointer-events:none;box-shadow:inset 0 0 70px rgba(4,6,12,.65);border-radius:inherit}
+.hero-screen .frame{position:absolute;inset:0;z-index:3;pointer-events:none;border-radius:inherit;padding:1px;background:linear-gradient(140deg,rgba(52,227,255,.65),transparent 38%,transparent 64%,rgba(139,107,255,.55));-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude}
+.hero-screen .scanline{position:absolute;left:0;right:0;top:-90px;height:90px;z-index:2;pointer-events:none;background:linear-gradient(to bottom,transparent,rgba(52,227,255,.22),transparent);animation:scanMove 3.4s linear infinite}
+.hero-screen .reticle{position:absolute;inset:0;z-index:2;pointer-events:none;background:
+  linear-gradient(rgba(52,227,255,.5),rgba(52,227,255,.5)) left 20px top 50%/14px 1px no-repeat,
+  linear-gradient(rgba(52,227,255,.5),rgba(52,227,255,.5)) right 20px top 50%/14px 1px no-repeat;
+  opacity:.5}
+.scan-badge{position:absolute;top:13px;left:13px;z-index:4;display:flex;align-items:center;gap:7px;font-family:'Space Grotesk';font-size:10.5px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:#fff;background:rgba(5,7,13,.55);backdrop-filter:blur(8px);padding:6px 11px;border-radius:100px;border:1px solid var(--stroke-strong)}
+.scan-badge .d{width:7px;height:7px;border-radius:50%;background:#ff5f57;box-shadow:0 0 10px #ff5f57;animation:pulse 1.5s infinite}
+.scan-eqs{position:absolute;bottom:13px;right:14px;z-index:4;font-family:'Space Grotesk';font-size:10.5px;font-weight:500;letter-spacing:.06em;color:var(--cyan);background:rgba(5,7,13,.5);backdrop-filter:blur(8px);padding:5px 10px;border-radius:100px;border:1px solid var(--stroke)}
+/* feathered cover over the AI-generator sparkle watermark (lower-right) */
+.hero-screen .logo-mask{position:absolute;right:0;bottom:0;width:30%;height:34%;z-index:2;pointer-events:none;
+  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  background:radial-gradient(125% 125% at 100% 100%, rgba(4,6,12,.92), rgba(4,6,12,.45) 52%, rgba(4,6,12,0) 78%);
+  -webkit-mask:radial-gradient(125% 125% at 100% 100%, #000 58%, transparent 100%);
+  mask:radial-gradient(125% 125% at 100% 100%, #000 58%, transparent 100%)}
+.vital-card{z-index:6}
+@keyframes screenIn{0%{opacity:0;transform:translate(-50%,-44%) perspective(1200px) rotateY(-18deg) rotateX(8deg) scale(.92)}100%{opacity:1;transform:translate(-50%,-50%) perspective(1200px) rotateY(-9deg) rotateX(4deg) scale(1)}}
+@keyframes screenFloat{0%,100%{transform:translate(-50%,-50%) perspective(1200px) rotateY(-9deg) rotateX(4deg) translateY(0)}50%{transform:translate(-50%,-50%) perspective(1200px) rotateY(-6deg) rotateX(2deg) translateY(-14px)}}
+@keyframes scanMove{0%{top:-90px}100%{top:100%}}
+.vital-card{position:absolute;padding:16px 18px;border-radius:16px;background:rgba(10,14,24,.72);border:1px solid var(--stroke-strong);backdrop-filter:blur(14px);box-shadow:var(--shadow-soft);min-width:158px;animation:float 6s var(--ease) infinite}
+.vital-card .top{display:flex;justify-content:space-between;align-items:center;margin-bottom:7px}
+.vital-card .label{font-size:12px;color:var(--text-dim);font-weight:500}
+.vital-card .tag{font-size:10px;font-weight:600;padding:3px 8px;border-radius:100px;text-transform:uppercase;letter-spacing:.05em}
+.tag-ok{background:rgba(62,240,162,.14);color:var(--green)}
+.tag-warn{background:rgba(255,178,77,.14);color:var(--amber)}
+.vital-card .val{font-family:'Space Grotesk';font-size:26px;font-weight:700}
+.vital-card .val small{font-size:13px;color:var(--text-faint);font-weight:500;margin-left:3px}
+.vc1{top:18px;left:-10px;animation-delay:0s}
+.vc2{top:200px;right:-22px;animation-delay:-2s}
+.vc3{bottom:24px;left:24px;animation-delay:-4s}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-16px)}}
+.spark{margin-top:6px;height:26px;width:100%}
+
+/* marquee trust strip */
+.trust{border-top:1px solid var(--stroke);border-bottom:1px solid var(--stroke);padding:22px 0;overflow:hidden;background:rgba(8,11,20,.4)}
+.trust-track{display:flex;gap:60px;white-space:nowrap;animation:scrollx 28s linear infinite;width:max-content}
+.trust-track span{font-family:'Space Grotesk';font-size:14px;color:var(--text-faint);letter-spacing:.12em;text-transform:uppercase;display:flex;align-items:center;gap:60px;font-weight:500}
+.trust-track span::after{content:"";width:5px;height:5px;border-radius:50%;background:var(--cyan);opacity:.6}
+@keyframes scrollx{to{transform:translateX(-50%)}}
+
+/* ============================================================
+   EXECUTIVE SUMMARY / pillars
+   ============================================================ */
+.pillars{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+.pillar{padding:34px 30px;transition:transform .5s var(--ease),box-shadow .5s var(--ease)}
+.pillar .ic{width:58px;height:58px;margin-bottom:22px}
+.pillar h3{font-size:21px;margin-bottom:12px;font-weight:600}
+.pillar p{color:var(--text-dim);font-size:15px}
+.pillar:hover{transform:translateY(-8px);box-shadow:var(--shadow-soft),var(--shadow-glow)}
+
+/* ============================================================
+   PROBLEM
+   ============================================================ */
+.problem-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+.prob{padding:28px 24px;transition:.5s var(--ease)}
+.prob .ic{width:46px;height:46px;margin-bottom:20px}
+.prob h4{font-size:17px;margin-bottom:10px}
+.prob p{font-size:13.5px;color:var(--text-dim)}
+.prob:hover{transform:translateY(-6px);border-color:var(--stroke-strong)}
+.prob .stat-big{font-family:'Space Grotesk';font-size:30px;font-weight:700;color:var(--pink);margin-bottom:4px}
+
+/* ============================================================
+   WHY NOW
+   ============================================================ */
+.forces{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+.force{padding:0;overflow:hidden}
+.force .viz{height:170px;position:relative;overflow:hidden;border-bottom:1px solid var(--stroke)}
+.force .viz canvas{position:absolute;inset:0;width:100%;height:100%}
+.force .body{padding:28px 28px 32px}
+.force .num{font-family:'Space Grotesk';font-size:13px;color:var(--cyan);letter-spacing:.1em;margin-bottom:12px}
+.force h3{font-size:22px;margin-bottom:8px}
+.force .big{font-family:'Space Grotesk';font-size:38px;font-weight:700;background:var(--grad-violet);-webkit-background-clip:text;background-clip:text;color:transparent;margin-bottom:4px}
+.force .sm{font-size:12.5px;color:var(--text-faint);text-transform:uppercase;letter-spacing:.06em;margin-bottom:16px}
+.force p{font-size:14px;color:var(--text-dim)}
+
+/* ============================================================
+   HOW IT WORKS — stepper
+   ============================================================ */
+.steps{position:relative;display:grid;grid-template-columns:repeat(5,1fr);gap:18px}
+.steps::before{content:"";position:absolute;top:40px;left:6%;right:6%;height:2px;background:linear-gradient(90deg,transparent,var(--cyan),var(--violet),var(--pink),transparent);opacity:.4}
+.step{text-align:center;position:relative}
+.step .node{width:82px;height:82px;margin:0 auto 22px;border-radius:24px;display:grid;place-items:center;background:var(--panel-solid);border:1px solid var(--stroke-strong);position:relative;box-shadow:var(--shadow-soft);transition:.5s var(--ease)}
+.step .node svg{width:38px;height:38px}
+.step .node .idx{position:absolute;top:-9px;right:-9px;width:26px;height:26px;border-radius:50%;background:var(--grad-hero);color:#05070d;font-family:'Space Grotesk';font-weight:700;font-size:13px;display:grid;place-items:center}
+.step:hover .node{transform:translateY(-6px) rotateX(8deg);border-color:var(--cyan);box-shadow:var(--shadow-glow)}
+.step h4{font-size:16px;margin-bottom:8px}
+.step p{font-size:13px;color:var(--text-dim)}
+
+/* ============================================================
+   CAPABILITIES
+   ============================================================ */
+.caps{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.cap{padding:30px 28px;transition:.5s var(--ease)}
+.cap .ic{width:52px;height:52px;margin-bottom:20px}
+.cap h3{font-size:19px;margin-bottom:16px;display:flex;align-items:center;justify-content:space-between}
+.cap h3 .cnt{font-size:12px;color:var(--cyan);font-family:'Space Grotesk';border:1px solid var(--stroke-strong);padding:3px 9px;border-radius:100px}
+.cap ul{list-style:none;display:flex;flex-direction:column;gap:9px}
+.cap li{font-size:14px;color:var(--text-dim);display:flex;align-items:center;gap:10px}
+.cap li::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--teal);flex:none;box-shadow:0 0 8px var(--teal)}
+.cap li.more{color:var(--text-faint)}
+.cap li.more::before{background:var(--text-faint);box-shadow:none}
+.cap:hover{transform:translateY(-8px);box-shadow:var(--shadow-soft),0 0 50px -15px rgba(35,213,200,.4);border-color:var(--stroke-strong)}
+
+/* ============================================================
+   DEEP TECH — pipeline
+   ============================================================ */
+.tech-split{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center}
+.pipeline{display:flex;flex-direction:column;gap:12px}
+.pl-stage{display:flex;align-items:center;gap:18px;padding:18px 22px;border-radius:16px;background:var(--panel);border:1px solid var(--stroke);transition:.4s var(--ease)}
+.pl-stage:hover{border-color:var(--stroke-strong);transform:translateX(8px);background:rgba(24,32,54,.7)}
+.pl-stage .n{font-family:'Space Grotesk';font-weight:700;font-size:14px;color:#05070d;width:30px;height:30px;border-radius:9px;display:grid;place-items:center;flex:none}
+.pl-stage h5{font-size:15px;margin-bottom:2px}
+.pl-stage span{font-size:12.5px;color:var(--text-faint)}
+.tech-visual{height:480px;position:relative}
+#tech-canvas{position:absolute;inset:0;width:100%;height:100%}
+
+/* ============================================================
+   SIGNAL COVERAGE — live readout
+   ============================================================ */
+.signal-wrap{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.sig{padding:22px;position:relative;overflow:hidden}
+.sig .label{font-size:12px;color:var(--text-dim);text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px}
+.sig .v{font-family:'Space Grotesk';font-size:30px;font-weight:700}
+.sig .v small{font-size:13px;color:var(--text-faint);font-weight:500;margin-left:4px}
+.sig canvas{margin-top:12px;width:100%;height:40px}
+.sig .ring{position:absolute;top:18px;right:18px}
+
+/* ============================================================
+   DEPLOY — one stack
+   ============================================================ */
+.deploy{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.dep{padding:32px 30px;transition:.5s var(--ease)}
+.dep .badge2{font-family:'Space Grotesk';font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--cyan);margin-bottom:18px;display:inline-block;padding:5px 12px;border:1px solid var(--stroke-strong);border-radius:100px}
+.dep h3{font-size:22px;margin-bottom:12px}
+.dep p{color:var(--text-dim);font-size:14.5px}
+.dep:hover{transform:translateY(-8px) rotateX(6deg);box-shadow:var(--shadow-soft),var(--shadow-glow)}
+
+/* ============================================================
+   COMPARE TABLE
+   ============================================================ */
+.cmp{border-radius:var(--radius);overflow:hidden;border:1px solid var(--stroke)}
+.cmp-row{display:grid;grid-template-columns:1fr 1.2fr 1.6fr;gap:0}
+.cmp-row>div{padding:20px 24px;border-bottom:1px solid var(--stroke)}
+.cmp-head>div{background:rgba(20,26,44,.6);font-family:'Space Grotesk';font-weight:600;font-size:15px}
+.cmp-head .salv{background:linear-gradient(120deg,rgba(52,227,255,.16),rgba(139,107,255,.16));color:#fff}
+.cmp-row .feat{font-weight:600;color:var(--text);font-size:14.5px}
+.cmp-row .old{color:var(--text-faint);font-size:14px}
+.cmp-row .salv{font-size:14px;color:var(--text);background:rgba(52,227,255,.04)}
+.cmp-row:last-child>div{border-bottom:none}
+.check{color:var(--green);font-weight:700}
+
+/* ============================================================
+   PRICING
+   ============================================================ */
+.tiers{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;align-items:stretch}
+.tier{padding:36px 32px;display:flex;flex-direction:column;transition:.5s var(--ease)}
+.tier.feat{border-color:var(--stroke-strong);box-shadow:var(--shadow-soft),0 0 70px -20px rgba(139,107,255,.5);transform:scale(1.03)}
+.tier .pop{position:absolute;top:18px;right:18px;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;background:var(--grad-hero);color:#05070d;padding:5px 12px;border-radius:100px}
+.tier h3{font-size:22px;margin-bottom:6px}
+.tier .pdesc{font-size:13.5px;color:var(--text-faint);margin-bottom:22px;min-height:38px}
+.tier .price{font-family:'Space Grotesk';font-size:40px;font-weight:700;margin-bottom:4px}
+.tier .price small{font-size:14px;color:var(--text-faint);font-weight:500}
+.tier .pricen{font-size:13px;color:var(--text-faint);margin-bottom:26px}
+.tier ul{list-style:none;display:flex;flex-direction:column;gap:13px;margin-bottom:30px;flex:1}
+.tier li{font-size:14px;color:var(--text-dim);display:flex;gap:11px;align-items:flex-start}
+.tier li svg{width:18px;height:18px;flex:none;margin-top:1px;color:var(--teal)}
+.tier li.off{opacity:.4}
+.tier li.off svg{color:var(--text-faint)}
+.tier:hover{transform:translateY(-8px) scale(1.01)}
+.tier.feat:hover{transform:translateY(-8px) scale(1.04)}
+
+/* ============================================================
+   CTA
+   ============================================================ */
+.cta-final{text-align:center;padding:90px 40px;border-radius:34px;position:relative;overflow:hidden}
+.cta-final h2{font-size:clamp(32px,5vw,58px);margin-bottom:20px;font-weight:600}
+.cta-final p{font-size:18px;color:var(--text-dim);max-width:520px;margin:0 auto 36px}
+.cta-final .hero-actions{justify-content:center}
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+footer{border-top:1px solid var(--stroke);padding:70px 0 40px;background:var(--bg-2)}
+.foot-grid{display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr 1fr;gap:40px;margin-bottom:50px}
+.foot-brand .logo{margin-bottom:18px}
+.foot-brand p{font-size:14px;color:var(--text-faint);max-width:260px}
+.foot-col h5{font-family:'Space Grotesk';font-size:13px;letter-spacing:.1em;text-transform:uppercase;color:var(--text);margin-bottom:18px}
+.foot-col a{display:block;font-size:14px;color:var(--text-faint);margin-bottom:11px;transition:.25s}
+.foot-col a:hover{color:var(--cyan)}
+.foot-bottom{display:flex;justify-content:space-between;align-items:center;padding-top:28px;border-top:1px solid var(--stroke);font-size:13px;color:var(--text-faint);flex-wrap:wrap;gap:14px}
+.foot-bottom .status{display:flex;align-items:center;gap:8px}
+.foot-bottom .status .dot{width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 10px var(--green);animation:pulse 2s infinite}
+
+/* ============================================================
+   SOLUTIONS / verticals
+   ============================================================ */
+.solutions{display:grid;grid-template-columns:repeat(2,1fr);gap:20px}
+.sol{padding:34px 32px;position:relative;overflow:hidden;transition:.5s var(--ease)}
+.sol::after{content:"";position:absolute;top:-40%;right:-30%;width:300px;height:300px;border-radius:50%;background:radial-gradient(circle,rgba(52,227,255,.10),transparent 70%);pointer-events:none}
+.sol .quote{font-family:'Space Grotesk';font-size:18px;font-weight:600;margin-bottom:20px;background:var(--grad-cyan);-webkit-background-clip:text;background-clip:text;color:transparent;line-height:1.35}
+.sol h3{font-size:20px;margin-bottom:11px;display:flex;align-items:center;gap:13px}
+.sol h3 .si{width:42px;height:42px;flex:none;padding:9px;border-radius:12px;background:rgba(255,255,255,.04);border:1px solid var(--stroke)}
+.sol p{font-size:14.5px;color:var(--text-dim);margin-bottom:20px}
+.sol .chip{font-family:'Space Grotesk';font-size:12px;color:var(--cyan);border:1px solid var(--stroke-strong);padding:7px 14px;border-radius:100px;display:inline-block;letter-spacing:.02em}
+.sol:hover{transform:translateY(-8px);box-shadow:var(--shadow-soft),var(--shadow-glow);border-color:var(--stroke-strong)}
+
+/* ============================================================
+   DEVELOPERS / SDK
+   ============================================================ */
+.dev-split{display:grid;grid-template-columns:1.05fr .95fr;gap:48px;align-items:center}
+.dev-list{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:26px}
+.devc{padding:22px 22px;border-radius:16px;background:var(--panel);border:1px solid var(--stroke);transition:.4s var(--ease)}
+.devc:hover{border-color:var(--stroke-strong);transform:translateY(-4px);background:rgba(24,32,54,.6)}
+.devc .di{width:34px;height:34px;margin-bottom:14px}
+.devc h5{font-size:16px;margin-bottom:5px}
+.devc span{font-size:12.5px;color:var(--text-faint)}
+.dev-tags{display:flex;flex-wrap:wrap;gap:10px}
+.dev-tags span{font-family:'Space Grotesk';font-size:12px;color:var(--text-dim);border:1px solid var(--stroke);padding:7px 13px;border-radius:100px;background:rgba(255,255,255,.02)}
+.codecard{border-radius:18px;background:#070a12;border:1px solid var(--stroke);overflow:hidden;box-shadow:var(--shadow-soft);font-family:'JetBrains Mono',ui-monospace,monospace}
+.codecard .bar{display:flex;align-items:center;gap:8px;padding:14px 18px;border-bottom:1px solid var(--stroke);background:rgba(255,255,255,.02)}
+.codecard .bar i{width:11px;height:11px;border-radius:50%}
+.codecard .bar i:nth-child(1){background:#ff5f57}.codecard .bar i:nth-child(2){background:#febc2e}.codecard .bar i:nth-child(3){background:#28c840}
+.codecard .bar .t{margin-left:10px;font-size:12px;color:var(--text-faint)}
+.codecard pre{margin:0;padding:22px;font-size:12.5px;line-height:1.75;overflow-x:auto;color:#cfe3ff}
+.codecard .k{color:#8b6bff}.codecard .s{color:#3ef0a2}.codecard .c{color:#5b6a8c}.codecard .n{color:#34e3ff}.codecard .f{color:#ffb24d}
+
+/* ============================================================
+   FAQ
+   ============================================================ */
+.faq{display:flex;flex-direction:column;gap:14px;max-width:840px;margin:0 auto}
+.faq details{border:1px solid var(--stroke);border-radius:16px;background:var(--panel);overflow:hidden;transition:.3s;backdrop-filter:blur(12px)}
+.faq details[open]{border-color:var(--stroke-strong)}
+.faq summary{padding:22px 26px;font-family:'Space Grotesk';font-weight:600;font-size:16.5px;cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center;gap:16px}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary .pl{width:20px;height:20px;flex:none;position:relative}
+.faq summary .pl::before,.faq summary .pl::after{content:"";position:absolute;background:var(--cyan);border-radius:2px}
+.faq summary .pl::before{top:9px;left:1px;right:1px;height:2px}
+.faq summary .pl::after{left:9px;top:1px;bottom:1px;width:2px;transition:.3s var(--ease)}
+.faq details[open] summary .pl::after{transform:scaleY(0)}
+.faq .a{padding:0 26px 24px;color:var(--text-dim);font-size:14.5px}
+
+/* ============================================================
+   MEDICAL DISCLAIMER
+   ============================================================ */
+.disclaimer{border-top:1px solid var(--stroke);background:rgba(8,11,20,.6)}
+.disclaimer .wrap{padding:38px 26px;display:flex;gap:18px;align-items:flex-start}
+.disclaimer .di{width:30px;height:30px;flex:none;color:var(--amber);margin-top:2px}
+.disclaimer p{font-size:12.5px;color:var(--text-faint);line-height:1.75;max-width:1000px}
+.disclaimer strong{color:var(--text-dim);font-weight:600}
+
+/* ---------- reveal animation ---------- */
+.reveal{opacity:0;transform:translateY(40px);transition:opacity 1s var(--ease),transform 1s var(--ease)}
+.reveal.in{opacity:1;transform:none}
+.reveal.d1{transition-delay:.08s}.reveal.d2{transition-delay:.16s}.reveal.d3{transition-delay:.24s}.reveal.d4{transition-delay:.32s}
+
+/* ---------- responsive ---------- */
+@media(max-width:1024px){
+  .hero-grid{grid-template-columns:1fr;gap:60px}
+  .hero-visual{height:440px}
+  .pillars,.forces,.caps,.deploy,.tiers,.solutions{grid-template-columns:1fr 1fr}
+  .problem-grid{grid-template-columns:1fr 1fr}
+  .dev-split{grid-template-columns:1fr}
+  .steps{grid-template-columns:1fr 1fr 1fr}
+  .steps::before{display:none}
+  .tech-split{grid-template-columns:1fr}
+  .signal-wrap{grid-template-columns:1fr 1fr}
+  .tier.feat{transform:none}
+  .nav-links{display:none}
+  .burger{display:flex}
+}
+@media(max-width:640px){
+  section{padding:80px 0}
+  .pillars,.forces,.caps,.deploy,.tiers,.problem-grid,.steps,.signal-wrap,.solutions,.dev-list{grid-template-columns:1fr}
+  .hero-copy h1{font-size:42px}
+  .cmp-row{grid-template-columns:1fr}
+  .cmp-row>div{border-bottom:1px solid var(--stroke)}
+  .foot-grid{grid-template-columns:1fr 1fr}
+  .nav-cta .btn-ghost{display:none}
+}
+</style>
+</head>
+<body>
+
+<!-- ambient backdrop -->
+<div class="bg-fx"><div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div></div>
+<div class="grid-overlay"></div>
+<div class="noise"></div>
+
+<!-- ============ NAV ============ -->
+<header class="nav" id="nav">
+  <div class="nav-inner">
+    <a class="logo" href="#top">
+      <svg class="mark" viewBox="0 0 40 40" fill="none">
+        <defs><linearGradient id="lg" x1="0" y1="0" x2="40" y2="40">
+          <stop stop-color="#34e3ff"/><stop offset=".5" stop-color="#8b6bff"/><stop offset="1" stop-color="#ff5fa8"/>
+        </linearGradient></defs>
+        <circle cx="20" cy="20" r="18" stroke="url(#lg)" stroke-width="2"/>
+        <path d="M6 20 H13 L16 11 L20 29 L24 15 L27 20 H34" stroke="url(#lg)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      Salvion AI
+    </a>
+    <nav class="nav-links">
+      <a href="#platform">Platform</a>
+      <a href="#solutions">Solutions</a>
+      <a href="#how">How it works</a>
+      <a href="#capabilities">Capabilities</a>
+      <a href="#developers">Developers</a>
+      <a href="#pricing">Pricing</a>
+    </nav>
+    <div class="nav-cta">
+      <a href="#cta" class="btn btn-ghost">Talk to Sales</a>
+      <a href="#cta" class="btn btn-primary">Request Demo</a>
+      <div class="burger" id="burger"><span></span><span></span><span></span></div>
+    </div>
+  </div>
+</header>
+
+<a id="top"></a>
+
+<!-- ============ HERO ============ -->
+<section class="hero" id="platform">
+  <canvas id="hero-canvas"></canvas>
+  <div class="wrap">
+    <div class="hero-grid">
+      <div class="hero-copy">
+        <div class="badge eyebrow"><span class="dot"></span>Now in Clinical Validation · Southeast Asia</div>
+        <h1>Your Camera.<span class="l2 grad-text">Your Health Intelligence.</span></h1>
+        <p class="sub">Salvion AI transforms any smartphone or laptop camera into a clinical-grade health screening platform — <strong style="color:var(--text)">50+ health markers</strong> from a single 30-second face scan. No wearables. No hardware. No friction.</p>
+        <div class="hero-actions">
+          <a href="#cta" class="btn btn-primary">Start Free Trial
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+          <a href="#how" class="btn btn-ghost">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+            See How It Works</a>
+        </div>
+        <div class="hero-stats">
+          <div class="stat"><div class="n" data-count="50" data-suffix="+">0</div><div class="l">Health Markers</div></div>
+          <div class="stat"><div class="n" data-count="30" data-suffix="s">0</div><div class="l">Single Scan</div></div>
+          <div class="stat"><div class="n">Zero</div><div class="l">Hardware Required</div></div>
+        </div>
+      </div>
+
+      <div class="hero-visual">
+        <div class="hero-screen reveal" aria-label="Live Salvion AI face-scan demonstration">
+          <video id="heroVideo" muted playsinline preload="auto" disablepictureinpicture aria-hidden="true">
+            <source src="assets/hero.mp4?v=2" type="video/mp4" />
+          </video>
+          <div class="logo-mask"></div>
+          <div class="vignette"></div>
+          <div class="reticle"></div>
+          <div class="frame"></div>
+          <div class="scanline"></div>
+          <div class="scan-badge"><span class="d"></span>Live Scan</div>
+          <div class="scan-eqs">EQS 0.98 · Liveness ✓</div>
+        </div>
+        <div class="vital-card vc1">
+          <div class="top"><span class="label">Heart Rate</span><span class="tag tag-ok">Normal</span></div>
+          <div class="val">72<small>bpm</small></div>
+          <canvas class="spark" data-spark="hr"></canvas>
+        </div>
+        <div class="vital-card vc2">
+          <div class="top"><span class="label">Blood Pressure</span><span class="tag tag-ok">Normal</span></div>
+          <div class="val">118/79<small>mmHg</small></div>
+        </div>
+        <div class="vital-card vc3">
+          <div class="top"><span class="label">Hypertension Risk</span><span class="tag tag-warn">Watch</span></div>
+          <div class="val">Low–Mod</div>
+          <canvas class="spark" data-spark="risk"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- trust strip -->
+<div class="trust">
+  <div class="trust-track">
+    <span>FHIR / HL7 Native<span></span>HIPAA Compliant<span></span>GDPR Ready<span></span>On-Device AI<span></span>OJK · Indonesia<span></span>ISO 13485 Roadmap<span></span>50+ Health Markers<span></span>Transformer Architecture<span></span></span>
+    <span>FHIR / HL7 Native<span></span>HIPAA Compliant<span></span>GDPR Ready<span></span>On-Device AI<span></span>OJK · Indonesia<span></span>ISO 13485 Roadmap<span></span>50+ Health Markers<span></span>Transformer Architecture<span></span></span>
+  </div>
+</div>
+
+<!-- ============ EXECUTIVE SUMMARY ============ -->
+<section id="summary">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow"><span class="dot"></span>Executive Summary</span>
+      <h2>The infrastructure layer preventive healthcare <span class="grad-text-cyan">has been waiting for.</span></h2>
+      <p class="lede">Salvion AI is not just a health app. It is the AI sensing and intelligence layer any hospital, insurer, enterprise, or app developer can embed — turning passive cameras into active health-monitoring infrastructure, at a fraction of the cost of any alternative.</p>
+    </div>
+    <div class="pillars">
+      <div class="pillar glass reveal d1">
+        <svg class="ic" viewBox="0 0 64 64" fill="none">
+          <defs><linearGradient id="p1" x1="0" y1="0" x2="64" y2="64"><stop stop-color="#34e3ff"/><stop offset="1" stop-color="#23d5c8"/></linearGradient></defs>
+          <rect x="6" y="14" width="52" height="36" rx="6" stroke="url(#p1)" stroke-width="2.4"/>
+          <path d="M12 36 H22 L26 26 L31 44 L36 30 L39 36 H52" stroke="url(#p1)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <h3>Clinical-Grade Signal Extraction</h3>
+        <p>Transformer AI extracts 50+ health markers from facial video — matching or exceeding dedicated medical hardware accuracy at zero hardware cost.</p>
+      </div>
+      <div class="pillar glass reveal d2">
+        <svg class="ic" viewBox="0 0 64 64" fill="none">
+          <defs><linearGradient id="p2" x1="0" y1="0" x2="64" y2="64"><stop stop-color="#8b6bff"/><stop offset="1" stop-color="#34e3ff"/></linearGradient></defs>
+          <rect x="10" y="10" width="20" height="20" rx="4" stroke="url(#p2)" stroke-width="2.4"/>
+          <rect x="34" y="10" width="20" height="20" rx="4" stroke="url(#p2)" stroke-width="2.4"/>
+          <rect x="10" y="34" width="20" height="20" rx="4" stroke="url(#p2)" stroke-width="2.4"/>
+          <rect x="34" y="34" width="20" height="20" rx="4" stroke="url(#p2)" stroke-width="2.4"/>
+          <path d="M30 20 H34 M30 44 H34 M20 30 V34 M44 30 V34" stroke="url(#p2)" stroke-width="2.4" stroke-linecap="round"/>
+        </svg>
+        <h3>Platform as Infrastructure</h3>
+        <p>Not a point product — a modular SDK + API platform that plugs into any digital health, insurance, or wellness vertical in days, not months.</p>
+      </div>
+      <div class="pillar glass reveal d3">
+        <svg class="ic" viewBox="0 0 64 64" fill="none">
+          <defs><linearGradient id="p3" x1="0" y1="0" x2="64" y2="64"><stop stop-color="#ff5fa8"/><stop offset="1" stop-color="#8b6bff"/></linearGradient></defs>
+          <circle cx="32" cy="32" r="22" stroke="url(#p3)" stroke-width="2.4"/>
+          <path d="M10 32 H54 M32 10 C40 18 40 46 32 54 C24 46 24 18 32 10" stroke="url(#p3)" stroke-width="2.2"/>
+        </svg>
+        <h3>Built for Scale, Starting SEA</h3>
+        <p>A $187B global digital health market. 680M+ addressable SEA population. Regulatory tailwinds across Indonesia, Singapore, Malaysia and Vietnam.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PROBLEM ============ -->
+<section id="problem">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow"><span class="dot"></span>The Problem</span>
+      <h2>Healthcare is bottlenecked <span class="grad-text">at the first step.</span></h2>
+      <p class="lede">Four structural failures block preventive care before it begins. Salvion AI solves all four — with a single 30-second face scan.</p>
+    </div>
+    <div class="problem-grid">
+      <div class="prob glass reveal d1">
+        <svg class="ic" viewBox="0 0 48 48" fill="none" stroke="#ff5fa8" stroke-width="2.2"><circle cx="24" cy="24" r="17"/><path d="M24 14v10l7 4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <h4>Vital Signs Take Time</h4>
+        <p>Nurses spend 5–10 minutes per patient capturing basic vitals before the physician even enters the room.</p>
+      </div>
+      <div class="prob glass reveal d2">
+        <svg class="ic" viewBox="0 0 48 48" fill="none" stroke="#ff5fa8" stroke-width="2.2"><path d="M8 24s6-11 16-11 16 11 16 11-6 11-16 11S8 24 8 24Z"/><circle cx="24" cy="24" r="4"/><path d="M10 10 38 38" stroke-linecap="round"/></svg>
+        <h4>No Hardware, No Data</h4>
+        <p>Telemedicine removes the clinic visit — but also access to physiological measurements, leaving physicians flying blind.</p>
+      </div>
+      <div class="prob glass reveal d3">
+        <div class="stat-big">14%</div>
+        <h4>Wearables Have Barriers</h4>
+        <p>Only 14% of adults globally own a health wearable. Cost, friction and maintenance kill adoption in emerging markets.</p>
+      </div>
+      <div class="prob glass reveal d4">
+        <svg class="ic" viewBox="0 0 48 48" fill="none" stroke="#ff5fa8" stroke-width="2.2"><path d="M24 6 8 14v10c0 9 7 15 16 18 9-3 16-9 16-18V14L24 6Z" stroke-linejoin="round"/><path d="M18 24l4 4 8-8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <h4>Underwriting Is Imprecise</h4>
+        <p>Insurers price risk on age and demographics, not actual health data — because clinical measurement is prohibitively expensive at scale.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ WHY NOW ============ -->
+<section id="whynow">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow"><span class="dot"></span>Why Now</span>
+      <h2>The convergence window is open — <span class="grad-text-cyan">and won't stay open long.</span></h2>
+      <p class="lede">Three forces have aligned simultaneously to make camera-based health intelligence not just possible, but inevitable.</p>
+    </div>
+    <div class="forces">
+      <div class="force glass reveal d1">
+        <div class="viz"><canvas data-viz="phones"></canvas></div>
+        <div class="body">
+          <div class="num">01 — Smartphone Ubiquity</div>
+          <div class="big">6.8B+</div>
+          <div class="sm">smartphone users globally</div>
+          <p>The sensing hardware is already deployed at planetary scale — in every pocket, on every desk. Salvion activates a camera that's already there.</p>
+        </div>
+      </div>
+      <div class="force glass reveal d2">
+        <div class="viz"><canvas data-viz="transformer"></canvas></div>
+        <div class="body">
+          <div class="num">02 — Transformer AI Maturity</div>
+          <div class="big">2022→Now</div>
+          <div class="sm">models reach biosignal tasks</div>
+          <p>The same attention architecture that transformed NLP now enables clinical-grade signal extraction from low-quality video. The accuracy threshold was only crossed recently.</p>
+        </div>
+      </div>
+      <div class="force glass reveal d3">
+        <div class="viz"><canvas data-viz="covid"></canvas></div>
+        <div class="body">
+          <div class="num">03 — Post-COVID Care Shift</div>
+          <div class="big">38%</div>
+          <div class="sm">permanent increase in telehealth</div>
+          <p>COVID normalized remote care globally. Patients expect digital-first interaction; providers need remote physiological data. The demand structure has permanently shifted.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ HOW IT WORKS ============ -->
+<section id="how">
+  <div class="wrap">
+    <div class="sec-head reveal" style="margin-left:auto;margin-right:auto;text-align:center">
+      <span class="eyebrow"><span class="dot"></span>How It Works</span>
+      <h2>From face to full health recommendations <span class="grad-text">in 30 seconds.</span></h2>
+      <p class="lede" style="margin:0 auto">Five orchestrated stages — guided framing, contactless scan, AI fusion, scoring, and personalised action.</p>
+    </div>
+    <div class="steps">
+      <div class="step reveal d1">
+        <div class="node"><span class="idx">1</span>
+          <svg viewBox="0 0 40 40" fill="none" stroke="#34e3ff" stroke-width="2.2"><rect x="6" y="6" width="28" height="28" rx="6"/><path d="M6 14h6M28 6v6M34 26h-6M12 34v-6" stroke-linecap="round"/><circle cx="20" cy="20" r="5"/></svg>
+        </div>
+        <h4>Position & Calibrate</h4>
+        <p>AI-guided framing, Environmental Quality Score (EQS) and liveness detection activated.</p>
+      </div>
+      <div class="step reveal d2">
+        <div class="node"><span class="idx">2</span>
+          <svg viewBox="0 0 40 40" fill="none" stroke="#3dd6ff" stroke-width="2.2"><circle cx="20" cy="16" r="7"/><path d="M8 34c0-7 5-11 12-11s12 4 12 11" stroke-linecap="round"/><circle cx="20" cy="16" r="12" stroke-dasharray="3 4"/></svg>
+        </div>
+        <h4>30-Second Scan</h4>
+        <p>Contactless capture across 6 facial ROI zones: forehead, cheeks, periocular and nose bridge.</p>
+      </div>
+      <div class="step reveal d3">
+        <div class="node"><span class="idx">3</span>
+          <svg viewBox="0 0 40 40" fill="none" stroke="#8b6bff" stroke-width="2.2"><circle cx="20" cy="20" r="4"/><circle cx="8" cy="10" r="3"/><circle cx="32" cy="10" r="3"/><circle cx="8" cy="30" r="3"/><circle cx="32" cy="30" r="3"/><path d="M11 11 17 18M29 11 23 18M11 29 17 22M29 29 23 22"/></svg>
+        </div>
+        <h4>AI Analysis</h4>
+        <p>Blooxia AI fuses VPG + VBCG + VCS into a unified 512-dimensional health feature vector.</p>
+      </div>
+      <div class="step reveal d4">
+        <div class="node"><span class="idx">4</span>
+          <svg viewBox="0 0 40 40" fill="none" stroke="#a07bff" stroke-width="2.2"><circle cx="20" cy="20" r="14"/><path d="M20 6a14 14 0 0 1 12 7" stroke="#34e3ff" stroke-linecap="round"/><path d="M20 13v7l5 3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <h4>Health Score</h4>
+        <p>50+ parameters computed, risk tiers classified, Salvion Health Score™ delivered.</p>
+      </div>
+      <div class="step reveal d4">
+        <div class="node"><span class="idx">5</span>
+          <svg viewBox="0 0 40 40" fill="none" stroke="#ff5fa8" stroke-width="2.2"><path d="M20 6v22M12 20l8 8 8-8" stroke-linecap="round" stroke-linejoin="round"/><path d="M8 32h24" stroke-linecap="round"/></svg>
+        </div>
+        <h4>Recommendations</h4>
+        <p>Actionable, personalised insights and alerts — enabling intervention before symptoms appear.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CAPABILITIES ============ -->
+<section id="capabilities">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow"><span class="dot"></span>Capabilities</span>
+      <h2>A complete <span class="grad-text-cyan">health intelligence suite.</span></h2>
+      <p class="lede">Six measurement domains. 50+ markers per scan. One unified output for clinicians, actuaries and product teams.</p>
+    </div>
+    <div class="caps">
+      <div class="cap glass reveal d1">
+        <svg class="ic" viewBox="0 0 52 52" fill="none" stroke="#34e3ff" stroke-width="2.4"><path d="M6 26h8l4-12 8 24 5-16 3 4h7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <h3>Vital Signs <span class="cnt">12+</span></h3>
+        <ul><li>Oxygen Saturation (SpO₂)</li><li>Heart Rate</li><li>Systolic &amp; Diastolic BP</li><li class="more">+ more</li></ul>
+      </div>
+      <div class="cap glass reveal d2">
+        <svg class="ic" viewBox="0 0 52 52" fill="none" stroke="#23d5c8" stroke-width="2.4"><path d="M26 44C14 36 8 28 8 19a9 9 0 0 1 18-3 9 9 0 0 1 18 3c0 9-6 17-18 25Z" stroke-linejoin="round"/></svg>
+        <h3>Physiological <span class="cnt">10+</span></h3>
+        <ul><li>Heart Rate Variability</li><li>Respiratory Rate</li><li>Pulse Respiratory Quotient</li><li class="more">+ more</li></ul>
+      </div>
+      <div class="cap glass reveal d3">
+        <svg class="ic" viewBox="0 0 52 52" fill="none" stroke="#8b6bff" stroke-width="2.4"><circle cx="26" cy="14" r="6"/><path d="M26 20v14M16 26h20M18 44l8-10 8 10" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <h3>Physical <span class="cnt">8+</span></h3>
+        <ul><li>Body Mass Index</li><li>Body Shape Index</li><li>Biological Age</li><li class="more">+ more</li></ul>
+      </div>
+      <div class="cap glass reveal d1">
+        <svg class="ic" viewBox="0 0 52 52" fill="none" stroke="#ff5fa8" stroke-width="2.4"><path d="M26 6s14 14 14 24a14 14 0 0 1-28 0C12 20 26 6 26 6Z" stroke-linejoin="round"/></svg>
+        <h3>Blood <span class="cnt">9+</span></h3>
+        <ul><li>Random Blood Glucose</li><li>Total Cholesterol</li><li>Hemoglobin</li><li class="more">+ more</li></ul>
+      </div>
+      <div class="cap glass reveal d2">
+        <svg class="ic" viewBox="0 0 52 52" fill="none" stroke="#3ef0a2" stroke-width="2.4"><rect x="10" y="10" width="32" height="32" rx="8"/><path d="M10 32c6 0 6-8 12-8s6 8 12 8 8-4 8-4" stroke-linecap="round"/></svg>
+        <h3>Body Composition <span class="cnt">6+</span></h3>
+        <ul><li>Muscle Ratio</li><li>Body Fat Ratio</li><li>Body Water Ratio</li><li class="more">+ more</li></ul>
+      </div>
+      <div class="cap glass reveal d3">
+        <svg class="ic" viewBox="0 0 52 52" fill="none" stroke="#ffb24d" stroke-width="2.4"><path d="M26 8a13 13 0 0 0-13 13c0 5 3 8 3 12v4h20v-4c0-4 3-7 3-12A13 13 0 0 0 26 8Z" stroke-linejoin="round"/><path d="M21 41h10" stroke-linecap="round"/></svg>
+        <h3>Mental Wellness <span class="cnt">7+</span></h3>
+        <ul><li>Stress Index</li><li>Cognitive Load</li><li>Autonomic Balance</li><li class="more">+ more</li></ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ DEEP TECH ============ -->
+<section id="tech">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow"><span class="dot"></span>Deep Technology</span>
+      <h2>The engine behind <span class="grad-text">every scan.</span></h2>
+      <p class="lede">Every frame travels a deterministic 7-stage pipeline of computer vision, signal cleaning, transformer fusion and multi-head decoding.</p>
+    </div>
+    <div class="tech-split">
+      <div class="pipeline reveal d1">
+        <div class="pl-stage"><div class="n" style="background:var(--grad-cyan)">1</div><div><h5>Face Detection · ROI Tracking</h5><span>6 facial regions locked &amp; stabilised</span></div></div>
+        <div class="pl-stage"><div class="n" style="background:var(--grad-cyan)">2</div><div><h5>Illumination Normalization</h5><span>Pre-processing for lighting invariance</span></div></div>
+        <div class="pl-stage"><div class="n" style="background:var(--grad-violet)">3</div><div><h5>Motion Artifact Removal</h5><span>Adaptive filtering of micro-movement</span></div></div>
+        <div class="pl-stage" style="border-color:var(--stroke-strong);background:linear-gradient(120deg,rgba(52,227,255,.08),rgba(139,107,255,.08))"><div class="n" style="background:var(--grad-hero)">4</div><div><h5>Blooxia AI Fusion</h5><span>VPG + VBCG + VCS · Transformer fusion</span></div></div>
+        <div class="pl-stage"><div class="n" style="background:var(--grad-violet)">5</div><div><h5>FFT Analysis · Wave Processing</h5><span>Frequency-domain signal decomposition</span></div></div>
+        <div class="pl-stage"><div class="n" style="background:var(--grad-violet)">6</div><div><h5>Temporal Attention Embedding</h5><span>Multi-head self-attention across time</span></div></div>
+        <div class="pl-stage"><div class="n" style="background:linear-gradient(120deg,#ff5fa8,#8b6bff)">7</div><div><h5>30+ Decoder Heads · Confidence</h5><span>Per-parameter output with confidence scoring</span></div></div>
+      </div>
+      <div class="tech-visual reveal d2"><canvas id="tech-canvas"></canvas></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SIGNAL COVERAGE ============ -->
+<section id="signal">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow"><span class="dot"></span>Signal Coverage</span>
+      <h2>A continuous map of <span class="grad-text-cyan">physiological state.</span></h2>
+      <p class="lede">Cardiovascular, respiratory, metabolic, autonomic. Salvion outputs a calibrated live stream — not a single number.</p>
+    </div>
+    <div class="signal-wrap">
+      <div class="sig glass reveal d1"><div class="label">Heart Rate</div><div class="v" data-live="hr">72<small>bpm</small></div><canvas data-wave="1"></canvas></div>
+      <div class="sig glass reveal d2"><div class="label">Blood Pressure</div><div class="v">118/79<small>mmHg</small></div><canvas data-wave="2"></canvas></div>
+      <div class="sig glass reveal d3"><div class="label">SpO₂ Level</div><div class="v" data-live="spo2">98<small>%</small></div><canvas data-wave="3"></canvas></div>
+      <div class="sig glass reveal d4"><div class="label">Respiratory</div><div class="v" data-live="resp">15<small>/min</small></div><canvas data-wave="4"></canvas></div>
+      <div class="sig glass reveal d1"><div class="label">Stress Index</div><div class="v" data-live="stress">31<small>/100</small></div><canvas data-wave="5"></canvas></div>
+      <div class="sig glass reveal d2"><div class="label">HRV</div><div class="v" data-live="hrv">62<small>ms</small></div><canvas data-wave="6"></canvas></div>
+      <div class="sig glass reveal d3"><div class="label">Glucose</div><div class="v" data-live="glu">94<small>mg/dL</small></div><canvas data-wave="7"></canvas></div>
+      <div class="sig glass reveal d4"><div class="label">Health Score</div><div class="v" data-live="score" style="color:var(--green)">87<small>/100</small></div><canvas data-wave="8"></canvas></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ DEPLOY ============ -->
+<section id="deploy">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow"><span class="dot"></span>One Stack · Many Surfaces</span>
+      <h2>From edge sensor <span class="grad-text">to enterprise system.</span></h2>
+      <p class="lede">The same intelligence runs on a phone in a clinic, a kiosk in a workplace, or a private cloud for an insurer.</p>
+    </div>
+    <div class="deploy">
+      <div class="dep glass reveal d1">
+        <span class="badge2">Edge</span>
+        <h3>On-Device AI</h3>
+        <p>Sub-50ms inference on iOS / Android with on-device models. 100% local by default — raw video never leaves the device.</p>
+      </div>
+      <div class="dep glass reveal d2">
+        <span class="badge2">Cloud</span>
+        <h3>Private VPC</h3>
+        <p>Regional data residency, FHIR-native interoperability, and elastic scale for population-level deployments.</p>
+      </div>
+      <div class="dep glass reveal d3">
+        <span class="badge2">Enterprise</span>
+        <h3>Dedicated Tenancy</h3>
+        <p>SLA-backed routing with HIPAA / GDPR audit logs, federated-learning roadmap and white-label control.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SOLUTIONS ============ -->
+<section id="solutions">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow"><span class="dot"></span>Solutions</span>
+      <h2>Built for every <span class="grad-text">health touchpoint.</span></h2>
+      <p class="lede">One intelligence layer, four front lines. Salvion plugs into the moment care, risk or wellbeing is decided.</p>
+    </div>
+    <div class="solutions">
+      <div class="sol glass reveal d1">
+        <div class="quote">"Screen before they even sit down."</div>
+        <h3><svg class="si" viewBox="0 0 24 24" fill="none" stroke="#34e3ff" stroke-width="1.8"><path d="M12 21s-7-4.5-7-10a7 7 0 0 1 14 0c0 5.5-7 10-7 10Z"/><path d="M9 11h2l1-2 2 4 1-2h1" stroke-linecap="round" stroke-linejoin="round"/></svg>Healthcare &amp; Telemedicine</h3>
+        <p>Pre-consultation health snapshots, telehealth vital capture without hardware, remote chronic-disease monitoring, and FHIR-compliant EHR integration.</p>
+        <span class="chip">REST API + SDK + White-Label Portal</span>
+      </div>
+      <div class="sol glass reveal d2">
+        <div class="quote">"Risk intelligence from the first touchpoint."</div>
+        <h3><svg class="si" viewBox="0 0 24 24" fill="none" stroke="#8b6bff" stroke-width="1.8"><path d="M12 3 4 6v6c0 5 3.5 8 8 9 4.5-1 8-4 8-9V6l-8-3Z" stroke-linejoin="round"/><path d="M9 12l2 2 4-4" stroke-linecap="round" stroke-linejoin="round"/></svg>Insurance &amp; Underwriting</h3>
+        <p>50+ objective biometric markers at onboarding — no medical examiner, no lab visit. Actuarial model enrichment and fraud reduction via liveness-verified data.</p>
+        <span class="chip">Insurance API · OJK Compliant (Indonesia)</span>
+      </div>
+      <div class="sol glass reveal d3">
+        <div class="quote">"Health intelligence that protects your workforce."</div>
+        <h3><svg class="si" viewBox="0 0 24 24" fill="none" stroke="#23d5c8" stroke-width="1.8"><circle cx="9" cy="8" r="3"/><circle cx="17" cy="9" r="2.4"/><path d="M3 19c0-3.3 2.7-5 6-5s6 1.7 6 5M15 19c0-2.5 1-4 3.5-4S21 16.5 21 19" stroke-linecap="round"/></svg>Corporate Wellness</h3>
+        <p>Daily employee health check-ins, burnout and stress detection at population level, and an HR risk dashboard with anonymized cohort analytics.</p>
+        <span class="chip">Corporate Platform + HR Dashboard · GDPR</span>
+      </div>
+      <div class="sol glass reveal d4">
+        <div class="quote">"Your health lab, in your pocket."</div>
+        <h3><svg class="si" viewBox="0 0 24 24" fill="none" stroke="#ff5fa8" stroke-width="1.8"><rect x="7" y="2" width="10" height="20" rx="3"/><path d="M11 18h2" stroke-linecap="round"/></svg>Consumer Health Apps</h3>
+        <p>Any consumer app gains clinical-grade assessment via the Salvion SDK — dramatically higher engagement, retention and genuine health utility.</p>
+        <span class="chip">Mobile SDK iOS / Android · Plug &amp; Play</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ COMPARE ============ -->
+<section id="compare">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow"><span class="dot"></span>Competitive Positioning</span>
+      <h2>Why Salvion AI <span class="grad-text-cyan">goes further.</span></h2>
+      <p class="lede">Conventional rPPG stops at vital signs. Salvion delivers a full intelligence layer — with cross-validation, scoring and recommendations.</p>
+    </div>
+    <div class="cmp reveal d1">
+      <div class="cmp-row cmp-head"><div>Capability</div><div>Conventional rPPG</div><div class="salv">Salvion AI</div></div>
+      <div class="cmp-row"><div class="feat">Output Depth</div><div class="old">Vital signs only (HR, SpO₂, BR)</div><div class="salv"><span class="check">✓</span> 50+ markers: vitals + blood proxies + body composition + disease risk</div></div>
+      <div class="cmp-row"><div class="feat">AI Architecture</div><div class="old">Traditional CNN / regression</div><div class="salv"><span class="check">✓</span> Transformer temporal attention — higher accuracy on low-quality cameras</div></div>
+      <div class="cmp-row"><div class="feat">Signal Modality</div><div class="old">Single-modality rPPG only</div><div class="salv"><span class="check">✓</span> Blooxia AI: VPG + VBCG + VCS — independent cross-validation</div></div>
+      <div class="cmp-row"><div class="feat">Health Intelligence</div><div class="old">Raw data output only</div><div class="salv"><span class="check">✓</span> Salvion Health Score™ + risk tiers + Early Risk Signals™ + recommendations</div></div>
+      <div class="cmp-row"><div class="feat">Privacy</div><div class="old">Cloud-dependent processing</div><div class="salv"><span class="check">✓</span> On-device by default · hybrid optional · federated-learning roadmap</div></div>
+      <div class="cmp-row"><div class="feat">Compliance</div><div class="old">Generic data policy</div><div class="salv"><span class="check">✓</span> HIPAA · GDPR · FHIR · OJK · PDPI · ISO 13485 roadmap</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ DEVELOPERS ============ -->
+<section id="developers">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow"><span class="dot"></span>Developers</span>
+      <h2>Integrate in days, <span class="grad-text-cyan">not months.</span></h2>
+      <p class="lede">A clean REST API and native SDKs across web, iOS and Android. FHIR R4 output, offline-first, per-parameter billing.</p>
+    </div>
+    <div class="dev-split">
+      <div class="reveal d1">
+        <div class="dev-list">
+          <div class="devc">
+            <svg class="di" viewBox="0 0 32 32" fill="none" stroke="#34e3ff" stroke-width="2"><rect x="4" y="6" width="24" height="20" rx="3"/><path d="M11 14l-3 2 3 2M21 14l3 2-3 2M18 12l-4 8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <h5>Web SDK · JS/TS</h5><span>WebAssembly inference · WebRTC camera</span>
+          </div>
+          <div class="devc">
+            <svg class="di" viewBox="0 0 32 32" fill="none" stroke="#8b6bff" stroke-width="2"><path d="M5 16h22M5 10h22M5 22h22" stroke-linecap="round"/><circle cx="9" cy="10" r="0"/></svg>
+            <h5>REST API</h5><span>HTTPS · OpenAPI 3.0 · JSON / FHIR</span>
+          </div>
+          <div class="devc">
+            <svg class="di" viewBox="0 0 32 32" fill="none" stroke="#23d5c8" stroke-width="2"><rect x="9" y="3" width="14" height="26" rx="3"/><path d="M14 25h4" stroke-linecap="round"/></svg>
+            <h5>Mobile SDK · Android</h5><span>Native Kotlin/Java · On-device AI · FHIR</span>
+          </div>
+          <div class="devc">
+            <svg class="di" viewBox="0 0 32 32" fill="none" stroke="#ff5fa8" stroke-width="2"><rect x="9" y="3" width="14" height="26" rx="3"/><circle cx="16" cy="25" r="1.4" fill="#ff5fa8" stroke="none"/></svg>
+            <h5>Mobile SDK · iOS</h5><span>Swift/ObjC · Privacy Manifest · App Store</span>
+          </div>
+        </div>
+        <div class="dev-tags">
+          <span>White-Label UI</span><span>Custom Pipeline</span><span>FHIR R4 Output</span><span>Offline-First</span><span>Per-Parameter Billing</span>
+        </div>
+      </div>
+      <div class="codecard reveal d2">
+        <div class="bar"><i></i><i></i><i></i><span class="t">scan.ts — Salvion SDK</span></div>
+<pre><span class="k">import</span> { Salvion } <span class="k">from</span> <span class="s">'@salvion/sdk'</span>;
+
+<span class="c">// 1 · authenticate &amp; open the camera stream</span>
+<span class="k">const</span> salvion = <span class="k">new</span> <span class="f">Salvion</span>({ apiKey: <span class="s">'sk_live_•••'</span> });
+<span class="k">const</span> session = <span class="k">await</span> salvion.<span class="f">scan</span>({
+  duration: <span class="n">30</span>,
+  markers: [<span class="s">'heartRate'</span>, <span class="s">'bloodPressure'</span>, <span class="s">'spo2'</span>, <span class="s">'glucose'</span>],
+  onDevice: <span class="k">true</span>,            <span class="c">// 100% local inference</span>
+});
+
+<span class="c">// 2 · stream results as confidence resolves</span>
+session.<span class="f">on</span>(<span class="s">'result'</span>, (r) => {
+  console.<span class="f">log</span>(r.healthScore);   <span class="c">// → 87 / 100</span>
+  console.<span class="f">log</span>(r.markers.bloodPressure); <span class="c">// → { sys: 118, dia: 79 }</span>
+});
+
+<span class="c">// 3 · export FHIR R4 for the EHR</span>
+<span class="k">const</span> bundle = <span class="k">await</span> session.<span class="f">toFHIR</span>();</pre>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PRICING ============ -->
+<section id="pricing">
+  <div class="wrap">
+    <div class="sec-head reveal" style="margin:0 auto 64px;text-align:center">
+      <span class="eyebrow"><span class="dot"></span>Pricing Packages</span>
+      <h2>Choose your <span class="grad-text">plan.</span></h2>
+      <p class="lede" style="margin:0 auto">AI-powered health screening for every need — from a single clinic to a national insurer. Per-parameter billing available.</p>
+    </div>
+    <div class="tiers">
+      <div class="tier glass reveal d1">
+        <h3>Essential</h3>
+        <p class="pdesc">Core vitals & health score for clinics and consumer apps getting started.</p>
+        <div class="price">$0.39<small>/scan</small></div>
+        <div class="pricen">Pay as you go · no minimum</div>
+        <ul>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"/></svg>Core vital-sign parameters</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"/></svg>Salvion Health Score™</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"/></svg>Instant results</li>
+          <li class="off"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M6 6l12 12M18 6 6 18" stroke-linecap="round"/></svg>Detailed report</li>
+          <li class="off"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M6 6l12 12M18 6 6 18" stroke-linecap="round"/></svg>Specialist insights</li>
+        </ul>
+        <a href="#cta" class="btn btn-ghost" style="justify-content:center">Get Started</a>
+      </div>
+      <div class="tier glass feat reveal d2">
+        <span class="pop">Most Popular</span>
+        <h3>Comprehensive</h3>
+        <p class="pdesc">The full 50+ marker suite with detailed reporting — built for healthcare and wellness.</p>
+        <div class="price">$0.95<small>/scan</small></div>
+        <div class="pricen">Billed monthly · volume tiers</div>
+        <ul>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"/></svg>All 50+ health parameters</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"/></svg>Salvion Health Score™ &amp; trends</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"/></svg>Detailed report + disease risk</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"/></svg>Instant results &amp; AI recommendations</li>
+          <li class="off"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M6 6l12 12M18 6 6 18" stroke-linecap="round"/></svg>Specialist insights</li>
+        </ul>
+        <a href="#cta" class="btn btn-primary" style="justify-content:center">Request Demo</a>
+      </div>
+      <div class="tier glass reveal d3">
+        <h3>Specialized</h3>
+        <p class="pdesc">Tailored deployments for insurers and enterprises — APIs, dashboards and SLAs.</p>
+        <div class="price">Custom</div>
+        <div class="pricen">Annual contract · from $2,500/mo</div>
+        <ul>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"/></svg>Everything in Comprehensive</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"/></svg>Specialist clinical insights</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"/></svg>White-label SDK + REST API</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"/></svg>HR / actuarial dashboards</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"/></svg>OJK / HIPAA / GDPR compliance</li>
+        </ul>
+        <a href="#cta" class="btn btn-ghost" style="justify-content:center">Talk to Sales</a>
+      </div>
+    </div>
+    <p class="reveal" style="text-align:center;color:var(--text-faint);font-size:13px;margin-top:34px">Indicative pricing — final rates depend on scan volume, deployment surface and compliance scope. <a href="#cta" style="color:var(--cyan)">Request a quote →</a></p>
+  </div>
+</section>
+
+<!-- ============ FAQ ============ -->
+<section id="faq">
+  <div class="wrap">
+    <div class="sec-head reveal" style="margin:0 auto 56px;text-align:center">
+      <span class="eyebrow"><span class="dot"></span>FAQ</span>
+      <h2>Questions, <span class="grad-text-cyan">answered.</span></h2>
+    </div>
+    <div class="faq">
+      <details class="reveal d1" open>
+        <summary>How accurate is a camera-based scan?<span class="pl"></span></summary>
+        <div class="a">Salvion's transformer models are engineered to match or exceed dedicated medical hardware for core vitals, with every parameter returned alongside a confidence score. The platform is currently in clinical validation across Southeast Asia — results are intended for screening and wellness insight, not standalone diagnosis.</div>
+      </details>
+      <details class="reveal d1">
+        <summary>What hardware does it need?<span class="pl"></span></summary>
+        <div class="a">Any standard smartphone or laptop camera — no wearables, sensors or accessories. Inference runs on-device in sub-50ms on modern iOS and Android hardware, or in your private cloud where you prefer.</div>
+      </details>
+      <details class="reveal d2">
+        <summary>Where does the video data go?<span class="pl"></span></summary>
+        <div class="a">Nowhere by default. Processing is 100% local — raw video never leaves the device. Only the resulting health markers are returned, and the architecture is HIPAA- and GDPR-compliant by design, with regional data residency available on cloud deployments.</div>
+      </details>
+      <details class="reveal d2">
+        <summary>How long does integration take?<span class="pl"></span></summary>
+        <div class="a">Most teams ship a working scan in days, not months. Drop in the Web, iOS or Android SDK, call a single <code>scan()</code> method, and receive FHIR R4 output ready for your EHR or data pipeline. White-label UI and custom pipelines are available for deeper builds.</div>
+      </details>
+      <details class="reveal d3">
+        <summary>Which markers can it measure?<span class="pl"></span></summary>
+        <div class="a">50+ markers across six domains — vital signs, physiological, physical, blood proxies, body composition and mental wellness — plus the Salvion Health Score™, risk tiers and Early Risk Signals™. You can bill per parameter and enable only what your product needs.</div>
+      </details>
+      <details class="reveal d3">
+        <summary>Is it compliant for regulated markets?<span class="pl"></span></summary>
+        <div class="a">Salvion supports HIPAA, GDPR, FHIR and OJK (Indonesia), with PDPI alignment and an ISO 13485 roadmap. Enterprise deployments add dedicated tenancy, SLA-backed routing and full audit logging.</div>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CTA ============ -->
+<section id="cta">
+  <div class="wrap">
+    <div class="cta-final glass reveal">
+      <canvas id="cta-canvas" style="position:absolute;inset:0;z-index:0;opacity:.6"></canvas>
+      <div style="position:relative;z-index:2">
+        <span class="eyebrow"><span class="dot"></span>Build on Salvion</span>
+        <h2 style="margin-top:22px">The intelligence layer<br>for what the body reveals.</h2>
+        <p>See the live scan, talk to engineering, or explore the API. Integrate in days, not months.</p>
+        <div class="hero-actions">
+          <a href="mailto:hello@salvion.ai" class="btn btn-primary">Request Demo
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+          <a href="mailto:sales@salvion.ai" class="btn btn-ghost">Talk to Sales</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ MEDICAL DISCLAIMER ============ -->
+<div class="disclaimer">
+  <div class="wrap">
+    <svg class="di" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3 2 20h20L12 3Z" stroke-linejoin="round"/><path d="M12 10v4M12 17h.01" stroke-linecap="round"/></svg>
+    <p><strong>Medical disclaimer.</strong> Salvion AI is a health-screening and wellness technology currently in clinical validation. Its measurements, scores and risk signals are provided for informational and preventive-screening purposes only and are <strong>not a substitute for professional medical advice, diagnosis or treatment</strong>. Always seek the guidance of a qualified clinician with any questions about a medical condition, and never disregard or delay professional advice because of information provided by this platform. In an emergency, contact your local emergency services. Marker availability, accuracy and regulatory clearance vary by region and deployment.</p>
+  </div>
+</div>
+
+<!-- ============ FOOTER ============ -->
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <a class="logo" href="#top">
+          <svg class="mark" viewBox="0 0 40 40" fill="none">
+            <circle cx="20" cy="20" r="18" stroke="url(#lg)" stroke-width="2"/>
+            <path d="M6 20 H13 L16 11 L20 29 L24 15 L27 20 H34" stroke="url(#lg)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>Salvion AI
+        </a>
+        <p>AI-powered health intelligence from any camera. No wearables required.</p>
+      </div>
+      <div class="foot-col"><h5>Platform</h5>
+        <a href="#">Salvion Smart Scan™</a><a href="#">Vital Signs Monitoring</a><a href="#">Disease Risk Prediction</a><a href="#">Body Composition AI</a><a href="#">SDK &amp; API Platform</a>
+      </div>
+      <div class="foot-col"><h5>Solutions</h5>
+        <a href="#">Healthcare &amp; Telemedicine</a><a href="#">Insurance Underwriting</a><a href="#">Corporate Wellness</a><a href="#">Consumer Health Apps</a>
+      </div>
+      <div class="foot-col"><h5>Technology</h5>
+        <a href="#">Blooxia AI · VPG+VBCG+VCS</a><a href="#">Transformer Architecture</a><a href="#">On-Device AI</a><a href="#">FHIR / HL7 Compatible</a>
+      </div>
+      <div class="foot-col"><h5>Company</h5>
+        <a href="#">About Salvion AI</a><a href="#">Developer Docs</a><a href="#">Privacy Policy</a><a href="#">Terms of Service</a><a href="#">Contact Sales</a>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <div>© 2026 Salvion AI · Powered by Salvion Technologies Pte Ltd</div>
+      <div class="status"><span class="dot"></span>Signal · Stable</div>
+    </div>
+  </div>
+</footer>
+
+<!-- ============ THREE.JS (hero + tech + cta) ============ -->
+<script type="importmap">
+{ "imports": { "three": "https://unpkg.com/three@0.160.0/build/three.module.js" } }
+</script>
+<script type="module">
+import * as THREE from 'three';
+
+/* ---------- shared helpers ---------- */
+const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+/* =========================================================
+   HERO — particle "signal sphere"
+   ========================================================= */
+function initHero(){
+  const canvas = document.getElementById('hero-canvas');
+  if(!canvas) return;
+  let renderer;
+  try{ renderer = new THREE.WebGLRenderer({canvas,antialias:true,alpha:true}); }
+  catch(e){ return; }
+  renderer.setPixelRatio(Math.min(devicePixelRatio,2));
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(55, 1, .1, 100);
+  camera.position.z = 7;
+
+  const group = new THREE.Group();
+  scene.add(group);
+
+  // --- particle sphere ---
+  const N = 2600, R = 2.6;
+  const pos = new Float32Array(N*3);
+  const col = new Float32Array(N*3);
+  const c1 = new THREE.Color('#34e3ff'), c2 = new THREE.Color('#8b6bff'), c3 = new THREE.Color('#ff5fa8');
+  for(let i=0;i<N;i++){
+    const t = Math.acos(1-2*(i+.5)/N);
+    const p = Math.PI*(1+Math.sqrt(5))*i;
+    const x = Math.sin(t)*Math.cos(p), y = Math.sin(t)*Math.sin(p), z = Math.cos(t);
+    pos[i*3]=x*R; pos[i*3+1]=y*R; pos[i*3+2]=z*R;
+    const mix = (y+1)/2;
+    const cc = mix<.5 ? c1.clone().lerp(c2, mix*2) : c2.clone().lerp(c3,(mix-.5)*2);
+    col[i*3]=cc.r; col[i*3+1]=cc.g; col[i*3+2]=cc.b;
+  }
+  const g = new THREE.BufferGeometry();
+  g.setAttribute('position', new THREE.BufferAttribute(pos,3));
+  g.setAttribute('color', new THREE.BufferAttribute(col,3));
+  const m = new THREE.PointsMaterial({size:.045,vertexColors:true,transparent:true,opacity:.95,depthWrite:false,blending:THREE.AdditiveBlending});
+  const points = new THREE.Points(g,m);
+  group.add(points);
+
+  // --- wireframe core ---
+  const ico = new THREE.Mesh(
+    new THREE.IcosahedronGeometry(1.7,1),
+    new THREE.MeshBasicMaterial({color:'#34e3ff',wireframe:true,transparent:true,opacity:.10})
+  );
+  group.add(ico);
+
+  // --- orbiting rings ---
+  const rings = new THREE.Group();
+  [3.1,3.5,3.9].forEach((r,i)=>{
+    const ring = new THREE.Mesh(
+      new THREE.TorusGeometry(r,.006,8,120),
+      new THREE.MeshBasicMaterial({color:i===1?'#8b6bff':'#34e3ff',transparent:true,opacity:.35})
+    );
+    ring.rotation.x = Math.PI/2 + i*.4;
+    ring.rotation.y = i*.7;
+    ring.userData.spd = .12 + i*.05;
+    rings.add(ring);
+  });
+  group.add(rings);
+
+  // --- floating data motes ---
+  const motesN = 140;
+  const mpos = new Float32Array(motesN*3);
+  for(let i=0;i<motesN;i++){
+    const r = 4+Math.random()*3;
+    const a = Math.random()*Math.PI*2, b = Math.acos(2*Math.random()-1);
+    mpos[i*3]=r*Math.sin(b)*Math.cos(a);
+    mpos[i*3+1]=r*Math.sin(b)*Math.sin(a);
+    mpos[i*3+2]=r*Math.cos(b);
+  }
+  const mg = new THREE.BufferGeometry();
+  mg.setAttribute('position',new THREE.BufferAttribute(mpos,3));
+  const motes = new THREE.Points(mg,new THREE.PointsMaterial({size:.03,color:'#9fd8ff',transparent:true,opacity:.5,depthWrite:false,blending:THREE.AdditiveBlending}));
+  scene.add(motes);
+
+  let mx=0,my=0,tx=0,ty=0;
+  window.addEventListener('mousemove',e=>{
+    tx=(e.clientX/innerWidth-.5); ty=(e.clientY/innerHeight-.5);
+  });
+
+  function resize(){
+    const w = canvas.clientWidth, h = canvas.clientHeight;
+    if(canvas.width!==w||canvas.height!==h){ renderer.setSize(w,h,false); camera.aspect=w/h; camera.updateProjectionMatrix(); }
+  }
+  let t=0;
+  function loop(){
+    requestAnimationFrame(loop);
+    resize();
+    t+=.005;
+    mx+=(tx-mx)*.04; my+=(ty-my)*.04;
+    group.rotation.y += .0016;
+    group.rotation.x = my*.5;
+    group.rotation.y += mx*.0006;
+    ico.rotation.y -= .003; ico.rotation.x += .001;
+    rings.children.forEach(r=> r.rotation.z += r.userData.spd*.01);
+    // gentle breathing
+    const s = 1+Math.sin(t*2)*.015;
+    points.scale.setScalar(s);
+    motes.rotation.y += .0007;
+    camera.position.x += (mx*1.4 - camera.position.x)*.05;
+    camera.position.y += (-my*1.0 - camera.position.y)*.05;
+    camera.lookAt(0,0,0);
+    renderer.render(scene,camera);
+  }
+  loop();
+}
+
+/* =========================================================
+   TECH — rotating neural lattice
+   ========================================================= */
+function initTech(){
+  const canvas = document.getElementById('tech-canvas');
+  if(!canvas) return;
+  let renderer;
+  try{ renderer = new THREE.WebGLRenderer({canvas,antialias:true,alpha:true}); }catch(e){ return; }
+  renderer.setPixelRatio(Math.min(devicePixelRatio,2));
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(50,1,.1,100);
+  camera.position.z = 9;
+  const group = new THREE.Group(); scene.add(group);
+
+  // layered neural net nodes
+  const layers = [4,7,7,5,3];
+  const nodes = [];
+  const nodeGeo = new THREE.SphereGeometry(.12,16,16);
+  const cA = new THREE.Color('#34e3ff'), cB = new THREE.Color('#8b6bff');
+  layers.forEach((cnt,li)=>{
+    for(let i=0;i<cnt;i++){
+      const mat = new THREE.MeshBasicMaterial({color:cA.clone().lerp(cB,li/(layers.length-1))});
+      const mesh = new THREE.Mesh(nodeGeo,mat);
+      const x = (li-(layers.length-1)/2)*2.1;
+      const y = (i-(cnt-1)/2)*1.25;
+      mesh.position.set(x,y,0);
+      mesh.userData={base:y,ph:Math.random()*6};
+      group.add(mesh); nodes.push({mesh,li,i,cnt,x,y});
+    }
+  });
+  // connections
+  const linePos=[];
+  for(let li=0;li<layers.length-1;li++){
+    const a=nodes.filter(n=>n.li===li), b=nodes.filter(n=>n.li===li+1);
+    a.forEach(na=>b.forEach(nb=>{ linePos.push(na.x,na.y,0, nb.x,nb.y,0); }));
+  }
+  const lg = new THREE.BufferGeometry();
+  lg.setAttribute('position',new THREE.BufferAttribute(new Float32Array(linePos),3));
+  const lines = new THREE.LineSegments(lg,new THREE.LineBasicMaterial({color:'#3a6fff',transparent:true,opacity:.14}));
+  group.add(lines);
+
+  function resize(){
+    const w=canvas.clientWidth,h=canvas.clientHeight;
+    if(canvas.width!==w||canvas.height!==h){renderer.setSize(w,h,false);camera.aspect=w/h;camera.updateProjectionMatrix();}
+  }
+  let t=0;
+  function loop(){
+    requestAnimationFrame(loop); resize(); t+=.016;
+    group.rotation.y = Math.sin(t*.3)*.5;
+    group.rotation.x = Math.cos(t*.2)*.12;
+    nodes.forEach((n,idx)=>{
+      const pulse = (Math.sin(t*2 - n.li*.6 + n.userData?.ph)+1)/2;
+      const sc = .8 + pulse*.9;
+      n.mesh.scale.setScalar(sc);
+      n.mesh.material.opacity = .5+pulse*.5;
+    });
+    renderer.render(scene,camera);
+  }
+  loop();
+}
+
+/* =========================================================
+   CTA — drifting particle field
+   ========================================================= */
+function initCta(){
+  const canvas = document.getElementById('cta-canvas');
+  if(!canvas) return;
+  let renderer;
+  try{ renderer = new THREE.WebGLRenderer({canvas,antialias:true,alpha:true}); }catch(e){ return; }
+  renderer.setPixelRatio(Math.min(devicePixelRatio,2));
+  const scene=new THREE.Scene();
+  const camera=new THREE.PerspectiveCamera(60,1,.1,100); camera.position.z=6;
+  const N=900, pos=new Float32Array(N*3);
+  for(let i=0;i<N;i++){pos[i*3]=(Math.random()-.5)*16;pos[i*3+1]=(Math.random()-.5)*8;pos[i*3+2]=(Math.random()-.5)*8;}
+  const g=new THREE.BufferGeometry(); g.setAttribute('position',new THREE.BufferAttribute(pos,3));
+  const pts=new THREE.Points(g,new THREE.PointsMaterial({size:.035,color:'#7fc8ff',transparent:true,opacity:.6,depthWrite:false,blending:THREE.AdditiveBlending}));
+  scene.add(pts);
+  function resize(){const w=canvas.clientWidth,h=canvas.clientHeight;if(canvas.width!==w||canvas.height!==h){renderer.setSize(w,h,false);camera.aspect=w/h;camera.updateProjectionMatrix();}}
+  function loop(){requestAnimationFrame(loop);resize();pts.rotation.y+=.0009;pts.rotation.x+=.0004;renderer.render(scene,camera);}
+  loop();
+}
+
+if(!prefersReduced){ initHero(); initTech(); initCta(); }
+</script>
+
+<!-- ============ UI / 2D canvas / interactions ============ -->
+<script>
+/* ---------- nav scroll state ---------- */
+const nav = document.getElementById('nav');
+addEventListener('scroll',()=>{ nav.classList.toggle('scrolled', scrollY>20); });
+
+/* ---------- mobile burger (smooth scroll fallback) ---------- */
+document.getElementById('burger').addEventListener('click',()=>{
+  document.querySelector('.nav-links').scrollIntoView();
+});
+
+/* ---------- reveal on scroll ---------- */
+const io = new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} });
+},{threshold:.12});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+/* ---------- animated stat counters ---------- */
+const counters = document.querySelectorAll('[data-count]');
+const cio = new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{
+    if(!e.isIntersecting) return;
+    const el=e.target, end=+el.dataset.count, suf=el.dataset.suffix||'';
+    let s=0; const step=end/45;
+    const tick=()=>{ s+=step; if(s>=end){el.textContent=end+suf;} else {el.textContent=Math.floor(s)+suf;requestAnimationFrame(tick);} };
+    tick(); cio.unobserve(el);
+  });
+},{threshold:.6});
+counters.forEach(c=>cio.observe(c));
+
+/* ---------- 3D tilt on glass cards ---------- */
+document.querySelectorAll('.pillar,.cap,.dep,.tier,.force').forEach(card=>{
+  card.style.transformStyle='preserve-3d';
+  card.addEventListener('mousemove',e=>{
+    const r=card.getBoundingClientRect();
+    const px=(e.clientX-r.left)/r.width-.5, py=(e.clientY-r.top)/r.height-.5;
+    card.style.transform=`perspective(800px) rotateY(${px*6}deg) rotateX(${-py*6}deg) translateY(-6px)`;
+  });
+  card.addEventListener('mouseleave',()=>{ card.style.transform=''; });
+});
+
+/* ---------- spark lines (hero vital cards) ---------- */
+function drawSpark(canvas,color,kind){
+  const ctx=canvas.getContext('2d'); const dpr=Math.min(devicePixelRatio,2);
+  const w=canvas.clientWidth||150, h=canvas.clientHeight||26;
+  canvas.width=w*dpr; canvas.height=h*dpr; ctx.scale(dpr,dpr);
+  let off=0;
+  function frame(){
+    ctx.clearRect(0,0,w,h);
+    const grad=ctx.createLinearGradient(0,0,w,0); grad.addColorStop(0,'rgba(52,227,255,0)');grad.addColorStop(.5,color);grad.addColorStop(1,'rgba(255,95,168,0)');
+    ctx.strokeStyle=grad; ctx.lineWidth=2; ctx.beginPath();
+    for(let x=0;x<=w;x++){
+      let y;
+      if(kind==='hr'){
+        // ECG-like
+        const xx=((x+off)%w)/w*6;
+        y=h/2 + Math.sin(xx*3)*2;
+        const beat=(x+off)%60;
+        if(beat>26&&beat<34){ y=h/2 - (beat<30? (beat-26)*4 : (34-beat)*4); }
+      } else {
+        y=h/2 + Math.sin((x+off)*.08)*4 + Math.sin((x+off)*.21)*2;
+      }
+      x===0?ctx.moveTo(x,y):ctx.lineTo(x,y);
+    }
+    ctx.stroke(); off+=1.4; requestAnimationFrame(frame);
+  }
+  frame();
+}
+document.querySelectorAll('[data-spark]').forEach(c=>{
+  drawSpark(c, c.dataset.spark==='hr'?'#34e3ff':'#ffb24d', c.dataset.spark);
+});
+
+/* ---------- signal-coverage waveforms ---------- */
+function drawWave(canvas,seed){
+  const ctx=canvas.getContext('2d'); const dpr=Math.min(devicePixelRatio,2);
+  const w=canvas.clientWidth||220,h=40; canvas.width=w*dpr;canvas.height=h*dpr;ctx.scale(dpr,dpr);
+  const col=['#34e3ff','#8b6bff','#23d5c8','#3ef0a2','#ffb24d','#ff5fa8','#7fc8ff','#3ef0a2'][seed%8];
+  let off=Math.random()*100;
+  function frame(){
+    ctx.clearRect(0,0,w,h);
+    ctx.beginPath(); ctx.strokeStyle=col; ctx.lineWidth=1.8; ctx.globalAlpha=.9;
+    for(let x=0;x<=w;x++){
+      const v=Math.sin((x+off)*.05+seed)*0.6+Math.sin((x+off)*.13+seed*2)*0.4;
+      const y=h/2 - v*(h/3);
+      x===0?ctx.moveTo(x,y):ctx.lineTo(x,y);
+    }
+    ctx.stroke();
+    // fill
+    ctx.lineTo(w,h);ctx.lineTo(0,h);ctx.closePath();
+    ctx.globalAlpha=.08; ctx.fillStyle=col; ctx.fill();
+    off+=.8; requestAnimationFrame(frame);
+  }
+  frame();
+}
+document.querySelectorAll('[data-wave]').forEach(c=>drawWave(c,+c.dataset.wave));
+
+/* ---------- live-ish jitter on signal numbers ---------- */
+const liveBase={hr:[68,76,'bpm'],spo2:[97,99,'%'],resp:[13,17,'/min'],stress:[28,36,'/100'],hrv:[55,70,'ms'],glu:[88,98,'mg/dL'],score:[85,90,'/100']};
+setInterval(()=>{
+  document.querySelectorAll('[data-live]').forEach(el=>{
+    const k=el.dataset.live; const b=liveBase[k]; if(!b) return;
+    const val=Math.floor(b[0]+Math.random()*(b[1]-b[0]));
+    el.innerHTML=val+'<small>'+b[2]+'</small>';
+  });
+},1600);
+
+/* ---------- why-now mini canvases ---------- */
+function vizCanvas(canvas,kind){
+  const ctx=canvas.getContext('2d');const dpr=Math.min(devicePixelRatio,2);
+  function size(){const w=canvas.clientWidth,h=canvas.clientHeight;canvas.width=w*dpr;canvas.height=h*dpr;ctx.setTransform(dpr,0,0,dpr,0,0);return[w,h];}
+  let t=0;
+  function frame(){
+    const [w,h]=size(); ctx.clearRect(0,0,w,h); t+=.02;
+    if(kind==='phones'){
+      // grid of dots lighting up = ubiquity
+      const gx=14,gy=6,px=w/(gx+1),py=h/(gy+1);
+      for(let i=0;i<gx;i++)for(let j=0;j<gy;j++){
+        const lit=(Math.sin(t+i*.5+j*.8)+1)/2;
+        ctx.beginPath();ctx.arc(px*(i+1),py*(j+1),2+lit*1.6,0,7);
+        ctx.fillStyle=`rgba(52,227,255,${.15+lit*.7})`;ctx.fill();
+      }
+    } else if(kind==='transformer'){
+      // attention lines
+      const nodes=[];for(let i=0;i<7;i++)nodes.push([w*(i+1)/8, h/2+Math.sin(t+i)*h*.22]);
+      ctx.strokeStyle='rgba(139,107,255,.35)';ctx.lineWidth=1;
+      for(let i=0;i<nodes.length;i++)for(let j=i+1;j<nodes.length;j++){
+        ctx.globalAlpha=(Math.sin(t+i+j)+1)/2*.5;ctx.beginPath();ctx.moveTo(...nodes[i]);ctx.lineTo(...nodes[j]);ctx.stroke();
+      }
+      ctx.globalAlpha=1;nodes.forEach(n=>{ctx.beginPath();ctx.arc(n[0],n[1],3,0,7);ctx.fillStyle='#8b6bff';ctx.fill();});
+    } else {
+      // covid: rising bar/area
+      ctx.beginPath();ctx.moveTo(0,h);
+      for(let x=0;x<=w;x++){const p=x/w;const y=h-(p*p*.7+Math.sin(x*.05+t)*.03)*h;ctx.lineTo(x,y);}
+      ctx.lineTo(w,h);ctx.closePath();
+      const grad=ctx.createLinearGradient(0,0,0,h);grad.addColorStop(0,'rgba(62,240,162,.5)');grad.addColorStop(1,'rgba(62,240,162,0)');
+      ctx.fillStyle=grad;ctx.fill();
+      ctx.strokeStyle='#3ef0a2';ctx.lineWidth=2;ctx.beginPath();
+      for(let x=0;x<=w;x++){const p=x/w;const y=h-(p*p*.7+Math.sin(x*.05+t)*.03)*h;x===0?ctx.moveTo(x,y):ctx.lineTo(x,y);}ctx.stroke();
+    }
+    requestAnimationFrame(frame);
+  }
+  frame();
+}
+document.querySelectorAll('[data-viz]').forEach(c=>vizCanvas(c,c.dataset.viz));
+
+/* ---------- hero video: drop first 1s, seamless muted loop ---------- */
+(function(){
+  const hv = document.getElementById('heroVideo');
+  if(!hv) return;
+  const START = 1.0;              // trim the first second
+  const EPS = 0.30;               // loop slightly before the true end
+  let started = false;
+  hv.muted = true;                // guarantee no sound (autoplay-safe)
+  function go(){ const p = hv.play(); if(p && p.catch) p.catch(()=>{}); }
+  hv.addEventListener('loadedmetadata', ()=>{ try{ hv.currentTime = START; }catch(e){ go(); } });
+  // begin playback only once we've seeked past the first second
+  hv.addEventListener('seeked', function init(){ if(started) return; started = true; hv.removeEventListener('seeked', init); go(); });
+  hv.addEventListener('canplaythrough', ()=>{ if(hv.paused) go(); });
+  // manual loop back to START (skips 0–1s every cycle)
+  hv.addEventListener('timeupdate', ()=>{ if(hv.duration && hv.currentTime >= hv.duration - EPS){ try{ hv.currentTime = START; }catch(e){} } });
+  hv.addEventListener('ended', ()=>{ try{ hv.currentTime = START; }catch(e){} go(); });
+  // resume if the tab/though visibility paused it
+  document.addEventListener('visibilitychange', ()=>{ if(!document.hidden && hv.paused) go(); });
+})();
+</script>
+</body>
+</html>
