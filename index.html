@@ -182,6 +182,20 @@ header.nav{position:fixed;top:0;left:0;right:0;z-index:100;transition:all .4s va
 .pillar:hover{transform:translateY(-8px);box-shadow:var(--shadow-soft),var(--shadow-glow)}
 
 /* ============================================================
+   EXECUTIVE SUMMARY — right-side animated panel (fills the empty space)
+   ============================================================ */
+.summary-head-grid{display:grid;grid-template-columns:1fr .82fr;gap:50px;align-items:center;margin-bottom:64px}
+.summary-head-grid .sec-head{margin-bottom:0}
+.summary-visual{position:relative;height:360px}
+.sv-frame{position:absolute;inset:0;border-radius:22px;overflow:hidden;background:#04060c;border:1px solid var(--stroke-strong);box-shadow:var(--shadow-soft),0 0 90px -26px rgba(52,227,255,.55);transform:perspective(1200px) rotateY(-6deg);animation:svFloat 9s var(--ease) infinite}
+.sv-frame video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 66%;transform:scale(1.2);filter:saturate(1.22) contrast(1.04) brightness(.96)}
+.sv-frame .sv-vig{position:absolute;inset:0;z-index:2;pointer-events:none;border-radius:inherit;box-shadow:inset 0 0 70px rgba(4,6,12,.6)}
+.sv-frame .sv-grad{position:absolute;inset:0;z-index:3;pointer-events:none;border-radius:inherit;padding:1px;background:linear-gradient(140deg,rgba(52,227,255,.6),transparent 40%,transparent 62%,rgba(139,107,255,.5));-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude}
+.sv-label{position:absolute;left:13px;bottom:13px;z-index:4;display:flex;align-items:center;gap:7px;font-family:'Space Grotesk';font-size:10.5px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:#fff;background:rgba(5,7,13,.55);backdrop-filter:blur(8px);padding:6px 11px;border-radius:100px;border:1px solid var(--stroke-strong)}
+.sv-label .d{width:7px;height:7px;border-radius:50%;background:var(--cyan);box-shadow:0 0 10px var(--cyan);animation:pulse 1.6s infinite}
+@keyframes svFloat{0%,100%{transform:perspective(1200px) rotateY(-6deg) translateY(0)}50%{transform:perspective(1200px) rotateY(-4deg) translateY(-12px)}}
+
+/* ============================================================
    PROBLEM
    ============================================================ */
 .problem-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
@@ -393,6 +407,8 @@ footer{border-top:1px solid var(--stroke);padding:70px 0 40px;background:var(--b
   .pillars,.forces,.caps,.deploy,.tiers,.solutions{grid-template-columns:1fr 1fr}
   .problem-grid{grid-template-columns:1fr 1fr}
   .dev-split{grid-template-columns:1fr}
+  .summary-head-grid{grid-template-columns:1fr;gap:34px}
+  .summary-visual{height:300px}
   .steps{grid-template-columns:1fr 1fr 1fr}
   .steps::before{display:none}
   .tech-split{grid-template-columns:1fr}
@@ -517,10 +533,22 @@ footer{border-top:1px solid var(--stroke);padding:70px 0 40px;background:var(--b
 <!-- ============ EXECUTIVE SUMMARY ============ -->
 <section id="summary">
   <div class="wrap">
-    <div class="sec-head reveal">
-      <span class="eyebrow"><span class="dot"></span>Executive Summary</span>
-      <h2>The infrastructure layer preventive healthcare <span class="grad-text-cyan">has been waiting for.</span></h2>
-      <p class="lede">Salvion AI is not just a health app. It is the AI sensing and intelligence layer any hospital, insurer, enterprise, or app developer can embed — turning passive cameras into active health-monitoring infrastructure, at a fraction of the cost of any alternative.</p>
+    <div class="summary-head-grid">
+      <div class="sec-head reveal">
+        <span class="eyebrow"><span class="dot"></span>Executive Summary</span>
+        <h2>The infrastructure layer preventive healthcare <span class="grad-text-cyan">has been waiting for.</span></h2>
+        <p class="lede">Salvion AI is not just a health app. It is the AI sensing and intelligence layer any hospital, insurer, enterprise, or app developer can embed — turning passive cameras into active health-monitoring infrastructure, at a fraction of the cost of any alternative.</p>
+      </div>
+      <div class="summary-visual reveal d2">
+        <div class="sv-frame">
+          <video data-bg muted loop playsinline preload="auto" disablepictureinpicture aria-hidden="true">
+            <source src="assets/summary.mp4" type="video/mp4" />
+          </video>
+          <div class="sv-vig"></div>
+          <div class="sv-grad"></div>
+          <div class="sv-label"><span class="d"></span>Signal · Live</div>
+        </div>
+      </div>
     </div>
     <div class="pillars">
       <div class="pillar glass reveal d1">
@@ -1406,6 +1434,14 @@ function vizCanvas(canvas,kind){
   frame();
 }
 document.querySelectorAll('[data-viz]').forEach(c=>vizCanvas(c,c.dataset.viz));
+
+/* ---------- ambient background videos (muted, native loop) ---------- */
+document.querySelectorAll('video[data-bg]').forEach(v=>{
+  v.muted=true;
+  const go=()=>{ const p=v.play(); if(p&&p.catch) p.catch(()=>{}); };
+  v.addEventListener('canplay',go); v.addEventListener('loadeddata',go); go();
+  document.addEventListener('visibilitychange',()=>{ if(!document.hidden && v.paused) go(); });
+});
 
 /* ---------- hero video: drop first 1s, seamless muted loop ---------- */
 (function(){
