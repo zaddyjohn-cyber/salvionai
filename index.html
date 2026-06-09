@@ -376,15 +376,23 @@ header.nav{position:fixed;top:0;left:0;right:0;z-index:100;transition:all .4s va
 /* ============================================================
    DEEP TECH — pipeline
    ============================================================ */
-.tech-split{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center}
+.tech-split{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:stretch}
 .pipeline{display:flex;flex-direction:column;gap:12px}
 .pl-stage{display:flex;align-items:center;gap:18px;padding:18px 22px;border-radius:16px;background:var(--panel);border:1px solid var(--stroke);transition:.4s var(--ease)}
 .pl-stage:hover{border-color:var(--stroke-strong);transform:translateX(8px);background:rgba(24,32,54,.7)}
 .pl-stage .n{font-family:'Space Grotesk';font-weight:700;font-size:14px;color:#05070d;width:30px;height:30px;border-radius:9px;display:grid;place-items:center;flex:none}
 .pl-stage h5{font-size:15px;margin-bottom:2px}
 .pl-stage span{font-size:12.5px;color:var(--text-faint)}
-.tech-visual{height:480px;position:relative}
+.tech-visual{position:relative;min-height:480px}
 #tech-canvas{position:absolute;inset:0;width:100%;height:100%}
+.img-marquee{position:absolute;inset:0;display:flex;gap:12px;justify-content:center;overflow:hidden;border-radius:18px;-webkit-mask:linear-gradient(transparent,#000 7%,#000 93%,transparent);mask:linear-gradient(transparent,#000 7%,#000 93%,transparent)}
+.img-col{flex:1;display:flex;flex-direction:column;gap:12px;will-change:transform;animation:kwUp 34s linear infinite}
+.img-col.b{animation:kwDown 38s linear infinite}
+.icard{position:relative;border-radius:14px;overflow:hidden;border:1px solid var(--stroke-strong);box-shadow:0 0 24px -9px rgba(52,227,255,.5)}
+.icard img{width:100%;height:128px;object-fit:cover;display:block;filter:brightness(.72) saturate(1.08) contrast(1.03)}
+.icard::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 44%,rgba(5,8,16,.88))}
+.icard .cap{position:absolute;left:9px;bottom:8px;z-index:2;display:flex;align-items:center;gap:7px;font-family:'Space Grotesk';font-size:11px;font-weight:600;color:#eaf6ff;text-shadow:0 1px 6px rgba(0,0,0,.85)}
+.icard .cap .d{width:6px;height:6px;border-radius:50%;background:var(--cyan);box-shadow:0 0 9px var(--cyan);flex:none}
 #tech{position:relative;overflow:hidden}
 .tech-bgvid{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;filter:brightness(.34) saturate(1.18) contrast(1.02)}
 .tech-scrim{position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(180deg,rgba(5,7,14,.72),rgba(5,7,14,.5) 40%,rgba(5,7,14,.82)),radial-gradient(110% 80% at 50% 42%,transparent 28%,rgba(5,7,14,.6))}
@@ -1085,12 +1093,21 @@ footer{border-top:1px solid var(--stroke);padding:70px 0 40px;background:var(--b
         <div class="pl-stage"><div class="n" style="background:linear-gradient(120deg,#ff5fa8,#8b6bff)">7</div><div><h5>30+ Decoder Heads · Confidence</h5><span>Per-parameter output with confidence scoring</span></div></div>
       </div>
       <div class="tech-visual reveal d2">
-        <div class="techroll-frame">
-          <video class="step-vid" muted loop playsinline preload="none" disablepictureinpicture aria-hidden="true"><source src="assets/techroll.mp4" type="video/mp4" /></video>
-          <div class="tr-tint"></div>
-          <div class="tr-grad"></div>
-          <div class="tr-tag">Under the Hood</div>
-          <div class="tr-cap"><span class="d"></span><span class="tr-txt">Transformer AI</span></div>
+        <div class="img-marquee">
+          <div class="img-col">
+            <div class="icard"><img src="assets/face.jpg" alt="" aria-hidden="true" /><span class="cap"><span class="d"></span>Facial Scan</span></div>
+            <div class="icard"><img src="assets/cap1.jpg" alt="" aria-hidden="true" /><span class="cap"><span class="d"></span>Signal Extraction</span></div>
+            <div class="icard"><img src="assets/cap6.jpg" alt="" aria-hidden="true" /><span class="cap"><span class="d"></span>Transformer AI</span></div>
+            <div class="icard"><img src="assets/step5.jpg" alt="" aria-hidden="true" /><span class="cap"><span class="d"></span>Health Score</span></div>
+            <div class="icard"><img src="assets/cap3.jpg" alt="" aria-hidden="true" /><span class="cap"><span class="d"></span>512-D Vector</span></div>
+          </div>
+          <div class="img-col b">
+            <div class="icard"><img src="assets/cap2.jpg" alt="" aria-hidden="true" /><span class="cap"><span class="d"></span>Temporal Attention</span></div>
+            <div class="icard"><img src="assets/cap5.jpg" alt="" aria-hidden="true" /><span class="cap"><span class="d"></span>Body Composition</span></div>
+            <div class="icard"><img src="assets/bg3.jpg" alt="" aria-hidden="true" /><span class="cap"><span class="d"></span>On-Device AI</span></div>
+            <div class="icard"><img src="assets/face.jpg" alt="" aria-hidden="true" /><span class="cap"><span class="d"></span>Liveness Detection</span></div>
+            <div class="icard"><img src="assets/cap1.jpg" alt="" aria-hidden="true" /><span class="cap"><span class="d"></span>Blooxia AI</span></div>
+          </div>
         </div>
       </div>
     </div>
@@ -2006,13 +2023,8 @@ document.querySelectorAll('video[data-bg]').forEach(v=>{
   vids.forEach(v=>io.observe(v));
 })();
 
-/* ---------- Deep Tech: cycle the keyword caption over the rolling pictures ---------- */
-(function(){
-  const txt=document.querySelector('.tr-txt'); if(!txt) return;
-  const kws=['Transformer AI','Blooxia AI','Computer Vision','Temporal Attention','VPG · VBCG · VCS','512-D Feature Vector','On-Device AI','Liveness Detection','30+ Decoder Heads','Privacy-First','FHIR / HL7','Sub-50ms Inference','HIPAA · GDPR','50+ Health Markers'];
-  let i=0;
-  setInterval(()=>{ txt.style.opacity='0'; setTimeout(()=>{ i=(i+1)%kws.length; txt.textContent=kws[i]; txt.style.opacity='1'; },300); },2000);
-})();
+/* ---------- Deep Tech rolling picture cards: duplicate for a seamless loop ---------- */
+document.querySelectorAll('.img-col').forEach(c=>{ c.innerHTML += c.innerHTML; });
 
 /* ---------- How It Works step media — muted loop, on-screen only, step-3 face frame at end ---------- */
 (function(){
