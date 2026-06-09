@@ -515,11 +515,23 @@ footer{border-top:1px solid var(--stroke);padding:70px 0 40px;background:var(--b
    ============================================================ */
 .dev-split{display:grid;grid-template-columns:1.05fr .95fr;gap:48px;align-items:center}
 .dev-list{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:26px}
-.devc{padding:22px 22px;border-radius:16px;background:var(--panel);border:1px solid var(--stroke);transition:.4s var(--ease)}
-.devc:hover{border-color:var(--stroke-strong);transform:translateY(-4px);background:rgba(24,32,54,.6)}
-.devc .di{width:34px;height:34px;margin-bottom:14px}
-.devc h5{font-size:16px;margin-bottom:5px}
-.devc span{font-size:12.5px;color:var(--text-faint)}
+.devc{--ac:52,227,255;position:relative;overflow:hidden;padding:22px;border-radius:16px;background:linear-gradient(160deg,rgba(var(--ac),.13),rgba(14,20,38,.5) 62%);border:1px solid rgba(var(--ac),.3);transition:transform .45s var(--ease),box-shadow .45s,border-color .45s}
+.dev-list .devc:nth-child(2){--ac:139,107,255}
+.dev-list .devc:nth-child(3){--ac:35,213,200}
+.dev-list .devc:nth-child(4){--ac:255,95,168}
+.devc::after{content:"";position:absolute;top:0;left:0;right:0;height:84px;pointer-events:none;background:radial-gradient(120% 92% at 28% 0%,rgba(var(--ac),.28),transparent 70%)}
+.devc:hover{transform:translateY(-6px);border-color:rgba(var(--ac),.6);box-shadow:0 24px 50px -26px rgba(0,0,0,.8),0 0 52px -14px rgba(var(--ac),.6)}
+.devc .di{position:relative;z-index:1;width:38px;height:38px;margin-bottom:14px;padding:7px;border-radius:11px;background:rgba(8,12,22,.45);border:1px solid rgba(var(--ac),.42);box-shadow:0 0 18px -4px rgba(var(--ac),.55);animation:diFloat 5s ease-in-out infinite}
+.dev-list .devc:nth-child(2) .di{animation-delay:-1.2s}.dev-list .devc:nth-child(3) .di{animation-delay:-2.4s}.dev-list .devc:nth-child(4) .di{animation-delay:-3.6s}
+@keyframes diFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+.devc h5{position:relative;z-index:1;font-size:16px;margin-bottom:5px}
+.devc span{position:relative;z-index:1;font-size:12.5px;color:#9fb0d0}
+.dev-media{position:relative;height:480px;border-radius:18px;overflow:hidden;border:1px solid var(--stroke-strong);background:#05070f;box-shadow:var(--shadow-soft),0 0 84px -26px rgba(255,95,168,.45)}
+.dev-media video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:contrast(1.05) saturate(1.12) brightness(.96)}
+.dm-tint{position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(180deg,rgba(5,8,16,.2),transparent 30%,rgba(5,8,16,.72)),radial-gradient(120% 90% at 50% 30%,rgba(255,95,168,.12),transparent 60%)}
+.dm-grad{position:absolute;inset:0;z-index:2;pointer-events:none;border-radius:inherit;padding:1px;background:linear-gradient(140deg,rgba(255,95,168,.5),transparent 42%,rgba(52,227,255,.45));-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude}
+.dm-tag{position:absolute;left:13px;bottom:13px;z-index:3;display:flex;align-items:center;gap:7px;font-family:'Space Grotesk';font-size:10px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:#fff;background:rgba(5,7,13,.55);backdrop-filter:blur(8px);border:1px solid var(--stroke-strong);border-radius:100px;padding:5px 11px}
+.dm-tag .d{width:6px;height:6px;border-radius:50%;background:var(--pink);box-shadow:0 0 10px var(--pink);animation:pulse 1.6s infinite}
 .dev-tags{display:flex;flex-wrap:wrap;gap:10px}
 .dev-tags span{font-family:'Space Grotesk';font-size:12px;color:var(--text-dim);border:1px solid var(--stroke);padding:7px 13px;border-radius:100px;background:rgba(255,255,255,.02)}
 .codecard{border-radius:18px;background:#070a12;border:1px solid var(--stroke);overflow:hidden;box-shadow:var(--shadow-soft);font-family:'JetBrains Mono',ui-monospace,monospace}
@@ -1258,26 +1270,11 @@ footer{border-top:1px solid var(--stroke);padding:70px 0 40px;background:var(--b
           <span>White-Label UI</span><span>Custom Pipeline</span><span>FHIR R4 Output</span><span>Offline-First</span><span>Per-Parameter Billing</span>
         </div>
       </div>
-      <div class="codecard reveal d2">
-        <div class="bar"><i></i><i></i><i></i><span class="t">scan.ts — Salvion SDK</span></div>
-<pre><span class="k">import</span> { Salvion } <span class="k">from</span> <span class="s">'@salvion/sdk'</span>;
-
-<span class="c">// 1 · authenticate &amp; open the camera stream</span>
-<span class="k">const</span> salvion = <span class="k">new</span> <span class="f">Salvion</span>({ apiKey: <span class="s">'sk_live_•••'</span> });
-<span class="k">const</span> session = <span class="k">await</span> salvion.<span class="f">scan</span>({
-  duration: <span class="n">30</span>,
-  markers: [<span class="s">'heartRate'</span>, <span class="s">'bloodPressure'</span>, <span class="s">'spo2'</span>, <span class="s">'glucose'</span>],
-  onDevice: <span class="k">true</span>,            <span class="c">// 100% local inference</span>
-});
-
-<span class="c">// 2 · stream results as confidence resolves</span>
-session.<span class="f">on</span>(<span class="s">'result'</span>, (r) => {
-  console.<span class="f">log</span>(r.healthScore);   <span class="c">// → 87 / 100</span>
-  console.<span class="f">log</span>(r.markers.bloodPressure); <span class="c">// → { sys: 118, dia: 79 }</span>
-});
-
-<span class="c">// 3 · export FHIR R4 for the EHR</span>
-<span class="k">const</span> bundle = <span class="k">await</span> session.<span class="f">toFHIR</span>();</pre>
+      <div class="dev-media reveal d2">
+        <video class="step-vid" muted loop playsinline preload="none" disablepictureinpicture aria-hidden="true"><source src="assets/developers.mp4" type="video/mp4" /></video>
+        <div class="dm-tint"></div>
+        <div class="dm-grad"></div>
+        <div class="dm-tag"><span class="d"></span>Built on Salvion</div>
       </div>
     </div>
   </div>
