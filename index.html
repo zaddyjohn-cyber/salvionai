@@ -399,6 +399,14 @@ header.nav{position:fixed;top:0;left:0;right:0;z-index:100;transition:all .4s va
 .kw.v .d{background:var(--violet);box-shadow:0 0 10px var(--violet)}
 .kw.p .d{background:var(--pink);box-shadow:0 0 10px var(--pink)}
 .kw.g .d{background:var(--green);box-shadow:0 0 10px var(--green)}
+.techroll-frame{position:relative;height:480px;border-radius:22px;overflow:hidden;border:1px solid var(--stroke-strong);background:#05070f;box-shadow:var(--shadow-soft),0 0 84px -26px rgba(52,227,255,.5)}
+.techroll-frame video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:contrast(1.06) saturate(1.05) brightness(.86)}
+.tr-tint{position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(180deg,rgba(5,9,18,.3),transparent 28%,rgba(5,9,18,.88)),radial-gradient(120% 80% at 50% 45%,rgba(52,227,255,.14),transparent 60%)}
+.tr-grad{position:absolute;inset:0;z-index:2;pointer-events:none;border-radius:inherit;padding:1px;background:linear-gradient(140deg,rgba(52,227,255,.5),transparent 42%,rgba(139,107,255,.45));-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude}
+.tr-cap{position:absolute;left:13px;bottom:13px;z-index:3;display:flex;align-items:center;gap:8px;font-family:'Space Grotesk';font-size:13px;font-weight:600;color:#eaf6ff;background:rgba(5,7,13,.62);backdrop-filter:blur(8px);border:1px solid var(--stroke-strong);border-radius:100px;padding:8px 14px;box-shadow:0 0 18px -5px rgba(52,227,255,.5)}
+.tr-cap .d{width:6px;height:6px;border-radius:50%;background:var(--cyan);box-shadow:0 0 10px var(--cyan);flex:none}
+.tr-txt{transition:opacity .3s}
+.tr-tag{position:absolute;top:13px;left:13px;z-index:3;font-family:'Space Grotesk';font-size:10px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:#9fe8ff;background:rgba(5,7,13,.55);backdrop-filter:blur(6px);border:1px solid var(--stroke);border-radius:100px;padding:5px 11px}
 
 /* ============================================================
    SIGNAL COVERAGE — live readout
@@ -1077,29 +1085,12 @@ footer{border-top:1px solid var(--stroke);padding:70px 0 40px;background:var(--b
         <div class="pl-stage"><div class="n" style="background:linear-gradient(120deg,#ff5fa8,#8b6bff)">7</div><div><h5>30+ Decoder Heads · Confidence</h5><span>Per-parameter output with confidence scoring</span></div></div>
       </div>
       <div class="tech-visual reveal d2">
-        <div class="kw-marquee">
-          <div class="kw-col">
-            <div class="kw"><span class="d"></span>Transformer AI</div>
-            <div class="kw v"><span class="d"></span>Blooxia AI</div>
-            <div class="kw"><span class="d"></span>Computer Vision</div>
-            <div class="kw v"><span class="d"></span>Temporal Attention</div>
-            <div class="kw"><span class="d"></span>VPG · VBCG · VCS</div>
-            <div class="kw g"><span class="d"></span>FFT Analysis</div>
-            <div class="kw"><span class="d"></span>512-D Feature Vector</div>
-            <div class="kw v"><span class="d"></span>On-Device AI</div>
-            <div class="kw g"><span class="d"></span>50+ Health Markers</div>
-          </div>
-          <div class="kw-col b">
-            <div class="kw p"><span class="d"></span>Multi-Head Attention</div>
-            <div class="kw"><span class="d"></span>Signal Extraction</div>
-            <div class="kw p"><span class="d"></span>Liveness Detection</div>
-            <div class="kw"><span class="d"></span>ROI Tracking</div>
-            <div class="kw v"><span class="d"></span>30+ Decoder Heads</div>
-            <div class="kw g"><span class="d"></span>Privacy-First</div>
-            <div class="kw"><span class="d"></span>FHIR / HL7</div>
-            <div class="kw"><span class="d"></span>Sub-50ms Inference</div>
-            <div class="kw p"><span class="d"></span>HIPAA · GDPR</div>
-          </div>
+        <div class="techroll-frame">
+          <video class="step-vid" muted loop playsinline preload="none" disablepictureinpicture aria-hidden="true"><source src="assets/techroll.mp4" type="video/mp4" /></video>
+          <div class="tr-tint"></div>
+          <div class="tr-grad"></div>
+          <div class="tr-tag">Under the Hood</div>
+          <div class="tr-cap"><span class="d"></span><span class="tr-txt">Transformer AI</span></div>
         </div>
       </div>
     </div>
@@ -2015,8 +2006,13 @@ document.querySelectorAll('video[data-bg]').forEach(v=>{
   vids.forEach(v=>io.observe(v));
 })();
 
-/* ---------- Deep Tech keyword marquee: duplicate chips for a seamless loop ---------- */
-document.querySelectorAll('.kw-col').forEach(c=>{ c.innerHTML += c.innerHTML; });
+/* ---------- Deep Tech: cycle the keyword caption over the rolling pictures ---------- */
+(function(){
+  const txt=document.querySelector('.tr-txt'); if(!txt) return;
+  const kws=['Transformer AI','Blooxia AI','Computer Vision','Temporal Attention','VPG · VBCG · VCS','512-D Feature Vector','On-Device AI','Liveness Detection','30+ Decoder Heads','Privacy-First','FHIR / HL7','Sub-50ms Inference','HIPAA · GDPR','50+ Health Markers'];
+  let i=0;
+  setInterval(()=>{ txt.style.opacity='0'; setTimeout(()=>{ i=(i+1)%kws.length; txt.textContent=kws[i]; txt.style.opacity='1'; },300); },2000);
+})();
 
 /* ---------- How It Works step media — muted loop, on-screen only, step-3 face frame at end ---------- */
 (function(){
