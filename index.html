@@ -197,15 +197,13 @@ header.nav{position:fixed;top:0;left:0;right:0;z-index:100;transition:all .4s va
 .sv-label .d{width:7px;height:7px;border-radius:50%;background:var(--cyan);box-shadow:0 0 10px var(--cyan);animation:pulse 1.6s infinite}
 @keyframes svFloat{0%,100%{transform:perspective(1200px) rotateY(-6deg) translateY(0)}50%{transform:perspective(1200px) rotateY(-4deg) translateY(-12px)}}
 
-/* soothing idle animation on the 3 pillar cards */
-.pillar::after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;z-index:0;background:radial-gradient(72% 60% at 28% 6%, rgba(52,227,255,.12), transparent 72%);opacity:.35;animation:pillarBreath 7s ease-in-out infinite}
-.pillar>*{position:relative;z-index:1}
+/* video-animated pillar cards (flow clip; portrait UI chrome cropped by object-fit cover + scale) */
+.pillar-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;transform:scale(1.08);z-index:0;opacity:.72;filter:brightness(.92) saturate(1.25);pointer-events:none}
+.pillar::after{content:"";position:absolute;inset:0;z-index:1;border-radius:inherit;pointer-events:none;background:linear-gradient(180deg,rgba(8,12,24,.28) 0%,rgba(8,12,24,.58) 48%,rgba(8,12,24,.9) 100%)}
+.pillar .ic,.pillar h3,.pillar p{position:relative;z-index:2}
 .pillar .ic{animation:icoFloat 6.5s ease-in-out infinite;transform-origin:center}
 .pillars .pillar:nth-child(2) .ic{animation-delay:-2.2s}
-.pillars .pillar:nth-child(2)::after{animation-delay:-2.2s}
 .pillars .pillar:nth-child(3) .ic{animation-delay:-4.4s}
-.pillars .pillar:nth-child(3)::after{animation-delay:-4.4s}
-@keyframes pillarBreath{0%,100%{opacity:.22}50%{opacity:.6}}
 @keyframes icoFloat{0%,100%{transform:translateY(0) scale(1);filter:drop-shadow(0 0 0 transparent)}50%{transform:translateY(-4px) scale(1.05);filter:drop-shadow(0 6px 16px rgba(52,227,255,.4))}}
 
 /* closing banner in the circled space — soothing flow field + write-up */
@@ -572,6 +570,7 @@ footer{border-top:1px solid var(--stroke);padding:70px 0 40px;background:var(--b
     </div>
     <div class="pillars">
       <div class="pillar glass reveal d1">
+        <video class="pillar-bg" muted loop playsinline preload="none" disablepictureinpicture aria-hidden="true"><source src="assets/cards.mp4" type="video/mp4" /></video>
         <svg class="ic" viewBox="0 0 64 64" fill="none">
           <defs><linearGradient id="p1" x1="0" y1="0" x2="64" y2="64"><stop stop-color="#34e3ff"/><stop offset="1" stop-color="#23d5c8"/></linearGradient></defs>
           <rect x="6" y="14" width="52" height="36" rx="6" stroke="url(#p1)" stroke-width="2.4"/>
@@ -581,6 +580,7 @@ footer{border-top:1px solid var(--stroke);padding:70px 0 40px;background:var(--b
         <p>Transformer AI extracts 50+ health markers from facial video — matching or exceeding dedicated medical hardware accuracy at zero hardware cost.</p>
       </div>
       <div class="pillar glass reveal d2">
+        <video class="pillar-bg" muted loop playsinline preload="none" disablepictureinpicture aria-hidden="true"><source src="assets/cards.mp4" type="video/mp4" /></video>
         <svg class="ic" viewBox="0 0 64 64" fill="none">
           <defs><linearGradient id="p2" x1="0" y1="0" x2="64" y2="64"><stop stop-color="#8b6bff"/><stop offset="1" stop-color="#34e3ff"/></linearGradient></defs>
           <rect x="10" y="10" width="20" height="20" rx="4" stroke="url(#p2)" stroke-width="2.4"/>
@@ -593,6 +593,7 @@ footer{border-top:1px solid var(--stroke);padding:70px 0 40px;background:var(--b
         <p>Not a point product — a modular SDK + API platform that plugs into any digital health, insurance, or wellness vertical in days, not months.</p>
       </div>
       <div class="pillar glass reveal d3">
+        <video class="pillar-bg" muted loop playsinline preload="none" disablepictureinpicture aria-hidden="true"><source src="assets/cards.mp4" type="video/mp4" /></video>
         <svg class="ic" viewBox="0 0 64 64" fill="none">
           <defs><linearGradient id="p3" x1="0" y1="0" x2="64" y2="64"><stop stop-color="#ff5fa8"/><stop offset="1" stop-color="#8b6bff"/></linearGradient></defs>
           <circle cx="32" cy="32" r="22" stroke="url(#p3)" stroke-width="2.4"/>
@@ -1543,6 +1544,25 @@ document.querySelectorAll('video[data-bg]').forEach(v=>{
     ctx.fillText('SALVION', cx, cy);
   }
   resize(); frame();
+})();
+
+/* ---------- pillar card background videos — staggered, muted, play only while on-screen ---------- */
+(function(){
+  const vids=[...document.querySelectorAll('.pillar-bg')];
+  vids.forEach((v,i)=>{ v.muted=true; v.addEventListener('loadedmetadata',()=>{ try{ v.currentTime=(i*2.0)%(v.duration||6); }catch(e){} }); });
+  const io=new IntersectionObserver((ents)=>{
+    ents.forEach(e=>{ const v=e.target; if(e.isIntersecting && !document.hidden){ const p=v.play(); if(p&&p.catch) p.catch(()=>{}); } else { v.pause(); } });
+  }, {threshold:0.08});
+  vids.forEach(v=>io.observe(v));
+})();
+
+/* ---------- pause the hero video when it scrolls out of view (perf) ---------- */
+(function(){
+  const hv=document.getElementById('heroVideo'); if(!hv) return;
+  const io=new IntersectionObserver((ents)=>{
+    ents.forEach(e=>{ if(e.isIntersecting && !document.hidden){ const p=hv.play(); if(p&&p.catch) p.catch(()=>{}); } else { hv.pause(); } });
+  }, {threshold:0.04});
+  io.observe(hv);
 })();
 
 /* ---------- Executive Summary banner: soothing flow field ---------- */
