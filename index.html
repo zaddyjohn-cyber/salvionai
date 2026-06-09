@@ -721,7 +721,7 @@ footer{border-top:1px solid var(--stroke);padding:70px 0 40px;background:var(--b
 
       <!-- 1 · Vital Signs Take Time -->
       <div class="scene reveal d1" data-scene3d="vitals">
-        <img class="scene-photo" src="assets/bg1.jpg" alt="" aria-hidden="true" style="object-position:center 28%" />
+        <video class="scene-photo scene-vid" muted playsinline preload="none" disablepictureinpicture aria-hidden="true" style="object-position:center 28%"><source src="assets/bg1.mp4" type="video/mp4" /></video>
         <div class="scene-tint"></div>
         <div class="stage"><div class="floater">
           <div class="lyr g gc flo" style="left:50%;top:8%;margin-left:-45px;width:90px;--z:40px;--d:.2s;padding:7px 0;text-align:center">
@@ -737,7 +737,7 @@ footer{border-top:1px solid var(--stroke);padding:70px 0 40px;background:var(--b
 
       <!-- 2 · No Hardware, No Data -->
       <div class="scene reveal d2" data-scene3d="nodata">
-        <img class="scene-photo" src="assets/bg2.jpg" alt="" aria-hidden="true" style="object-position:center 24%" />
+        <video class="scene-photo scene-vid" muted playsinline preload="none" disablepictureinpicture aria-hidden="true" style="object-position:center 24%"><source src="assets/bg2.mp4" type="video/mp4" /></video>
         <div class="scene-tint"></div>
         <div class="stage"><div class="floater">
           <div class="lyr g gc flo" style="left:5%;top:9%;--z:30px;--d:.1s;padding:4px 9px;font:700 7px 'Space Grotesk';letter-spacing:.1em;color:#9fe8ff">● DR · LIVE</div>
@@ -775,7 +775,7 @@ footer{border-top:1px solid var(--stroke);padding:70px 0 40px;background:var(--b
 
       <!-- 4 · Underwriting Is Imprecise -->
       <div class="scene reveal d4" data-scene3d="risk">
-        <img class="scene-photo" src="assets/bg4.jpg" alt="" aria-hidden="true" style="object-position:72% 90%;filter:brightness(.3) contrast(1.05) saturate(.65)" />
+        <video class="scene-photo scene-vid" muted playsinline preload="none" disablepictureinpicture aria-hidden="true" style="object-position:center 50%;filter:brightness(.32) contrast(1.05) saturate(.65)"><source src="assets/bg4.mp4" type="video/mp4" /></video>
         <div class="scene-tint"></div>
         <div class="stage"><div class="floater">
           <div class="lyr g gp flo" style="left:6%;top:50%;margin-top:-36px;width:72px;height:72px;border-radius:50%;--z:40px;--d:.2s">
@@ -1857,6 +1857,19 @@ document.querySelectorAll('video[data-bg]').forEach(v=>{
     ents.forEach(e=>{ const v=e.target; if(e.isIntersecting && !document.hidden){ const p=v.play(); if(p&&p.catch) p.catch(()=>{}); } else { v.pause(); } });
   }, {threshold:0.08});
   vids.forEach(v=>io.observe(v));
+})();
+
+/* ---------- Problem scene background videos — muted, loop first 8s, on-screen only ---------- */
+(function(){
+  const vids=[...document.querySelectorAll('video.scene-vid')]; if(!vids.length) return;
+  vids.forEach(v=>{
+    v.muted=true;
+    v.addEventListener('timeupdate',()=>{ if(v.currentTime>=8){ try{v.currentTime=0;}catch(e){} } });
+    v.addEventListener('ended',()=>{ try{v.currentTime=0;}catch(e){} const p=v.play(); if(p&&p.catch)p.catch(()=>{}); });
+  });
+  const io=new IntersectionObserver(es=>{es.forEach(e=>{const v=e.target; if(e.isIntersecting && !document.hidden){ if(v.preload==='none'){v.preload='auto';v.load();} const p=v.play(); if(p&&p.catch)p.catch(()=>{}); } else { v.pause(); }});},{threshold:0.15});
+  vids.forEach(v=>io.observe(v));
+  document.addEventListener('visibilitychange',()=>{ if(document.hidden) vids.forEach(v=>v.pause()); });
 })();
 
 /* ---------- Throughline banner video — muted, play only while on-screen ---------- */
