@@ -249,7 +249,8 @@ header.nav{position:fixed;top:0;left:0;right:0;z-index:100;transition:all .4s va
 #whynow{padding:58px 0 30px}
 #how{padding:60px 0 34px}
 #capabilities{padding:60px 0 30px}
-#tech{padding-top:60px}
+#tech{padding:60px 0 34px}
+#signal{padding-top:60px}
 .scene:hover{border-color:var(--stroke-strong);box-shadow:0 0 56px -18px rgba(52,227,255,.55)}
 .scene .floor{position:absolute;left:-25%;right:-25%;bottom:-36%;height:82%;transform:rotateX(71deg);transform-origin:bottom;background:repeating-linear-gradient(90deg,rgba(120,180,255,.11) 0 1px,transparent 1px 26px),repeating-linear-gradient(0deg,rgba(120,180,255,.07) 0 1px,transparent 1px 22px);-webkit-mask-image:linear-gradient(transparent,#000 52%);mask-image:linear-gradient(transparent,#000 52%);opacity:.6;pointer-events:none}
 .scene .blob{position:absolute;border-radius:50%;filter:blur(28px);opacity:.42;pointer-events:none;animation:blobmove 12s ease-in-out infinite}
@@ -384,6 +385,20 @@ header.nav{position:fixed;top:0;left:0;right:0;z-index:100;transition:all .4s va
 .pl-stage span{font-size:12.5px;color:var(--text-faint)}
 .tech-visual{height:480px;position:relative}
 #tech-canvas{position:absolute;inset:0;width:100%;height:100%}
+#tech{position:relative;overflow:hidden}
+.tech-bgvid{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;filter:brightness(.34) saturate(1.18) contrast(1.02)}
+.tech-scrim{position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(180deg,rgba(5,7,14,.72),rgba(5,7,14,.5) 40%,rgba(5,7,14,.82)),radial-gradient(110% 80% at 50% 42%,transparent 28%,rgba(5,7,14,.6))}
+#tech .wrap{position:relative;z-index:2}
+.kw-marquee{position:absolute;inset:0;display:flex;gap:14px;justify-content:center;overflow:hidden;-webkit-mask:linear-gradient(transparent,#000 10%,#000 90%,transparent);mask:linear-gradient(transparent,#000 10%,#000 90%,transparent)}
+.kw-col{display:flex;flex-direction:column;gap:14px;will-change:transform;animation:kwUp 26s linear infinite}
+.kw-col.b{animation:kwDown 30s linear infinite}
+@keyframes kwUp{from{transform:translateY(0)}to{transform:translateY(-50%)}}
+@keyframes kwDown{from{transform:translateY(-50%)}to{transform:translateY(0)}}
+.kw{display:flex;align-items:center;gap:8px;font-family:'Space Grotesk';font-size:13px;font-weight:600;color:#e3f1ff;background:rgba(10,16,30,.5);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border:1px solid var(--stroke-strong);border-radius:100px;padding:9px 15px;box-shadow:0 0 20px -7px rgba(52,227,255,.55);white-space:nowrap}
+.kw .d{width:6px;height:6px;border-radius:50%;background:var(--cyan);box-shadow:0 0 10px var(--cyan);flex:none}
+.kw.v .d{background:var(--violet);box-shadow:0 0 10px var(--violet)}
+.kw.p .d{background:var(--pink);box-shadow:0 0 10px var(--pink)}
+.kw.g .d{background:var(--green);box-shadow:0 0 10px var(--green)}
 
 /* ============================================================
    SIGNAL COVERAGE — live readout
@@ -1043,6 +1058,8 @@ footer{border-top:1px solid var(--stroke);padding:70px 0 40px;background:var(--b
 
 <!-- ============ DEEP TECH ============ -->
 <section id="tech">
+  <video class="tech-bgvid step-vid" muted loop playsinline preload="none" disablepictureinpicture aria-hidden="true"><source src="assets/tech.mp4" type="video/mp4" /></video>
+  <div class="tech-scrim"></div>
   <div class="wrap">
     <div class="sec-head reveal">
       <span class="eyebrow"><span class="dot"></span>Deep Technology</span>
@@ -1059,7 +1076,32 @@ footer{border-top:1px solid var(--stroke);padding:70px 0 40px;background:var(--b
         <div class="pl-stage"><div class="n" style="background:var(--grad-violet)">6</div><div><h5>Temporal Attention Embedding</h5><span>Multi-head self-attention across time</span></div></div>
         <div class="pl-stage"><div class="n" style="background:linear-gradient(120deg,#ff5fa8,#8b6bff)">7</div><div><h5>30+ Decoder Heads · Confidence</h5><span>Per-parameter output with confidence scoring</span></div></div>
       </div>
-      <div class="tech-visual reveal d2"><canvas id="tech-canvas"></canvas></div>
+      <div class="tech-visual reveal d2">
+        <div class="kw-marquee">
+          <div class="kw-col">
+            <div class="kw"><span class="d"></span>Transformer AI</div>
+            <div class="kw v"><span class="d"></span>Blooxia AI</div>
+            <div class="kw"><span class="d"></span>Computer Vision</div>
+            <div class="kw v"><span class="d"></span>Temporal Attention</div>
+            <div class="kw"><span class="d"></span>VPG · VBCG · VCS</div>
+            <div class="kw g"><span class="d"></span>FFT Analysis</div>
+            <div class="kw"><span class="d"></span>512-D Feature Vector</div>
+            <div class="kw v"><span class="d"></span>On-Device AI</div>
+            <div class="kw g"><span class="d"></span>50+ Health Markers</div>
+          </div>
+          <div class="kw-col b">
+            <div class="kw p"><span class="d"></span>Multi-Head Attention</div>
+            <div class="kw"><span class="d"></span>Signal Extraction</div>
+            <div class="kw p"><span class="d"></span>Liveness Detection</div>
+            <div class="kw"><span class="d"></span>ROI Tracking</div>
+            <div class="kw v"><span class="d"></span>30+ Decoder Heads</div>
+            <div class="kw g"><span class="d"></span>Privacy-First</div>
+            <div class="kw"><span class="d"></span>FHIR / HL7</div>
+            <div class="kw"><span class="d"></span>Sub-50ms Inference</div>
+            <div class="kw p"><span class="d"></span>HIPAA · GDPR</div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </section>
@@ -1972,6 +2014,9 @@ document.querySelectorAll('video[data-bg]').forEach(v=>{
   }, {threshold:0.08});
   vids.forEach(v=>io.observe(v));
 })();
+
+/* ---------- Deep Tech keyword marquee: duplicate chips for a seamless loop ---------- */
+document.querySelectorAll('.kw-col').forEach(c=>{ c.innerHTML += c.innerHTML; });
 
 /* ---------- How It Works step media — muted loop, on-screen only, step-3 face frame at end ---------- */
 (function(){
