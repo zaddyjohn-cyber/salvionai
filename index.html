@@ -248,7 +248,8 @@ header.nav{position:fixed;top:0;left:0;right:0;z-index:100;transition:all .4s va
 #problem{padding-bottom:26px}
 #whynow{padding:58px 0 30px}
 #how{padding:60px 0 34px}
-#capabilities{padding-top:60px}
+#capabilities{padding:60px 0 30px}
+#tech{padding-top:60px}
 .scene:hover{border-color:var(--stroke-strong);box-shadow:0 0 56px -18px rgba(52,227,255,.55)}
 .scene .floor{position:absolute;left:-25%;right:-25%;bottom:-36%;height:82%;transform:rotateX(71deg);transform-origin:bottom;background:repeating-linear-gradient(90deg,rgba(120,180,255,.11) 0 1px,transparent 1px 26px),repeating-linear-gradient(0deg,rgba(120,180,255,.07) 0 1px,transparent 1px 22px);-webkit-mask-image:linear-gradient(transparent,#000 52%);mask-image:linear-gradient(transparent,#000 52%);opacity:.6;pointer-events:none}
 .scene .blob{position:absolute;border-radius:50%;filter:blur(28px);opacity:.42;pointer-events:none;animation:blobmove 12s ease-in-out infinite}
@@ -355,16 +356,21 @@ header.nav{position:fixed;top:0;left:0;right:0;z-index:100;transition:all .4s va
    CAPABILITIES
    ============================================================ */
 .caps{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
-.cap{padding:30px 28px;transition:.5s var(--ease)}
-.cap .ic{width:52px;height:52px;margin-bottom:20px}
-.cap h3{font-size:19px;margin-bottom:16px;display:flex;align-items:center;justify-content:space-between}
-.cap h3 .cnt{font-size:12px;color:var(--cyan);font-family:'Space Grotesk';border:1px solid var(--stroke-strong);padding:3px 9px;border-radius:100px}
-.cap ul{list-style:none;display:flex;flex-direction:column;gap:9px}
-.cap li{font-size:14px;color:var(--text-dim);display:flex;align-items:center;gap:10px}
-.cap li::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--teal);flex:none;box-shadow:0 0 8px var(--teal)}
+.cap{--ac:52,227,255;position:relative;overflow:hidden;min-height:344px;padding:0;display:flex;flex-direction:column;justify-content:flex-end;border:1px solid rgba(var(--ac),.26);transition:transform .5s var(--ease),box-shadow .5s,border-color .5s}
+.caps .cap:nth-child(2){--ac:35,213,200}.caps .cap:nth-child(3){--ac:139,107,255}.caps .cap:nth-child(4){--ac:255,95,168}.caps .cap:nth-child(5){--ac:62,240,162}.caps .cap:nth-child(6){--ac:255,178,77}
+.cap-bg{position:absolute;inset:0;z-index:0;width:100%;height:100%;object-fit:cover;filter:brightness(.52) saturate(1.1) contrast(1.05)}
+.cap.roll .cap-bg{width:118%;height:118%;left:-9%;top:-9%;animation:capRoll 18s ease-in-out infinite}
+@keyframes capRoll{0%,100%{transform:translate(0,0) scale(1.04)}50%{transform:translate(-5%,-4%) scale(1.15)}}
+.cap-tint{position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(180deg,rgba(6,10,20,.28),rgba(6,10,20,.5) 42%,rgba(6,10,20,.96)),radial-gradient(120% 72% at 50% 0%,rgba(var(--ac),.18),transparent 62%)}
+.cap .ic{position:absolute;top:18px;left:20px;z-index:3;width:40px;height:40px;padding:7px;border-radius:11px;background:rgba(8,12,22,.5);backdrop-filter:blur(6px);border:1px solid rgba(var(--ac),.42);box-shadow:0 0 18px -4px rgba(var(--ac),.55)}
+.cap h3{position:relative;z-index:2;font-size:19px;margin:0 22px 14px;display:flex;align-items:center;justify-content:space-between;gap:10px;text-shadow:0 2px 8px rgba(0,0,0,.7)}
+.cap h3 .cnt{font-size:12px;color:rgb(var(--ac));font-family:'Space Grotesk';border:1px solid rgba(var(--ac),.5);padding:3px 9px;border-radius:100px;background:rgba(var(--ac),.12)}
+.cap ul{position:relative;z-index:2;list-style:none;display:flex;flex-direction:column;gap:8px;margin:0 22px 24px}
+.cap li{font-size:13.5px;color:#d3def2;display:flex;align-items:center;gap:10px;text-shadow:0 1px 5px rgba(0,0,0,.7)}
+.cap li::before{content:"";width:6px;height:6px;border-radius:50%;background:rgb(var(--ac));flex:none;box-shadow:0 0 8px rgb(var(--ac))}
 .cap li.more{color:var(--text-faint)}
 .cap li.more::before{background:var(--text-faint);box-shadow:none}
-.cap:hover{transform:translateY(-8px);box-shadow:var(--shadow-soft),0 0 50px -15px rgba(35,213,200,.4);border-color:var(--stroke-strong)}
+.cap:hover{transform:translateY(-8px);border-color:rgba(var(--ac),.6);box-shadow:var(--shadow-soft),0 0 58px -16px rgba(var(--ac),.6)}
 
 /* ============================================================
    DEEP TECH — pipeline
@@ -989,32 +995,44 @@ footer{border-top:1px solid var(--stroke);padding:70px 0 40px;background:var(--b
       <p class="lede">Six measurement domains. 50+ markers per scan. One unified output for clinicians, actuaries and product teams.</p>
     </div>
     <div class="caps">
-      <div class="cap glass reveal d1">
+      <div class="cap glass roll reveal d1">
+        <img class="cap-bg" src="assets/cap1.jpg" alt="" aria-hidden="true" />
+        <div class="cap-tint"></div>
         <svg class="ic" viewBox="0 0 52 52" fill="none" stroke="#34e3ff" stroke-width="2.4"><path d="M6 26h8l4-12 8 24 5-16 3 4h7" stroke-linecap="round" stroke-linejoin="round"/></svg>
         <h3>Vital Signs <span class="cnt">12+</span></h3>
         <ul><li>Oxygen Saturation (SpO₂)</li><li>Heart Rate</li><li>Systolic &amp; Diastolic BP</li><li class="more">+ more</li></ul>
       </div>
-      <div class="cap glass reveal d2">
+      <div class="cap glass roll reveal d2">
+        <img class="cap-bg" src="assets/cap2.jpg" alt="" aria-hidden="true" />
+        <div class="cap-tint"></div>
         <svg class="ic" viewBox="0 0 52 52" fill="none" stroke="#23d5c8" stroke-width="2.4"><path d="M26 44C14 36 8 28 8 19a9 9 0 0 1 18-3 9 9 0 0 1 18 3c0 9-6 17-18 25Z" stroke-linejoin="round"/></svg>
         <h3>Physiological <span class="cnt">10+</span></h3>
         <ul><li>Heart Rate Variability</li><li>Respiratory Rate</li><li>Pulse Respiratory Quotient</li><li class="more">+ more</li></ul>
       </div>
-      <div class="cap glass reveal d3">
+      <div class="cap glass roll reveal d3">
+        <img class="cap-bg" src="assets/cap3.jpg" alt="" aria-hidden="true" />
+        <div class="cap-tint"></div>
         <svg class="ic" viewBox="0 0 52 52" fill="none" stroke="#8b6bff" stroke-width="2.4"><circle cx="26" cy="14" r="6"/><path d="M26 20v14M16 26h20M18 44l8-10 8 10" stroke-linecap="round" stroke-linejoin="round"/></svg>
         <h3>Physical <span class="cnt">8+</span></h3>
         <ul><li>Body Mass Index</li><li>Body Shape Index</li><li>Biological Age</li><li class="more">+ more</li></ul>
       </div>
       <div class="cap glass reveal d1">
+        <video class="cap-bg step-vid" muted loop playsinline preload="none" disablepictureinpicture aria-hidden="true"><source src="assets/cap4.mp4" type="video/mp4" /></video>
+        <div class="cap-tint"></div>
         <svg class="ic" viewBox="0 0 52 52" fill="none" stroke="#ff5fa8" stroke-width="2.4"><path d="M26 6s14 14 14 24a14 14 0 0 1-28 0C12 20 26 6 26 6Z" stroke-linejoin="round"/></svg>
         <h3>Blood <span class="cnt">9+</span></h3>
         <ul><li>Random Blood Glucose</li><li>Total Cholesterol</li><li>Hemoglobin</li><li class="more">+ more</li></ul>
       </div>
-      <div class="cap glass reveal d2">
+      <div class="cap glass roll reveal d2">
+        <img class="cap-bg" src="assets/cap5.jpg" alt="" aria-hidden="true" />
+        <div class="cap-tint"></div>
         <svg class="ic" viewBox="0 0 52 52" fill="none" stroke="#3ef0a2" stroke-width="2.4"><rect x="10" y="10" width="32" height="32" rx="8"/><path d="M10 32c6 0 6-8 12-8s6 8 12 8 8-4 8-4" stroke-linecap="round"/></svg>
         <h3>Body Composition <span class="cnt">6+</span></h3>
         <ul><li>Muscle Ratio</li><li>Body Fat Ratio</li><li>Body Water Ratio</li><li class="more">+ more</li></ul>
       </div>
-      <div class="cap glass reveal d3">
+      <div class="cap glass roll reveal d3">
+        <img class="cap-bg" src="assets/cap6.jpg" alt="" aria-hidden="true" />
+        <div class="cap-tint"></div>
         <svg class="ic" viewBox="0 0 52 52" fill="none" stroke="#ffb24d" stroke-width="2.4"><path d="M26 8a13 13 0 0 0-13 13c0 5 3 8 3 12v4h20v-4c0-4 3-7 3-12A13 13 0 0 0 26 8Z" stroke-linejoin="round"/><path d="M21 41h10" stroke-linecap="round"/></svg>
         <h3>Mental Wellness <span class="cnt">7+</span></h3>
         <ul><li>Stress Index</li><li>Cognitive Load</li><li>Autonomic Balance</li><li class="more">+ more</li></ul>
