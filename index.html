@@ -58,7 +58,7 @@ img,svg{display:block;max-width:100%}
 
 /* ---------- Backdrop / ambient ---------- */
 .bg-fx{position:fixed;inset:0;z-index:-2;pointer-events:none;overflow:hidden}
-.bg-fx .blob{position:absolute;border-radius:50%;filter:blur(120px);opacity:.5;mix-blend-mode:screen}
+.bg-fx .blob{position:absolute;border-radius:50%;filter:blur(120px);opacity:.62;mix-blend-mode:screen}
 .b1{width:620px;height:620px;background:#1c5cff;top:-180px;left:-160px;animation:drift 22s var(--ease) infinite}
 .b2{width:560px;height:560px;background:#8b2bff;top:30%;right:-200px;animation:drift 28s var(--ease) infinite reverse}
 .b3{width:520px;height:520px;background:#00b3a4;bottom:-160px;left:30%;animation:drift 25s var(--ease) infinite}
@@ -389,7 +389,7 @@ header.nav{position:fixed;top:0;left:0;right:0;z-index:100;transition:all .4s va
 .icard .cap{position:absolute;left:9px;bottom:8px;z-index:2;display:flex;align-items:center;gap:7px;font-family:'Space Grotesk';font-size:11px;font-weight:600;color:#eaf6ff;text-shadow:0 1px 6px rgba(0,0,0,.85)}
 .icard .cap .d{width:6px;height:6px;border-radius:50%;background:var(--cyan);box-shadow:0 0 9px var(--cyan);flex:none}
 #tech{position:relative;overflow:hidden}
-.tech-bgvid{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;filter:brightness(.34) saturate(1.18) contrast(1.02)}
+.tech-bgvid{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;filter:brightness(.52) saturate(1.2) contrast(1.03)}
 .tech-scrim{position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(180deg,rgba(5,7,14,.72),rgba(5,7,14,.5) 40%,rgba(5,7,14,.82)),radial-gradient(110% 80% at 50% 42%,transparent 28%,rgba(5,7,14,.6))}
 #tech .wrap{position:relative;z-index:2}
 .kw-marquee{position:absolute;inset:0;display:flex;gap:14px;justify-content:center;overflow:hidden;-webkit-mask:linear-gradient(transparent,#000 10%,#000 90%,transparent);mask:linear-gradient(transparent,#000 10%,#000 90%,transparent)}
@@ -593,6 +593,13 @@ footer{border-top:1px solid var(--stroke);padding:70px 0 40px;background:var(--b
   .tier.feat{transform:none}
   .nav-links{display:none}
   .burger{display:flex}
+  .nav-inner{position:relative}
+  .nav.open .nav-links{display:flex;flex-direction:column;position:absolute;top:calc(100% + 8px);left:0;right:0;background:rgba(8,11,20,.97);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid var(--stroke-strong);border-radius:18px;padding:10px;gap:2px;box-shadow:0 30px 60px -20px rgba(0,0,0,.85)}
+  .nav.open .nav-links a{padding:13px 16px;font-size:15.5px;border-radius:12px}
+  .burger span{transition:transform .3s var(--ease),opacity .2s}
+  .nav.open .burger span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+  .nav.open .burger span:nth-child(2){opacity:0}
+  .nav.open .burger span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
 }
 @media(max-width:640px){
   section{padding:40px 0}
@@ -606,6 +613,24 @@ footer{border-top:1px solid var(--stroke);padding:70px 0 40px;background:var(--b
   .cmp-row>div{border-bottom:1px solid var(--stroke)}
   .foot-grid{grid-template-columns:1fr 1fr}
   .nav-cta .btn-ghost{display:none}
+  /* ---- mobile: shorten hero + tall sections for easy scrolling ---- */
+  .hero{min-height:auto;padding-top:92px;padding-bottom:40px}
+  .hero-grid{gap:30px}
+  .hero-copy h1{font-size:38px;margin-bottom:18px}
+  .hero-copy p.sub{font-size:16px;margin-bottom:26px}
+  .hero-actions{margin-bottom:30px}
+  .hero-stats{gap:22px}
+  .hero-visual{height:300px}
+  .hero-screen{max-width:340px;width:96%}
+  .sig{min-height:200px;padding:18px}
+  .sig .v{font-size:26px}
+  .cap{min-height:264px}
+  .smedia{height:150px}
+  .dev-media,.tech-visual,.scan-frame,.sv-frame{min-height:280px;height:auto}
+  .spiral-frame,.summary-visual,.whynow-visual,.problem-visual{height:260px}
+  .sec-head h2{font-size:30px}
+  .sec-head{margin-bottom:34px}
+  .cta-final{padding:54px 22px}
 }
 </style>
 </head>
@@ -1641,10 +1666,12 @@ if(!prefersReduced){ initHero(); initTech(); initCta(); }
 const nav = document.getElementById('nav');
 addEventListener('scroll',()=>{ nav.classList.toggle('scrolled', scrollY>20); });
 
-/* ---------- mobile burger (smooth scroll fallback) ---------- */
-document.getElementById('burger').addEventListener('click',()=>{
-  document.querySelector('.nav-links').scrollIntoView();
-});
+/* ---------- mobile burger: toggle the nav menu ---------- */
+(function(){
+  const nav=document.getElementById('nav'), burger=document.getElementById('burger');
+  if(burger){ burger.addEventListener('click',()=>nav.classList.toggle('open')); }
+  document.querySelectorAll('.nav-links a').forEach(a=>a.addEventListener('click',()=>nav.classList.remove('open')));
+})();
 
 /* ---------- reveal on scroll ---------- */
 const io = new IntersectionObserver((entries)=>{
