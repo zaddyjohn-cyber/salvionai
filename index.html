@@ -243,6 +243,10 @@ header.nav{position:fixed;top:0;left:0;right:0;z-index:100;transition:all .4s va
 .scan-frame .scan-grad{position:absolute;inset:0;z-index:3;pointer-events:none;border-radius:inherit;padding:1px;background:linear-gradient(140deg,rgba(52,227,255,.55),transparent 42%,transparent 60%,rgba(139,107,255,.45));-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude}
 .scan-tag{position:absolute;left:13px;bottom:13px;z-index:4;display:flex;align-items:center;gap:7px;font-family:'Space Grotesk';font-size:10.5px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:#fff;background:rgba(5,7,13,.55);backdrop-filter:blur(8px);padding:6px 11px;border-radius:100px;border:1px solid var(--stroke-strong)}
 .scan-tag .d{width:7px;height:7px;border-radius:50%;background:#34e3ff;box-shadow:0 0 10px #34e3ff;animation:pulse 1.5s infinite}
+.problem-scenes{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-top:18px}
+.scene{position:relative;height:148px;border-radius:18px;overflow:hidden;background:linear-gradient(180deg,rgba(16,22,40,.55),rgba(8,12,22,.4));border:1px solid var(--stroke);transition:.4s var(--ease)}
+.scene:hover{border-color:var(--stroke-strong);box-shadow:0 0 44px -16px rgba(52,227,255,.5);transform:translateY(-3px)}
+.scene-canvas{position:absolute;inset:0;width:100%;height:100%}
 .problem-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
 .prob{padding:28px 24px;transition:.5s var(--ease)}
 .prob .ic{width:46px;height:46px;margin-bottom:20px}
@@ -456,6 +460,7 @@ footer{border-top:1px solid var(--stroke);padding:70px 0 40px;background:var(--b
   .summary-visual{height:300px}
   .problem-head-grid{grid-template-columns:1fr;gap:34px}
   .problem-visual{height:300px}
+  .problem-scenes{grid-template-columns:1fr 1fr}
   .steps{grid-template-columns:1fr 1fr 1fr}
   .steps::before{display:none}
   .tech-split{grid-template-columns:1fr}
@@ -468,7 +473,7 @@ footer{border-top:1px solid var(--stroke);padding:70px 0 40px;background:var(--b
   section{padding:80px 0}
   .sb-video{width:74%;opacity:.5}
   .sb-inner{max-width:none}
-  .pillars,.forces,.caps,.deploy,.tiers,.problem-grid,.steps,.signal-wrap,.solutions,.dev-list{grid-template-columns:1fr}
+  .pillars,.forces,.caps,.deploy,.tiers,.problem-grid,.steps,.signal-wrap,.solutions,.dev-list,.problem-scenes{grid-template-columns:1fr}
   .hero-copy h1{font-size:42px}
   .cmp-row{grid-template-columns:1fr}
   .cmp-row>div{border-bottom:1px solid var(--stroke)}
@@ -683,6 +688,12 @@ footer{border-top:1px solid var(--stroke);padding:70px 0 40px;background:var(--b
         <h4>Underwriting Is Imprecise</h4>
         <p>Insurers price risk on age and demographics, not actual health data — because clinical measurement is prohibitively expensive at scale.</p>
       </div>
+    </div>
+    <div class="problem-scenes">
+      <div class="scene reveal d1"><canvas class="scene-canvas" data-scene="vitals" aria-hidden="true"></canvas></div>
+      <div class="scene reveal d2"><canvas class="scene-canvas" data-scene="nodata" aria-hidden="true"></canvas></div>
+      <div class="scene reveal d3"><canvas class="scene-canvas" data-scene="wearable" aria-hidden="true"></canvas></div>
+      <div class="scene reveal d4"><canvas class="scene-canvas" data-scene="risk" aria-hidden="true"></canvas></div>
     </div>
   </div>
 </section>
@@ -1584,6 +1595,83 @@ document.querySelectorAll('video[data-bg]').forEach(v=>{
     ctx.fillText('SALVION', cx, cy);
   }
   resize(); frame();
+})();
+
+/* ---------- Problem cards: four themed scene animations ---------- */
+(function(){
+  const scenes=[...document.querySelectorAll('.scene-canvas')]; if(!scenes.length) return;
+  const TAU=Math.PI*2;
+  const rr=(c,x,y,w,h,r)=>{c.beginPath();c.moveTo(x+r,y);c.arcTo(x+w,y,x+w,y+h,r);c.arcTo(x+w,y+h,x,y+h,r);c.arcTo(x,y+h,x,y,r);c.arcTo(x,y,x+w,y,r);c.closePath();};
+  const txt=(c,s,x,y,col,size,w,al)=>{c.fillStyle=col;c.textAlign=al||'left';c.textBaseline='alphabetic';c.font=(w||'600')+' '+size+'px "Space Grotesk",system-ui,sans-serif';c.fillText(s,x,y);};
+
+  function vitals(c,W,H,t){
+    const cx=W*0.23,cy=H*0.44,r=Math.min(H*0.30,W*0.16);
+    c.strokeStyle='rgba(120,200,255,.5)';c.lineWidth=1.6;c.beginPath();c.arc(cx,cy,r,0,TAU);c.stroke();
+    for(let i=0;i<12;i++){const a=i/12*TAU;c.strokeStyle='rgba(120,200,255,.3)';c.lineWidth=1;c.beginPath();c.moveTo(cx+Math.cos(a)*(r-3),cy+Math.sin(a)*(r-3));c.lineTo(cx+Math.cos(a)*r,cy+Math.sin(a)*r);c.stroke();}
+    const sa=(t/4)*TAU-Math.PI/2;c.save();c.shadowColor='#34e3ff';c.shadowBlur=8;c.strokeStyle='#9ff0ff';c.lineWidth=2;c.beginPath();c.moveTo(cx,cy);c.lineTo(cx+Math.cos(sa)*(r-5),cy+Math.sin(sa)*(r-5));c.stroke();c.restore();
+    const ma=(t/40)*TAU-Math.PI/2;c.strokeStyle='rgba(190,230,255,.8)';c.lineWidth=2;c.beginPath();c.moveTo(cx,cy);c.lineTo(cx+Math.cos(ma)*(r*0.55),cy+Math.sin(ma)*(r*0.55));c.stroke();
+    c.fillStyle='#9ff0ff';c.beginPath();c.arc(cx,cy,2,0,TAU);c.fill();
+    const T=8,pp=(t%T)/T,tot=300+pp*300,mm=Math.floor(tot/60),ss=Math.floor(tot%60);
+    txt(c,mm+':'+(ss<10?'0':'')+ss,cx,cy+r+17,'#eaf6ff',14,'700','center');
+    txt(c,'PER PATIENT',cx,cy+r+29,'rgba(150,180,225,.7)',7,'600','center');
+    const ex0=W*0.45,ex1=W-14,ey=H*0.40,amp=H*0.15;
+    c.strokeStyle='#34e3ff';c.lineWidth=1.6;c.save();c.shadowColor='#34e3ff';c.shadowBlur=6;c.beginPath();
+    for(let x=ex0;x<=ex1;x++){const u=(((x-t*55)%72)+72)%72;let y;if(u>30&&u<42){y=ey-(u<36?(u-30):(42-u))*amp/6;}else{y=ey+Math.sin(x*0.35)*1.2;}x===ex0?c.moveTo(x,y):c.lineTo(x,y);}
+    c.stroke();c.restore();
+    txt(c,'CAPTURING VITALS…',ex0,H*0.72,'rgba(150,180,225,.75)',8,'600','left');
+    const bw=ex1-ex0,by=H*0.80;c.fillStyle='rgba(120,160,255,.16)';c.fillRect(ex0,by,bw,3);c.fillStyle='#34e3ff';c.fillRect(ex0,by,bw*pp,3);
+  }
+
+  function nodata(c,W,H,t){
+    const px=14,py=H*0.18,pw=W*0.36,ph=H*0.62;
+    c.strokeStyle='rgba(120,200,255,.4)';c.lineWidth=1.4;rr(c,px,py,pw,ph,8);c.stroke();
+    c.fillStyle='rgba(120,200,255,.25)';c.beginPath();c.arc(px+pw/2,py+ph*0.4,ph*0.16,0,TAU);c.fill();
+    c.beginPath();c.ellipse(px+pw/2,py+ph*0.95,pw*0.26,ph*0.32,0,Math.PI,TAU);c.fill();
+    c.fillStyle='#ff5f57';c.beginPath();c.arc(px+9,py+10,2.4,0,TAU);c.fill();txt(c,'LIVE',px+15,py+13,'rgba(220,235,255,.85)',6.5,'700','left');
+    const dx=px+pw+6,dxe=W*0.5;c.strokeStyle='rgba(120,180,255,.35)';c.setLineDash([3,3]);c.lineWidth=1;c.beginPath();c.moveTo(dx,py+ph/2);c.lineTo(dxe,py+ph/2);c.stroke();c.setLineDash([]);
+    const vx=W*0.53,vy=H*0.16,vw=W-vx-14,vh=H*0.6,bl=Math.sin(t*4)*0.5+0.5;
+    c.strokeStyle='rgba(255,95,120,.45)';c.lineWidth=1.4;rr(c,vx,vy,vw,vh,8);c.stroke();
+    txt(c,'VITALS',vx+10,vy+15,'rgba(255,140,160,.9)',8,'700','left');
+    ['HR','BP','SpO₂'].forEach((lb,i)=>{const yy=vy+30+i*15;txt(c,lb,vx+10,yy,'rgba(180,200,235,.7)',8,'600','left');txt(c,'— —',vx+vw-10,yy,'rgba(255,95,120,'+(0.35+bl*0.55).toFixed(2)+')',11,'700','right');});
+    txt(c,'NO SENSOR DATA',W*0.5,H-11,'rgba(255,120,140,.9)',8,'700','center');
+  }
+
+  function wearable(c,W,H,t){
+    const n=7,gap=W/(n+1),cy=H*0.40,idx=3;
+    for(let i=0;i<n;i++){const x=gap*(i+1),has=i===idx,col=has?'#34e3ff':'rgba(120,150,200,.32)';
+      c.fillStyle=col;c.beginPath();c.arc(x,cy-9,4.5,0,TAU);c.fill();
+      c.strokeStyle=col;c.lineWidth=2;c.beginPath();c.moveTo(x,cy-3);c.lineTo(x,cy+11);c.stroke();
+      c.beginPath();c.moveTo(x-6,cy+3);c.lineTo(x+6,cy+3);c.stroke();
+      c.beginPath();c.moveTo(x,cy+11);c.lineTo(x-5,cy+21);c.moveTo(x,cy+11);c.lineTo(x+5,cy+21);c.stroke();
+      if(has){const pl=Math.sin(t*4)*0.5+0.5;c.save();c.shadowColor='#34e3ff';c.shadowBlur=7+pl*9;c.fillStyle='#9ff0ff';c.beginPath();c.arc(x+6,cy+3,2.4,0,TAU);c.fill();c.restore();}
+    }
+    txt(c,'ONLY 14%',W*0.5,H*0.74,'#eaf6ff',15,'700','center');
+    txt(c,'OWN A HEALTH WEARABLE',W*0.5,H*0.88,'rgba(150,180,225,.75)',8,'600','center');
+  }
+
+  function risk(c,W,H,t){
+    const cx=W*0.30,cy=H*0.46,R=Math.min(H*0.34,W*0.17);
+    for(let k=3;k>=1;k--){c.strokeStyle='rgba(120,180,255,'+(0.14+(3-k)*0.08)+')';c.lineWidth=1.2;c.beginPath();c.arc(cx,cy,R*k/3,0,TAU);c.stroke();}
+    c.fillStyle='rgba(120,180,255,.45)';c.beginPath();c.arc(cx,cy,2,0,TAU);c.fill();
+    const hits=[[-.5,-.7],[.6,-.3],[.35,.7],[-.7,.35],[.8,.5],[-.2,-.45]];
+    hits.forEach((h,i)=>{const x=cx+h[0]*R*0.95,y=cy+h[1]*R*0.95;c.save();c.shadowColor='#ff5f7a';c.shadowBlur=7;c.fillStyle='rgba(255,95,122,.92)';c.beginPath();c.arc(x,y,2.4,0,TAU);c.fill();c.restore();c.strokeStyle='rgba(255,95,122,.4)';c.lineWidth=1;c.beginPath();c.moveTo(x-3,y);c.lineTo(x+3,y);c.moveTo(x,y-3);c.lineTo(x,y+3);c.stroke();});
+    const wob=Math.sin(t*1.5)*4;c.strokeStyle='rgba(255,140,160,.5)';c.setLineDash([4,4]);c.lineWidth=1.2;c.beginPath();c.ellipse(cx,cy,R*0.95+wob,R*0.72,0,0,TAU);c.stroke();c.setLineDash([]);
+    txt(c,'RISK ESTIMATE',W*0.57,H*0.34,'rgba(150,180,225,.75)',8,'600','left');
+    txt(c,'AGE · DEMOGRAPHICS',W*0.57,H*0.49,'rgba(180,200,235,.65)',7.5,'500','left');
+    txt(c,'± '+Math.round(Math.abs(Math.sin(t*1.2))*22+24)+'%',W*0.57,H*0.68,'#ff8aa0',14,'700','left');
+    txt(c,'WIDE MARGIN OF ERROR',W*0.57,H*0.81,'rgba(150,180,225,.7)',7,'600','left');
+  }
+
+  const draws={vitals,nodata,wearable,risk};
+  scenes.forEach(canvas=>{
+    const ctx=canvas.getContext('2d'); const dpr=Math.min(window.devicePixelRatio||1,2);
+    let W=0,H=0,vis=false; const fn=draws[canvas.dataset.scene]; const t0=performance.now();
+    if(!fn) return;
+    function resize(){W=canvas.clientWidth;H=canvas.clientHeight;canvas.width=Math.round(W*dpr);canvas.height=Math.round(H*dpr);ctx.setTransform(dpr,0,0,dpr,0,0);}
+    new IntersectionObserver(es=>{vis=es[0].isIntersecting;},{threshold:0.05}).observe(canvas);
+    function loop(now){requestAnimationFrame(loop);if(!vis)return;if(canvas.clientWidth!==W||canvas.clientHeight!==H||!canvas.width)resize();if(!W)return;ctx.clearRect(0,0,W,H);fn(ctx,W,H,(now-t0)/1000);}
+    requestAnimationFrame(loop);
+  });
 })();
 
 /* ---------- Problem panel: 5s looping facial-health-scan HUD over a real face ---------- */
