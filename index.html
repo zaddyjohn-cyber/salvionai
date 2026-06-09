@@ -247,7 +247,8 @@ header.nav{position:fixed;top:0;left:0;right:0;z-index:100;transition:all .4s va
 .scene{position:relative;height:340px;border-radius:18px;overflow:hidden;border:1px solid var(--stroke);background:radial-gradient(125% 120% at 50% 0%,#101c3a 0%,#0a1124 56%,#05070f 100%);perspective:1000px;transition:border-color .4s,box-shadow .4s}
 #problem{padding-bottom:26px}
 #whynow{padding:58px 0 30px}
-#how{padding-top:60px}
+#how{padding:60px 0 34px}
+#capabilities{padding-top:60px}
 .scene:hover{border-color:var(--stroke-strong);box-shadow:0 0 56px -18px rgba(52,227,255,.55)}
 .scene .floor{position:absolute;left:-25%;right:-25%;bottom:-36%;height:82%;transform:rotateX(71deg);transform-origin:bottom;background:repeating-linear-gradient(90deg,rgba(120,180,255,.11) 0 1px,transparent 1px 26px),repeating-linear-gradient(0deg,rgba(120,180,255,.07) 0 1px,transparent 1px 22px);-webkit-mask-image:linear-gradient(transparent,#000 52%);mask-image:linear-gradient(transparent,#000 52%);opacity:.6;pointer-events:none}
 .scene .blob{position:absolute;border-radius:50%;filter:blur(28px);opacity:.42;pointer-events:none;animation:blobmove 12s ease-in-out infinite}
@@ -333,6 +334,22 @@ header.nav{position:fixed;top:0;left:0;right:0;z-index:100;transition:all .4s va
 .step:hover .node{transform:translateY(-6px) rotateX(8deg);border-color:var(--cyan);box-shadow:var(--shadow-glow)}
 .step h4{font-size:16px;margin-bottom:8px}
 .step p{font-size:13px;color:var(--text-dim)}
+/* per-step media panels */
+.step-media{display:grid;grid-template-columns:repeat(5,1fr);gap:16px;margin-top:34px}
+.smedia{position:relative;height:212px;border-radius:16px;overflow:hidden;border:1px solid var(--stroke-strong);background:#05070f;box-shadow:var(--shadow-soft),0 0 60px -26px rgba(52,227,255,.45);transition:transform .4s var(--ease),box-shadow .4s}
+.smedia:hover{transform:translateY(-6px);box-shadow:var(--shadow-soft),0 0 54px -16px rgba(52,227,255,.6)}
+.smedia video,.smedia .sm-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0}
+.smedia .mtint{position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(180deg,rgba(5,8,16,.28),transparent 26%,rgba(5,8,16,.5) 70%,rgba(5,8,16,.94))}
+.smedia .mnum{position:absolute;top:10px;right:10px;z-index:4;width:22px;height:22px;border-radius:50%;background:var(--grad-hero);color:#05070d;font:700 12px 'Space Grotesk';display:grid;place-items:center;box-shadow:0 0 14px -2px rgba(139,107,255,.6)}
+.smedia .mtag{position:absolute;left:10px;bottom:10px;right:10px;z-index:4;font:700 9px 'Space Grotesk';letter-spacing:.08em;text-transform:uppercase;color:#fff;background:rgba(5,7,13,.6);backdrop-filter:blur(6px);border:1px solid var(--stroke);border-radius:100px;padding:5px 10px;text-align:center}
+.smedia .mchip{position:absolute;z-index:3;font:600 9px 'Space Grotesk';letter-spacing:.03em;color:#eaf6ff;background:rgba(8,12,22,.62);backdrop-filter:blur(6px);border:1px solid var(--stroke-strong);border-radius:7px;padding:4px 7px;box-shadow:0 0 14px -4px rgba(52,227,255,.5);white-space:nowrap}
+.smedia .scanline{position:absolute;left:0;right:0;top:-60px;height:60px;z-index:2;pointer-events:none;background:linear-gradient(transparent,rgba(52,227,255,.2),transparent);animation:scanMove 3.2s linear infinite}
+.smedia .face-end{position:absolute;inset:0;z-index:2;opacity:0;transition:opacity .6s var(--ease);background-size:cover;background-position:center 30%;filter:brightness(.66) saturate(.85) contrast(1.05)}
+.smedia .face-end::before{content:"";position:absolute;inset:0;background:radial-gradient(120% 100% at 50% 35%,rgba(52,227,255,.18),transparent 60%),linear-gradient(180deg,transparent 55%,rgba(5,8,16,.85))}
+.smedia .face-end::after{content:"● SCAN COMPLETE";position:absolute;left:50%;bottom:13px;transform:translateX(-50%);font:700 9px 'Space Grotesk';letter-spacing:.12em;color:#9ff0ff;text-shadow:0 0 10px #34e3ff;white-space:nowrap}
+.smedia.show-face .face-end{opacity:1}
+.smedia.roll .sm-img{width:124%;height:124%;left:-12%;top:-12%;animation:roll 16s ease-in-out infinite}
+@keyframes roll{0%,100%{transform:translate(0,0) scale(1.04)}50%{transform:translate(-7%,-5%) scale(1.16)}}
 
 /* ============================================================
    CAPABILITIES
@@ -510,6 +527,7 @@ footer{border-top:1px solid var(--stroke);padding:70px 0 40px;background:var(--b
   .dev-split{grid-template-columns:1fr}
   .summary-head-grid{grid-template-columns:1fr;gap:34px}
   .summary-visual{height:300px}
+  .step-media{grid-template-columns:repeat(3,1fr)}
   .problem-head-grid{grid-template-columns:1fr;gap:34px}
   .problem-visual{height:300px}
   .whynow-head-grid{grid-template-columns:1fr;gap:34px}
@@ -527,6 +545,7 @@ footer{border-top:1px solid var(--stroke);padding:70px 0 40px;background:var(--b
   section{padding:80px 0}
   .sb-video{width:74%;opacity:.5}
   .sb-inner{max-width:none}
+  .step-media{grid-template-columns:1fr 1fr}
   .pillars,.forces,.caps,.deploy,.tiers,.problem-grid,.steps,.signal-wrap,.solutions,.dev-list,.problem-scenes{grid-template-columns:1fr}
   .scene{height:250px}
   .hero-copy h1{font-size:42px}
@@ -918,6 +937,44 @@ footer{border-top:1px solid var(--stroke);padding:70px 0 40px;background:var(--b
         </div>
         <h4>Recommendations</h4>
         <p>Actionable, personalised insights and alerts — enabling intervention before symptoms appear.</p>
+      </div>
+    </div>
+
+    <div class="step-media">
+      <div class="smedia reveal d1">
+        <video class="step-vid" muted loop playsinline preload="none" disablepictureinpicture aria-hidden="true"><source src="assets/step1.mp4" type="video/mp4" /></video>
+        <div class="mtint"></div><div class="mnum">1</div>
+        <div class="mchip" style="top:10px;left:10px">AI-GUIDED FRAMING</div>
+        <div class="mchip" style="top:34px;left:10px;color:#7dffc0;border-color:rgba(62,240,162,.4)">LIVENESS ✓</div>
+        <div class="mtag">EQS 0.98 · Calibrated</div>
+      </div>
+      <div class="smedia reveal d2">
+        <video class="step-vid" muted loop playsinline preload="none" disablepictureinpicture aria-hidden="true"><source src="assets/step2.mp4" type="video/mp4" /></video>
+        <div class="mtint"></div><div class="mnum">2</div>
+        <div class="mchip" style="top:10px;left:10px">SCANNING</div>
+        <div class="mchip" style="top:34px;left:10px">Heart Rate · SpO₂</div>
+        <div class="mchip" style="top:58px;left:10px">BP · Glucose · HRV</div>
+        <div class="mtag">6 Facial ROI Zones</div>
+      </div>
+      <div class="smedia face-step reveal d3">
+        <video class="step-vid" muted loop playsinline preload="none" disablepictureinpicture aria-hidden="true"><source src="assets/step3.mp4" type="video/mp4" /></video>
+        <div class="mtint"></div><div class="mnum">3</div>
+        <div class="face-end" style="background-image:url(assets/face.jpg)"></div>
+        <div class="mchip" style="top:10px;left:10px">BLOOXIA AI · FUSION</div>
+        <div class="mtag">512-D Health Vector</div>
+      </div>
+      <div class="smedia reveal d4">
+        <video class="step-vid" muted loop playsinline preload="none" disablepictureinpicture aria-hidden="true"><source src="assets/step4.mp4" type="video/mp4" /></video>
+        <div class="mtint"></div><div class="mnum">4</div>
+        <div class="mchip" style="top:10px;left:10px;color:#7dffc0;border-color:rgba(62,240,162,.4)">HEALTH SCORE 87/100</div>
+        <div class="mtag">50+ Parameters · Risk Tiers</div>
+      </div>
+      <div class="smedia roll reveal d4">
+        <img class="sm-img" src="assets/step5.jpg" alt="" aria-hidden="true" />
+        <div class="mtint"></div><div class="mnum">5</div>
+        <div class="scanline"></div>
+        <div class="mchip" style="top:10px;left:10px">AI RECOMMENDATIONS</div>
+        <div class="mtag">Early Risk Signals™</div>
       </div>
     </div>
   </div>
@@ -1896,6 +1953,17 @@ document.querySelectorAll('video[data-bg]').forEach(v=>{
     ents.forEach(e=>{ const v=e.target; if(e.isIntersecting && !document.hidden){ const p=v.play(); if(p&&p.catch) p.catch(()=>{}); } else { v.pause(); } });
   }, {threshold:0.08});
   vids.forEach(v=>io.observe(v));
+})();
+
+/* ---------- How It Works step media — muted loop, on-screen only, step-3 face frame at end ---------- */
+(function(){
+  const vids=[...document.querySelectorAll('video.step-vid')]; if(!vids.length) return;
+  vids.forEach(v=>{ v.muted=true; v.loop=true; });
+  const io=new IntersectionObserver(es=>{es.forEach(e=>{const v=e.target; if(e.isIntersecting && !document.hidden){ if(v.preload==='none'){v.preload='auto';v.load();} const p=v.play(); if(p&&p.catch)p.catch(()=>{}); } else v.pause();});},{threshold:0.12});
+  vids.forEach(v=>io.observe(v));
+  const fs=document.querySelector('.smedia.face-step'); const fv=fs&&fs.querySelector('video');
+  if(fv){ fv.addEventListener('timeupdate',()=>{ if(fv.duration && fv.currentTime>fv.duration-1.1) fs.classList.add('show-face'); else fs.classList.remove('show-face'); }); }
+  document.addEventListener('visibilitychange',()=>{ if(document.hidden) vids.forEach(v=>v.pause()); });
 })();
 
 /* ---------- Problem scene background videos — muted, loop first 8s, on-screen only ---------- */
