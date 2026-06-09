@@ -125,9 +125,9 @@ header.nav{position:fixed;top:0;left:0;right:0;z-index:100;transition:all .4s va
 .hero-stats .stat .n{font-family:'Space Grotesk';font-size:30px;font-weight:700;background:var(--grad-cyan);-webkit-background-clip:text;background-clip:text;color:transparent}
 .hero-stats .stat .l{font-size:12.5px;color:var(--text-faint);text-transform:uppercase;letter-spacing:.08em;margin-top:2px}
 /* floating vitals cards over the 3D scene */
-.hero-visual{position:relative;height:520px}
+.hero-visual{position:relative;height:680px}
 /* animated live-scan video screen */
-.hero-screen{position:absolute;top:50%;left:50%;width:112%;max-width:560px;aspect-ratio:16/9;border-radius:20px;overflow:hidden;background:#04060c;box-shadow:var(--shadow-soft),0 0 90px -22px rgba(52,227,255,.55);z-index:1;animation:screenFloat 9s var(--ease) infinite;opacity:0;transform:translate(-50%,-50%) perspective(1200px) rotateY(-9deg) rotateX(4deg)}
+.hero-screen{position:absolute;top:50%;left:50%;width:104%;max-width:600px;aspect-ratio:1/1;border-radius:20px;overflow:hidden;background:#04060c;box-shadow:var(--shadow-soft),0 0 90px -22px rgba(52,227,255,.55);z-index:1;animation:screenFloat 9s var(--ease) infinite;opacity:0;transform:translate(-50%,-50%) perspective(1200px) rotateY(-9deg) rotateX(4deg)}
 .hero-screen.in{animation:screenIn 1.1s var(--ease) forwards,screenFloat 9s var(--ease) 1.1s infinite}
 .hero-screen video{width:100%;height:100%;object-fit:cover;display:block;filter:saturate(1.12) contrast(1.05)}
 .hero-screen .vignette{position:absolute;inset:0;z-index:2;pointer-events:none;box-shadow:inset 0 0 70px rgba(4,6,12,.65);border-radius:inherit}
