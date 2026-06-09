@@ -244,7 +244,9 @@ header.nav{position:fixed;top:0;left:0;right:0;z-index:100;transition:all .4s va
 .scan-tag{position:absolute;left:13px;bottom:13px;z-index:4;display:flex;align-items:center;gap:7px;font-family:'Space Grotesk';font-size:10.5px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:#fff;background:rgba(5,7,13,.55);backdrop-filter:blur(8px);padding:6px 11px;border-radius:100px;border:1px solid var(--stroke-strong)}
 .scan-tag .d{width:7px;height:7px;border-radius:50%;background:#34e3ff;box-shadow:0 0 10px #34e3ff;animation:pulse 1.5s infinite}
 .problem-scenes{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-top:18px}
-.scene{position:relative;height:204px;border-radius:18px;overflow:hidden;border:1px solid var(--stroke);background:radial-gradient(125% 120% at 50% 0%,#101c3a 0%,#0a1124 56%,#05070f 100%);perspective:1000px;transition:border-color .4s,box-shadow .4s}
+.scene{position:relative;height:340px;border-radius:18px;overflow:hidden;border:1px solid var(--stroke);background:radial-gradient(125% 120% at 50% 0%,#101c3a 0%,#0a1124 56%,#05070f 100%);perspective:1000px;transition:border-color .4s,box-shadow .4s}
+#problem{padding-bottom:26px}
+#whynow{padding-top:58px}
 .scene:hover{border-color:var(--stroke-strong);box-shadow:0 0 56px -18px rgba(52,227,255,.55)}
 .scene .floor{position:absolute;left:-25%;right:-25%;bottom:-36%;height:82%;transform:rotateX(71deg);transform-origin:bottom;background:repeating-linear-gradient(90deg,rgba(120,180,255,.11) 0 1px,transparent 1px 26px),repeating-linear-gradient(0deg,rgba(120,180,255,.07) 0 1px,transparent 1px 22px);-webkit-mask-image:linear-gradient(transparent,#000 52%);mask-image:linear-gradient(transparent,#000 52%);opacity:.6;pointer-events:none}
 .scene .blob{position:absolute;border-radius:50%;filter:blur(28px);opacity:.42;pointer-events:none;animation:blobmove 12s ease-in-out infinite}
@@ -502,6 +504,7 @@ footer{border-top:1px solid var(--stroke);padding:70px 0 40px;background:var(--b
   .sb-video{width:74%;opacity:.5}
   .sb-inner{max-width:none}
   .pillars,.forces,.caps,.deploy,.tiers,.problem-grid,.steps,.signal-wrap,.solutions,.dev-list,.problem-scenes{grid-template-columns:1fr}
+  .scene{height:250px}
   .hero-copy h1{font-size:42px}
   .cmp-row{grid-template-columns:1fr}
   .cmp-row>div{border-bottom:1px solid var(--stroke)}
