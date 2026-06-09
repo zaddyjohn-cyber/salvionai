@@ -288,6 +288,21 @@ header.nav{position:fixed;top:0;left:0;right:0;z-index:100;transition:all .4s va
 /* ============================================================
    WHY NOW
    ============================================================ */
+.whynow-head-grid{display:grid;grid-template-columns:1fr .82fr;gap:50px;align-items:center;margin-bottom:60px}
+.whynow-head-grid .sec-head{margin-bottom:0}
+.whynow-visual{position:relative;height:300px}
+.spiral-frame{position:absolute;inset:0;border-radius:22px;overflow:hidden;border:1px solid var(--stroke-strong);background:#04060c;box-shadow:var(--shadow-soft),0 0 92px -28px rgba(52,227,255,.5)}
+.spiral-frame video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;filter:brightness(.92) contrast(1.05) saturate(1.2) blur(1.4px)}
+.spiral-tint{position:absolute;inset:0;z-index:1;pointer-events:none;border-radius:inherit;background:linear-gradient(90deg,rgba(5,8,16,.5),transparent 26%,transparent 74%,rgba(5,8,16,.5)),radial-gradient(120% 100% at 50% 50%,transparent 38%,rgba(5,8,16,.6))}
+.sp-lbl{position:absolute;z-index:3;display:flex;align-items:center;gap:7px;font-family:'Space Grotesk';font-size:11px;font-weight:600;color:#eaf6ff;background:rgba(8,12,22,.6);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border:1px solid var(--stroke-strong);border-radius:100px;padding:6px 11px;box-shadow:0 0 18px -4px rgba(52,227,255,.5);white-space:nowrap}
+.sp-lbl .dot{width:6px;height:6px;border-radius:50%;background:var(--cyan);box-shadow:0 0 10px var(--cyan);flex:none}
+.sp-1{top:13%;right:7%;animation:flo 6s ease-in-out infinite}
+.sp-2{top:45%;left:6%;animation:flo 6.6s ease-in-out infinite;animation-delay:-2s;border-color:rgba(139,107,255,.45);box-shadow:0 0 18px -4px rgba(139,107,255,.55)}
+.sp-2 .dot{background:var(--violet);box-shadow:0 0 10px var(--violet)}
+.sp-3{bottom:14%;right:9%;animation:flo 5.6s ease-in-out infinite;animation-delay:-3.5s;border-color:rgba(255,95,168,.45);box-shadow:0 0 18px -4px rgba(255,95,168,.55)}
+.sp-3 .dot{background:var(--pink);box-shadow:0 0 10px var(--pink)}
+.sp-tag{position:absolute;left:13px;bottom:13px;z-index:3;display:flex;align-items:center;gap:7px;font-family:'Space Grotesk';font-size:10px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:#fff;background:rgba(5,7,13,.55);backdrop-filter:blur(8px);padding:5px 10px;border-radius:100px;border:1px solid var(--stroke)}
+.sp-tag .d{width:6px;height:6px;border-radius:50%;background:var(--cyan);box-shadow:0 0 10px var(--cyan);animation:pulse 1.6s infinite}
 .forces{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
 .force{padding:0;overflow:hidden}
 .force .viz{height:170px;position:relative;overflow:hidden;border-bottom:1px solid var(--stroke)}
@@ -490,6 +505,8 @@ footer{border-top:1px solid var(--stroke);padding:70px 0 40px;background:var(--b
   .summary-visual{height:300px}
   .problem-head-grid{grid-template-columns:1fr;gap:34px}
   .problem-visual{height:300px}
+  .whynow-head-grid{grid-template-columns:1fr;gap:34px}
+  .whynow-visual{height:260px}
   .problem-scenes{grid-template-columns:1fr 1fr}
   .steps{grid-template-columns:1fr 1fr 1fr}
   .steps::before{display:none}
@@ -802,10 +819,22 @@ footer{border-top:1px solid var(--stroke);padding:70px 0 40px;background:var(--b
 <!-- ============ WHY NOW ============ -->
 <section id="whynow">
   <div class="wrap">
-    <div class="sec-head reveal">
-      <span class="eyebrow"><span class="dot"></span>Why Now</span>
-      <h2>The convergence window is open — <span class="grad-text-cyan">and won't stay open long.</span></h2>
-      <p class="lede">Three forces have aligned simultaneously to make camera-based health intelligence not just possible, but inevitable.</p>
+    <div class="whynow-head-grid">
+      <div class="sec-head reveal">
+        <span class="eyebrow"><span class="dot"></span>Why Now</span>
+        <h2>The convergence window is open — <span class="grad-text-cyan">and won't stay open long.</span></h2>
+        <p class="lede">Three forces have aligned simultaneously to make camera-based health intelligence not just possible, but inevitable.</p>
+      </div>
+      <div class="whynow-visual reveal d2">
+        <div class="spiral-frame">
+          <video class="scene-vid" muted playsinline preload="none" disablepictureinpicture aria-hidden="true"><source src="assets/whynow.mp4" type="video/mp4" /></video>
+          <div class="spiral-tint"></div>
+          <div class="sp-lbl sp-1"><span class="dot"></span>6.8B+ Smartphones</div>
+          <div class="sp-lbl sp-2"><span class="dot"></span>Transformer AI · 2022→Now</div>
+          <div class="sp-lbl sp-3"><span class="dot"></span>+38% Telehealth</div>
+          <div class="sp-tag"><span class="d"></span>Convergence · Live</div>
+        </div>
+      </div>
     </div>
     <div class="forces">
       <div class="force glass reveal d1">
