@@ -250,7 +250,8 @@ header.nav{position:fixed;top:0;left:0;right:0;z-index:100;transition:all .4s va
 #how{padding:60px 0 34px}
 #capabilities{padding:60px 0 30px}
 #tech{padding:60px 0 34px}
-#signal{padding-top:60px}
+#signal{padding:60px 0 30px}
+#deploy{padding-top:60px}
 .scene:hover{border-color:var(--stroke-strong);box-shadow:0 0 56px -18px rgba(52,227,255,.55)}
 .scene .floor{position:absolute;left:-25%;right:-25%;bottom:-36%;height:82%;transform:rotateX(71deg);transform-origin:bottom;background:repeating-linear-gradient(90deg,rgba(120,180,255,.11) 0 1px,transparent 1px 26px),repeating-linear-gradient(0deg,rgba(120,180,255,.07) 0 1px,transparent 1px 22px);-webkit-mask-image:linear-gradient(transparent,#000 52%);mask-image:linear-gradient(transparent,#000 52%);opacity:.6;pointer-events:none}
 .scene .blob{position:absolute;border-radius:50%;filter:blur(28px);opacity:.42;pointer-events:none;animation:blobmove 12s ease-in-out infinite}
@@ -420,15 +421,16 @@ header.nav{position:fixed;top:0;left:0;right:0;z-index:100;transition:all .4s va
    SIGNAL COVERAGE — live readout
    ============================================================ */
 .signal-wrap{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
-.sig{padding:22px;position:relative;overflow:hidden;min-height:174px;transition:transform .4s var(--ease),box-shadow .4s}
-.sig-bg{position:absolute;inset:0;z-index:0;width:100%;height:100%;object-fit:cover;filter:brightness(.4) saturate(1.12) contrast(1.04)}
+.sig{padding:24px;position:relative;overflow:hidden;min-height:286px;display:flex;flex-direction:column;justify-content:space-between;transition:transform .4s var(--ease),box-shadow .4s}
+.sig-bg{position:absolute;inset:0;z-index:0;width:100%;height:100%;object-fit:cover;filter:brightness(.5) saturate(1.15) contrast(1.04)}
 .sig.roll .sig-bg{width:116%;height:116%;left:-8%;top:-8%;animation:capRoll 17s ease-in-out infinite}
 .sig-tint{position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(180deg,rgba(6,10,20,.56),rgba(6,10,20,.38) 36%,rgba(6,10,20,.8)),radial-gradient(120% 80% at 50% 0%,rgba(52,227,255,.12),transparent 62%)}
 .sig:hover{transform:translateY(-5px);box-shadow:var(--shadow-soft),0 0 48px -16px rgba(52,227,255,.55)}
 .sig .label{position:relative;z-index:2;font-size:12px;color:#cdd8ec;text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px;text-shadow:0 1px 5px rgba(0,0,0,.7)}
 .sig .v{position:relative;z-index:2;font-family:'Space Grotesk';font-size:30px;font-weight:700;text-shadow:0 2px 10px rgba(0,0,0,.75)}
 .sig .v small{font-size:13px;color:#b6c4dd;font-weight:500;margin-left:4px;text-shadow:none}
-.sig canvas{position:relative;z-index:2;margin-top:12px;width:100%;height:40px}
+.sig .v{margin-top:auto}
+.sig canvas{position:relative;z-index:2;margin-top:12px;width:100%;height:44px}
 .sig .ring{position:absolute;top:18px;right:18px;z-index:2}
 
 /* ============================================================
