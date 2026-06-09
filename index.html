@@ -234,9 +234,14 @@ header.nav{position:fixed;top:0;left:0;right:0;z-index:100;transition:all .4s va
 .problem-head-grid .sec-head{margin-bottom:0}
 .problem-visual{position:relative;height:340px}
 .scan-frame{position:absolute;inset:0;border-radius:22px;overflow:hidden;background:radial-gradient(130% 120% at 50% 32%, #0c1d40 0%, #081026 55%, #05070f 100%);border:1px solid var(--stroke-strong);box-shadow:var(--shadow-soft),0 0 92px -28px rgba(52,227,255,.5)}
-#scanCanvas{position:absolute;inset:0;width:100%;height:100%;z-index:1}
-.scan-frame .scan-grad{position:absolute;inset:0;z-index:2;pointer-events:none;border-radius:inherit;padding:1px;background:linear-gradient(140deg,rgba(52,227,255,.55),transparent 42%,transparent 60%,rgba(139,107,255,.45));-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude}
-.scan-tag{position:absolute;left:13px;bottom:13px;z-index:3;display:flex;align-items:center;gap:7px;font-family:'Space Grotesk';font-size:10.5px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:#fff;background:rgba(5,7,13,.55);backdrop-filter:blur(8px);padding:6px 11px;border-radius:100px;border:1px solid var(--stroke-strong)}
+.scan-face{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 40%;z-index:0;filter:brightness(.8) contrast(1.05) saturate(.82)}
+.scan-tint{position:absolute;inset:0;z-index:1;pointer-events:none;background:
+  linear-gradient(90deg, rgba(5,9,20,.9) 0%, rgba(5,9,20,.12) 28%, rgba(5,9,20,.12) 72%, rgba(5,9,20,.9) 100%),
+  linear-gradient(180deg, rgba(5,9,20,.55) 0%, rgba(5,9,20,.1) 32%, rgba(5,9,20,.82) 100%),
+  radial-gradient(120% 92% at 50% 40%, rgba(52,227,255,.16), transparent 62%)}
+#scanCanvas{position:absolute;inset:0;width:100%;height:100%;z-index:2}
+.scan-frame .scan-grad{position:absolute;inset:0;z-index:3;pointer-events:none;border-radius:inherit;padding:1px;background:linear-gradient(140deg,rgba(52,227,255,.55),transparent 42%,transparent 60%,rgba(139,107,255,.45));-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude}
+.scan-tag{position:absolute;left:13px;bottom:13px;z-index:4;display:flex;align-items:center;gap:7px;font-family:'Space Grotesk';font-size:10.5px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:#fff;background:rgba(5,7,13,.55);backdrop-filter:blur(8px);padding:6px 11px;border-radius:100px;border:1px solid var(--stroke-strong)}
 .scan-tag .d{width:7px;height:7px;border-radius:50%;background:#34e3ff;box-shadow:0 0 10px #34e3ff;animation:pulse 1.5s infinite}
 .problem-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
 .prob{padding:28px 24px;transition:.5s var(--ease)}
@@ -649,9 +654,11 @@ footer{border-top:1px solid var(--stroke);padding:70px 0 40px;background:var(--b
       </div>
       <div class="problem-visual reveal d2">
         <div class="scan-frame">
+          <img class="scan-face" src="assets/face.jpg" alt="" aria-hidden="true" />
+          <div class="scan-tint"></div>
           <canvas id="scanCanvas" aria-hidden="true"></canvas>
           <div class="scan-grad"></div>
-          <div class="scan-tag"><span class="d"></span>Skin Analysis · Scanning</div>
+          <div class="scan-tag"><span class="d"></span>Facial Health Scan · Live</div>
         </div>
       </div>
     </div>
@@ -1579,19 +1586,23 @@ document.querySelectorAll('video[data-bg]').forEach(v=>{
   resize(); frame();
 })();
 
-/* ---------- Problem panel: 5s looping face-scan HUD ---------- */
+/* ---------- Problem panel: 5s looping facial-health-scan HUD over a real face ---------- */
 (function(){
   const canvas=document.getElementById('scanCanvas'); if(!canvas) return;
   const ctx=canvas.getContext('2d'); const dpr=Math.min(window.devicePixelRatio||1,2);
-  let W=0,H=0;
-  function resize(){W=canvas.clientWidth;H=canvas.clientHeight;canvas.width=Math.round(W*dpr);canvas.height=Math.round(H*dpr);ctx.setTransform(dpr,0,0,dpr,0,0);}
-  const outline=[[.5,.04],[.63,.07],[.74,.15],[.82,.29],[.86,.45],[.84,.60],[.77,.74],[.66,.86],[.5,.94],[.34,.86],[.23,.74],[.16,.60],[.14,.45],[.18,.29],[.26,.15],[.37,.07]];
-  const Leye=[[.32,.43],[.39,.40],[.45,.43],[.39,.46]], Reye=[[.55,.43],[.61,.40],[.68,.43],[.61,.46]];
-  const Lbrow=[[.28,.35],[.37,.33],[.46,.355]], Rbrow=[[.54,.355],[.63,.33],[.72,.35]];
-  const nose=[[.5,.46],[.5,.60],[.44,.63],[.56,.63]], mouth=[[.40,.73],[.5,.71],[.60,.73],[.5,.77]];
-  const pts=[[.30,.55],[.70,.55],[.40,.66],[.60,.66],[.5,.52],[.35,.30],[.65,.30],[.5,.84],[.25,.50],[.75,.50]];
-  const readL=[{l:'UV DAMAGE',t:18,u:'%'},{l:'PORES',t:1240,u:''},{l:'TEXTURE',t:86,u:'%'}];
-  const readR=[{l:'REDNESS',t:42,u:'%'},{l:'HYDRATION',t:73,u:'%'},{l:'ELASTICITY',t:91,u:'%'}];
+  let W=0,H=0,mesh=[],edges=[];
+  function roundRect(x,y,w,h,r){ctx.beginPath();ctx.moveTo(x+r,y);ctx.arcTo(x+w,y,x+w,y+h,r);ctx.arcTo(x+w,y+h,x,y+h,r);ctx.arcTo(x,y+h,x,y,r);ctx.arcTo(x,y,x+w,y,r);ctx.closePath();}
+  function buildMesh(){
+    mesh=[]; const cx=W*0.5, cy=H*0.48, rx=W*0.215, ry=H*0.34;
+    mesh.push([cx,cy]);
+    [[0.45,7],[0.78,11],[1.04,14]].forEach(([rr,n])=>{ for(let i=0;i<n;i++){ const a=(i/n)*Math.PI*2+rr*1.6; mesh.push([cx+Math.cos(a)*rx*rr, cy+Math.sin(a)*ry*rr]); } });
+    edges=[];
+    for(let i=0;i<mesh.length;i++){ const d=[]; for(let j=0;j<mesh.length;j++){ if(i!==j){ const dx=mesh[i][0]-mesh[j][0],dy=mesh[i][1]-mesh[j][1]; d.push([dx*dx+dy*dy,j]); } } d.sort((a,b)=>a[0]-b[0]); for(let k=0;k<3;k++){ if(d[k]&&i<d[k][1]) edges.push([i,d[k][1]]); } }
+  }
+  function resize(){W=canvas.clientWidth;H=canvas.clientHeight;canvas.width=Math.round(W*dpr);canvas.height=Math.round(H*dpr);ctx.setTransform(dpr,0,0,dpr,0,0);buildMesh();}
+  // health markers from the Salvion capabilities (vitals, physiological, blood, mental)
+  const readL=[{l:'HEART RATE',t:72,u:' bpm'},{l:'SpO₂',t:98,u:'%'},{l:'RESP. RATE',t:16,u:'/min'}];
+  const readR=[{l:'BLOOD PRESSURE',bp:[118,79]},{l:'HRV',t:62,u:' ms'},{l:'GLUCOSE',t:94,u:' mg/dL'}];
   let ripples=[], lastRip=0; const T=5;
   const ease=x=>x<.5?2*x*x:1-Math.pow(-2*x+2,2)/2;
   const t0=performance.now();
@@ -1601,34 +1612,27 @@ document.querySelectorAll('video[data-bg]').forEach(v=>{
     if(!W) return;
     const t=(now-t0)/1000, p=(t%T)/T;
     ctx.clearRect(0,0,W,H);
-    ctx.strokeStyle='rgba(90,140,220,0.05)'; ctx.lineWidth=1;
-    for(let x=24;x<W;x+=28){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke();}
-    for(let y=24;y<H;y+=28){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke();}
-    ctx.strokeStyle='rgba(52,227,255,0.45)'; ctx.lineWidth=1.5; const bm=14,bl=20;
+    ctx.strokeStyle='rgba(52,227,255,0.5)'; ctx.lineWidth=1.5; const bm=14,bl=20;
     [[bm,bm,1,1],[W-bm,bm,-1,1],[bm,H-bm,1,-1],[W-bm,H-bm,-1,-1]].forEach(c=>{ctx.beginPath();ctx.moveTo(c[0]+c[2]*bl,c[1]);ctx.lineTo(c[0],c[1]);ctx.lineTo(c[0],c[1]+c[3]*bl);ctx.stroke();});
-    const fb=Math.min(W*0.46,H*0.74), fx=W*0.5-fb/2, fy=H*0.5-fb/2+10;
-    const M=pt=>[fx+pt[0]*fb, fy+pt[1]*fb];
-    const scanX=fx+p*fb;
-    function stroke(points,close,col,w,glow){ctx.save();ctx.strokeStyle=col;ctx.lineWidth=w;if(glow){ctx.shadowColor=col;ctx.shadowBlur=glow;}ctx.beginPath();for(let i=0;i<points.length;i++){const m=M(points[i]);i?ctx.lineTo(m[0],m[1]):ctx.moveTo(m[0],m[1]);}if(close)ctx.closePath();ctx.stroke();ctx.restore();}
-    stroke(outline,true,'rgba(52,227,255,.5)',1.4,8);
-    stroke(Leye,true,'rgba(120,220,255,.7)',1.2,5); stroke(Reye,true,'rgba(120,220,255,.7)',1.2,5);
-    stroke(Lbrow,false,'rgba(120,220,255,.6)',1.2,4); stroke(Rbrow,false,'rgba(120,220,255,.6)',1.2,4);
-    stroke([nose[0],nose[1]],false,'rgba(120,220,255,.5)',1.2,3); stroke([nose[2],nose[1],nose[3]],false,'rgba(120,220,255,.5)',1.2,3);
-    stroke(mouth,true,'rgba(120,220,255,.6)',1.2,4);
-    function dots(arr,base,rad){for(const pt of arr){const m=M(pt);const near=Math.abs(m[0]-scanX)<15;ctx.save();ctx.shadowColor='#34e3ff';ctx.shadowBlur=near?12:5;ctx.fillStyle=near?'#eaffff':base;ctx.beginPath();ctx.arc(m[0],m[1],near?rad+1:rad,0,7);ctx.fill();ctx.restore();}}
-    dots(outline,'rgba(130,215,255,.75)',1.5); dots(pts,'rgba(130,215,255,.7)',1.5);
-    if(t-lastRip>0.4){lastRip=t;const pt=pts[(Math.random()*pts.length)|0];const m=M(pt);ripples.push({x:m[0],y:m[1],r:2,a:1});}
+    const cx=W*0.5, cy=H*0.48, rw=W*0.285, rh=H*0.40;
+    ctx.strokeStyle='rgba(120,210,255,.32)'; ctx.lineWidth=1.2; roundRect(cx-rw,cy-rh,rw*2,rh*2,16); ctx.stroke();
+    const scanX=(cx-rw)+p*(rw*2);
+    ctx.strokeStyle='rgba(110,200,255,0.18)'; ctx.lineWidth=1;
+    for(const e of edges){ctx.beginPath();ctx.moveTo(mesh[e[0]][0],mesh[e[0]][1]);ctx.lineTo(mesh[e[1]][0],mesh[e[1]][1]);ctx.stroke();}
+    for(const m of mesh){const near=Math.abs(m[0]-scanX)<16;ctx.save();ctx.shadowColor='#34e3ff';ctx.shadowBlur=near?12:5;ctx.fillStyle=near?'#eaffff':'rgba(150,222,255,.85)';ctx.beginPath();ctx.arc(m[0],m[1],near?2.6:1.5,0,7);ctx.fill();ctx.restore();}
+    if(t-lastRip>0.45){lastRip=t;const m=mesh[(Math.random()*mesh.length)|0];ripples.push({x:m[0],y:m[1],r:2,a:1});}
     for(let i=ripples.length-1;i>=0;i--){const r=ripples[i];r.r+=0.9;r.a-=0.018;if(r.a<=0){ripples.splice(i,1);continue;}ctx.strokeStyle='rgba(61,240,255,'+r.a.toFixed(3)+')';ctx.lineWidth=1.3;ctx.beginPath();ctx.arc(r.x,r.y,r.r,0,7);ctx.stroke();}
-    const sg=ctx.createLinearGradient(scanX-22,0,scanX+22,0);sg.addColorStop(0,'rgba(52,227,255,0)');sg.addColorStop(.5,'rgba(190,245,255,.85)');sg.addColorStop(1,'rgba(52,227,255,0)');
-    ctx.fillStyle=sg;ctx.fillRect(scanX-22,fy-12,44,fb+24);
-    ctx.save();ctx.shadowColor='#9ff0ff';ctx.shadowBlur=14;ctx.strokeStyle='rgba(230,252,255,.95)';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(scanX,fy-12);ctx.lineTo(scanX,fy+fb+12);ctx.stroke();ctx.restore();
+    const sg=ctx.createLinearGradient(scanX-22,0,scanX+22,0);sg.addColorStop(0,'rgba(52,227,255,0)');sg.addColorStop(.5,'rgba(190,245,255,.8)');sg.addColorStop(1,'rgba(52,227,255,0)');
+    ctx.fillStyle=sg;ctx.fillRect(scanX-22,cy-rh-8,44,rh*2+16);
+    ctx.save();ctx.shadowColor='#9ff0ff';ctx.shadowBlur=14;ctx.strokeStyle='rgba(230,252,255,.95)';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(scanX,cy-rh-8);ctx.lineTo(scanX,cy+rh+8);ctx.stroke();ctx.restore();
     const ep=ease(Math.min(p/0.85,1)); ctx.textBaseline='alphabetic';
-    function read(r,x,y,align){const val=r.t*ep;ctx.textAlign=align;ctx.fillStyle='rgba(150,182,232,.8)';ctx.font='600 8.5px "Space Grotesk",system-ui,sans-serif';ctx.fillText(r.l,x,y);ctx.fillStyle='#eaf6ff';ctx.font='700 15px "Space Grotesk",system-ui,sans-serif';const vs=r.u==='%'?Math.round(val)+'%':Math.round(val).toLocaleString();ctx.fillText(vs,x,y+16);const bw=72,bx=align==='right'?x-bw:x,by=y+22;ctx.fillStyle='rgba(120,160,255,.16)';ctx.fillRect(bx,by,bw,3);ctx.fillStyle='#34e3ff';ctx.fillRect(bx,by,bw*(r.u==='%'?r.t/100*ep:ep),3);}
-    readL.forEach((r,i)=>read(r,14,66+i*66,'left'));
-    readR.forEach((r,i)=>read(r,W-14,66+i*66,'right'));
+    function read(r,x,y,align){ctx.textAlign=align;ctx.fillStyle='rgba(160,192,238,.85)';ctx.font='600 8.5px "Space Grotesk",system-ui,sans-serif';ctx.fillText(r.l,x,y);ctx.fillStyle='#eaf6ff';ctx.font='700 15px "Space Grotesk",system-ui,sans-serif';let vs;if(r.bp){vs=Math.round(r.bp[0]*ep)+'/'+Math.round(r.bp[1]*ep);}else{vs=Math.round(r.t*ep)+r.u;}ctx.fillText(vs,x,y+16);const bw=74,bx=align==='right'?x-bw:x,by=y+22;ctx.fillStyle='rgba(120,160,255,.16)';ctx.fillRect(bx,by,bw,3);ctx.fillStyle='#34e3ff';ctx.fillRect(bx,by,bw*ep,3);}
+    readL.forEach((r,i)=>read(r,14,64+i*66,'left'));
+    readR.forEach((r,i)=>read(r,W-14,64+i*66,'right'));
     const prog=Math.round(ease(Math.min(p/0.92,1))*100);
-    ctx.textAlign='center';ctx.fillStyle='rgba(150,182,232,.85)';ctx.font='600 8.5px "Space Grotesk",system-ui,sans-serif';ctx.fillText('ANALYSIS LOADING',W*0.5,18);
-    ctx.fillStyle='#eaf6ff';ctx.font='700 20px "Space Grotesk",system-ui,sans-serif';ctx.fillText(prog+'%',W*0.5,40);
+    ctx.textAlign='center';ctx.fillStyle='rgba(160,192,238,.9)';ctx.font='600 8.5px "Space Grotesk",system-ui,sans-serif';ctx.fillText('ANALYSIS LOADING',W*0.5,17);
+    ctx.fillStyle='#eaf6ff';ctx.font='700 19px "Space Grotesk",system-ui,sans-serif';ctx.fillText(prog+'%',W*0.5,38);
+    ctx.fillStyle='rgba(62,240,162,.95)';ctx.font='700 13px "Space Grotesk",system-ui,sans-serif';ctx.fillText('HEALTH SCORE '+Math.round(87*ep)+'/100',W*0.5,H-15);
   }
   requestAnimationFrame(frame);
 })();
