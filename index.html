@@ -650,8 +650,18 @@ footer{border-top:1px solid var(--stroke);padding:70px 0 40px;background:var(--b
   .hero-copy p.sub{font-size:16px;margin-bottom:26px}
   .hero-actions{margin-bottom:30px}
   .hero-stats{gap:22px}
-  .hero-visual{height:300px}
-  .hero-screen{max-width:340px;width:96%}
+  .hero-visual{height:340px}
+  .hero-screen{max-width:300px;width:92%}
+  /* mobile: tuck the floating vital cards to the edges so they don't block the scan */
+  .vital-card{min-width:0;padding:8px 11px;animation:none;box-shadow:0 12px 26px -14px rgba(0,0,0,.85)}
+  .vital-card .label{font-size:10.5px}
+  .vital-card .val{font-size:17px}
+  .vital-card .val small{font-size:10px}
+  .vital-card .spark{display:none}
+  .vital-card .tag{font-size:9px;padding:2px 6px}
+  .vc1{top:2px;left:0}
+  .vc2{top:2px;right:0;left:auto}
+  .vc3{top:auto;bottom:2px;left:50%;right:auto;transform:translateX(-50%)}
   .sig{min-height:200px;padding:18px}
   .sig .v{font-size:26px}
   .cap{min-height:264px}
@@ -841,7 +851,7 @@ footer{border-top:1px solid var(--stroke);padding:70px 0 40px;background:var(--b
       </div>
       <div class="problem-visual reveal d2">
         <div class="scan-frame">
-          <img class="scan-face" src="assets/face.jpg" alt="" aria-hidden="true" />
+          <img class="scan-face" src="assets/face.jpg" alt="" aria-hidden="true" decoding="async" fetchpriority="high" />
           <div class="scan-tint"></div>
           <canvas id="scanCanvas" aria-hidden="true"></canvas>
           <div class="scan-grad"></div>
@@ -905,7 +915,7 @@ footer{border-top:1px solid var(--stroke);padding:70px 0 40px;background:var(--b
 
       <!-- 3 · Wearables Have Barriers -->
       <div class="scene reveal d3" data-scene3d="wearable">
-        <img class="scene-photo" src="assets/bg3.jpg" alt="" aria-hidden="true" style="object-position:center 42%" />
+        <img loading="lazy" decoding="async" class="scene-photo" src="assets/bg3.jpg" alt="" aria-hidden="true" style="object-position:center 42%" />
         <div class="scene-tint"></div>
         <div class="wavepass"></div>
         <div class="stage"><div class="floater">
@@ -1078,7 +1088,7 @@ footer{border-top:1px solid var(--stroke);padding:70px 0 40px;background:var(--b
         <div class="mtag">50+ Parameters · Risk Tiers</div>
       </div>
       <div class="smedia roll reveal d4">
-        <img class="sm-img" src="assets/step5.jpg" alt="" aria-hidden="true" />
+        <img loading="lazy" decoding="async" class="sm-img" src="assets/step5.jpg" alt="" aria-hidden="true" />
         <div class="mtint"></div><div class="mnum">5</div>
         <div class="scanline"></div>
         <div class="mchip" style="top:10px;left:10px">AI RECOMMENDATIONS</div>
@@ -1098,21 +1108,21 @@ footer{border-top:1px solid var(--stroke);padding:70px 0 40px;background:var(--b
     </div>
     <div class="caps">
       <div class="cap glass roll reveal d1">
-        <img class="cap-bg" src="assets/cap1.jpg" alt="" aria-hidden="true" />
+        <img loading="lazy" decoding="async" class="cap-bg" src="assets/cap1.jpg" alt="" aria-hidden="true" />
         <div class="cap-tint"></div>
         <svg class="ic" viewBox="0 0 52 52" fill="none" stroke="#34e3ff" stroke-width="2.4"><path d="M6 26h8l4-12 8 24 5-16 3 4h7" stroke-linecap="round" stroke-linejoin="round"/></svg>
         <h3>Vital Signs <span class="cnt">12+</span></h3>
         <ul><li>Oxygen Saturation (SpO₂)</li><li>Heart Rate</li><li>Systolic &amp; Diastolic BP</li><li class="more">+ more</li></ul>
       </div>
       <div class="cap glass roll reveal d2">
-        <img class="cap-bg" src="assets/cap2.jpg" alt="" aria-hidden="true" />
+        <img loading="lazy" decoding="async" class="cap-bg" src="assets/cap2.jpg" alt="" aria-hidden="true" />
         <div class="cap-tint"></div>
         <svg class="ic" viewBox="0 0 52 52" fill="none" stroke="#23d5c8" stroke-width="2.4"><path d="M26 44C14 36 8 28 8 19a9 9 0 0 1 18-3 9 9 0 0 1 18 3c0 9-6 17-18 25Z" stroke-linejoin="round"/></svg>
         <h3>Physiological <span class="cnt">10+</span></h3>
         <ul><li>Heart Rate Variability</li><li>Respiratory Rate</li><li>Pulse Respiratory Quotient</li><li class="more">+ more</li></ul>
       </div>
       <div class="cap glass roll reveal d3">
-        <img class="cap-bg" src="assets/cap3.jpg" alt="" aria-hidden="true" />
+        <img loading="lazy" decoding="async" class="cap-bg" src="assets/cap3.jpg" alt="" aria-hidden="true" />
         <div class="cap-tint"></div>
         <svg class="ic" viewBox="0 0 52 52" fill="none" stroke="#8b6bff" stroke-width="2.4"><circle cx="26" cy="14" r="6"/><path d="M26 20v14M16 26h20M18 44l8-10 8 10" stroke-linecap="round" stroke-linejoin="round"/></svg>
         <h3>Physical <span class="cnt">8+</span></h3>
@@ -1126,14 +1136,14 @@ footer{border-top:1px solid var(--stroke);padding:70px 0 40px;background:var(--b
         <ul><li>Random Blood Glucose</li><li>Total Cholesterol</li><li>Hemoglobin</li><li class="more">+ more</li></ul>
       </div>
       <div class="cap glass roll reveal d2">
-        <img class="cap-bg" src="assets/cap5.jpg" alt="" aria-hidden="true" />
+        <img loading="lazy" decoding="async" class="cap-bg" src="assets/cap5.jpg" alt="" aria-hidden="true" />
         <div class="cap-tint"></div>
         <svg class="ic" viewBox="0 0 52 52" fill="none" stroke="#3ef0a2" stroke-width="2.4"><rect x="10" y="10" width="32" height="32" rx="8"/><path d="M10 32c6 0 6-8 12-8s6 8 12 8 8-4 8-4" stroke-linecap="round"/></svg>
         <h3>Body Composition <span class="cnt">6+</span></h3>
         <ul><li>Muscle Ratio</li><li>Body Fat Ratio</li><li>Body Water Ratio</li><li class="more">+ more</li></ul>
       </div>
       <div class="cap glass roll reveal d3">
-        <img class="cap-bg" src="assets/cap6.jpg" alt="" aria-hidden="true" />
+        <img loading="lazy" decoding="async" class="cap-bg" src="assets/cap6.jpg" alt="" aria-hidden="true" />
         <div class="cap-tint"></div>
         <svg class="ic" viewBox="0 0 52 52" fill="none" stroke="#ffb24d" stroke-width="2.4"><path d="M26 8a13 13 0 0 0-13 13c0 5 3 8 3 12v4h20v-4c0-4 3-7 3-12A13 13 0 0 0 26 8Z" stroke-linejoin="round"/><path d="M21 41h10" stroke-linecap="round"/></svg>
         <h3>Mental Wellness <span class="cnt">7+</span></h3>
@@ -1166,18 +1176,18 @@ footer{border-top:1px solid var(--stroke);padding:70px 0 40px;background:var(--b
       <div class="tech-visual reveal d2">
         <div class="img-marquee">
           <div class="img-col">
-            <div class="icard"><img src="assets/face.jpg" alt="" aria-hidden="true" /><span class="cap"><span class="d"></span>Facial Scan</span></div>
-            <div class="icard"><img src="assets/cap1.jpg" alt="" aria-hidden="true" /><span class="cap"><span class="d"></span>Signal Extraction</span></div>
-            <div class="icard"><img src="assets/cap6.jpg" alt="" aria-hidden="true" /><span class="cap"><span class="d"></span>Transformer AI</span></div>
-            <div class="icard"><img src="assets/step5.jpg" alt="" aria-hidden="true" /><span class="cap"><span class="d"></span>Health Score</span></div>
-            <div class="icard"><img src="assets/cap3.jpg" alt="" aria-hidden="true" /><span class="cap"><span class="d"></span>512-D Vector</span></div>
+            <div class="icard"><img loading="lazy" decoding="async" src="assets/face.jpg" alt="" aria-hidden="true" /><span class="cap"><span class="d"></span>Facial Scan</span></div>
+            <div class="icard"><img loading="lazy" decoding="async" src="assets/cap1.jpg" alt="" aria-hidden="true" /><span class="cap"><span class="d"></span>Signal Extraction</span></div>
+            <div class="icard"><img loading="lazy" decoding="async" src="assets/cap6.jpg" alt="" aria-hidden="true" /><span class="cap"><span class="d"></span>Transformer AI</span></div>
+            <div class="icard"><img loading="lazy" decoding="async" src="assets/step5.jpg" alt="" aria-hidden="true" /><span class="cap"><span class="d"></span>Health Score</span></div>
+            <div class="icard"><img loading="lazy" decoding="async" src="assets/cap3.jpg" alt="" aria-hidden="true" /><span class="cap"><span class="d"></span>512-D Vector</span></div>
           </div>
           <div class="img-col b">
-            <div class="icard"><img src="assets/cap2.jpg" alt="" aria-hidden="true" /><span class="cap"><span class="d"></span>Temporal Attention</span></div>
-            <div class="icard"><img src="assets/cap5.jpg" alt="" aria-hidden="true" /><span class="cap"><span class="d"></span>Body Composition</span></div>
-            <div class="icard"><img src="assets/bg3.jpg" alt="" aria-hidden="true" /><span class="cap"><span class="d"></span>On-Device AI</span></div>
-            <div class="icard"><img src="assets/face.jpg" alt="" aria-hidden="true" /><span class="cap"><span class="d"></span>Liveness Detection</span></div>
-            <div class="icard"><img src="assets/cap1.jpg" alt="" aria-hidden="true" /><span class="cap"><span class="d"></span>Blooxia AI</span></div>
+            <div class="icard"><img loading="lazy" decoding="async" src="assets/cap2.jpg" alt="" aria-hidden="true" /><span class="cap"><span class="d"></span>Temporal Attention</span></div>
+            <div class="icard"><img loading="lazy" decoding="async" src="assets/cap5.jpg" alt="" aria-hidden="true" /><span class="cap"><span class="d"></span>Body Composition</span></div>
+            <div class="icard"><img loading="lazy" decoding="async" src="assets/bg3.jpg" alt="" aria-hidden="true" /><span class="cap"><span class="d"></span>On-Device AI</span></div>
+            <div class="icard"><img loading="lazy" decoding="async" src="assets/face.jpg" alt="" aria-hidden="true" /><span class="cap"><span class="d"></span>Liveness Detection</span></div>
+            <div class="icard"><img loading="lazy" decoding="async" src="assets/cap1.jpg" alt="" aria-hidden="true" /><span class="cap"><span class="d"></span>Blooxia AI</span></div>
           </div>
         </div>
       </div>
@@ -1201,7 +1211,7 @@ footer{border-top:1px solid var(--stroke);padding:70px 0 40px;background:var(--b
       <div class="sig glass reveal d1"><video class="sig-bg step-vid" muted loop playsinline preload="none" disablepictureinpicture aria-hidden="true"><source src="assets/sig5.mp4" type="video/mp4" /></video><div class="sig-tint"></div><div class="label">Stress Index</div><div class="v" data-live="stress">31<small>/100</small></div><canvas data-wave="5"></canvas></div>
       <div class="sig glass reveal d2"><video class="sig-bg step-vid" muted loop playsinline preload="none" disablepictureinpicture aria-hidden="true"><source src="assets/sig6.mp4" type="video/mp4" /></video><div class="sig-tint"></div><div class="label">HRV</div><div class="v" data-live="hrv">62<small>ms</small></div><canvas data-wave="6"></canvas></div>
       <div class="sig glass reveal d3"><video class="sig-bg step-vid" muted loop playsinline preload="none" disablepictureinpicture aria-hidden="true"><source src="assets/sig7.mp4" type="video/mp4" /></video><div class="sig-tint"></div><div class="label">Glucose</div><div class="v" data-live="glu">94<small>mg/dL</small></div><canvas data-wave="7"></canvas></div>
-      <div class="sig glass roll reveal d4"><img class="sig-bg" src="assets/sig8.jpg" alt="" aria-hidden="true" /><div class="sig-tint"></div><div class="label">Health Score</div><div class="v" data-live="score" style="color:var(--green)">87<small>/100</small></div><canvas data-wave="8"></canvas></div>
+      <div class="sig glass roll reveal d4"><img loading="lazy" decoding="async" class="sig-bg" src="assets/sig8.jpg" alt="" aria-hidden="true" /><div class="sig-tint"></div><div class="label">Health Score</div><div class="v" data-live="score" style="color:var(--green)">87<small>/100</small></div><canvas data-wave="8"></canvas></div>
     </div>
   </div>
 </section>
@@ -1236,7 +1246,7 @@ footer{border-top:1px solid var(--stroke);padding:70px 0 40px;background:var(--b
 
 <!-- ============ SOLUTIONS ============ -->
 <section id="solutions">
-  <img class="sol-bg" src="assets/solutions.jpg" alt="" aria-hidden="true" />
+  <img loading="lazy" decoding="async" class="sol-bg" src="assets/solutions.jpg" alt="" aria-hidden="true" />
   <div class="sol-scrim"></div>
   <div class="wrap">
     <div class="sec-head reveal">
