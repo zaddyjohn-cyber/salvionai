@@ -672,6 +672,197 @@ footer{border-top:1px solid var(--stroke);padding:70px 0 40px;background:var(--b
   .sec-head{margin-bottom:34px}
   .cta-final{padding:54px 22px}
 }
+
+/* ============================================================
+   NEW MODULES (impact · try-scan · science · privacy · integ ·
+   roi · proof · team · roadmap · lead-form)
+   ============================================================ */
+/* ---- shared illustrative caption ---- */
+.illus{font-size:12px;color:var(--text-faint);margin-top:18px;letter-spacing:.02em;display:inline-flex;align-items:center;gap:7px}
+.illus::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--text-faint);flex:none}
+
+/* ---- IMPACT counters band ---- */
+.impact{border-top:1px solid var(--stroke);border-bottom:1px solid var(--stroke);background:linear-gradient(180deg,rgba(10,15,28,.5),rgba(6,10,20,.2))}
+.impact .wrap{padding-top:38px;padding-bottom:38px}
+.impact-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:22px}
+.imetric{text-align:center;position:relative;padding:6px 10px}
+.imetric+.imetric::before{content:"";position:absolute;left:-11px;top:14%;height:72%;width:1px;background:var(--stroke)}
+.imetric .n{font-family:'Space Grotesk';font-size:clamp(30px,3.4vw,42px);font-weight:700;background:var(--grad-cyan);-webkit-background-clip:text;background-clip:text;color:transparent;line-height:1}
+.imetric .l{font-size:12.5px;color:var(--text-faint);text-transform:uppercase;letter-spacing:.1em;margin-top:9px;font-weight:600}
+
+/* ---- TRY SCAN interactive demo ---- */
+.trydemo-grid{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center}
+.scanbox{position:relative;aspect-ratio:4/3;border-radius:24px;overflow:hidden;border:1px solid var(--stroke-strong);background:radial-gradient(130% 120% at 50% 30%,#0c1d40,#081026 55%,#05070f);box-shadow:var(--shadow-soft),0 0 100px -30px rgba(52,227,255,.55)}
+.scanbox video,.scanbox .scan-still{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 38%;filter:brightness(.92) contrast(1.05) saturate(1.05)}
+.scanbox.idle .scan-live{display:none}
+.scanbox .scrim{position:absolute;inset:0;z-index:2;pointer-events:none;background:radial-gradient(120% 100% at 50% 35%,transparent 40%,rgba(5,7,15,.6)),linear-gradient(180deg,rgba(5,7,15,.35),transparent 30%,rgba(5,7,15,.65))}
+.scanbox .recticle{position:absolute;inset:0;z-index:3;pointer-events:none;display:flex;align-items:center;justify-content:center;transition:opacity .5s}
+.scanbox .face-oval{width:46%;aspect-ratio:3/4;border-radius:50%;border:2px dashed rgba(52,227,255,.55);box-shadow:0 0 40px -8px rgba(52,227,255,.5),inset 0 0 40px -10px rgba(52,227,255,.35);animation:pulse 2.4s ease-in-out infinite}
+.scanbox .dscan{position:absolute;left:0;right:0;height:120px;z-index:4;pointer-events:none;background:linear-gradient(to bottom,transparent,rgba(52,227,255,.28),transparent);opacity:0}
+.scanbox.scanning .dscan{opacity:1;animation:scanMove 2.2s linear infinite}
+.scanbox.scanning .face-oval{border-color:rgba(62,240,162,.7);box-shadow:0 0 50px -6px rgba(62,240,162,.55),inset 0 0 40px -8px rgba(62,240,162,.4)}
+.scan-cta-wrap{position:absolute;left:0;right:0;bottom:0;z-index:6;padding:20px;display:flex;flex-direction:column;align-items:center;gap:12px;background:linear-gradient(180deg,transparent,rgba(4,6,12,.85))}
+.scan-hint{font-size:12.5px;color:var(--text-dim);text-align:center}
+.scan-prog{position:absolute;top:14px;left:14px;right:14px;z-index:6;height:6px;border-radius:100px;background:rgba(8,12,22,.7);border:1px solid var(--stroke);overflow:hidden;opacity:0;transition:opacity .4s}
+.scanbox.scanning .scan-prog,.scanbox.done .scan-prog{opacity:1}
+.scan-prog i{display:block;height:100%;width:0;border-radius:100px;background:var(--grad-cyan);box-shadow:0 0 16px rgba(52,227,255,.7);transition:width .2s linear}
+.scan-chip{position:absolute;top:30px;left:14px;z-index:6;display:flex;align-items:center;gap:7px;font-family:'Space Grotesk';font-size:10.5px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#fff;background:rgba(5,7,13,.6);backdrop-filter:blur(8px);padding:6px 11px;border-radius:100px;border:1px solid var(--stroke-strong);opacity:0;transition:opacity .4s}
+.scanbox.scanning .scan-chip,.scanbox.done .scan-chip{opacity:1}
+.scan-chip .d{width:7px;height:7px;border-radius:50%;background:#ff5f57;box-shadow:0 0 10px #ff5f57;animation:pulse 1.4s infinite}
+.scanbox.done .scan-chip .d{background:var(--green);box-shadow:0 0 10px var(--green)}
+/* readout side */
+.scan-readout{display:flex;flex-direction:column;gap:14px}
+.scan-readout h2{font-size:clamp(28px,3.6vw,40px);margin-bottom:4px}
+.scan-readout .lede{color:var(--text-dim);font-size:16px;max-width:480px}
+.sr-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:8px}
+.sr-cell{position:relative;padding:16px 16px 14px;border-radius:16px;border:1px solid var(--stroke);background:rgba(12,17,30,.6);overflow:hidden;opacity:.35;transform:translateY(8px);transition:opacity .5s var(--ease),transform .5s var(--ease),border-color .5s}
+.sr-cell.live{opacity:1;transform:none;border-color:var(--stroke-strong)}
+.sr-cell .k{font-size:12px;color:var(--text-dim);font-weight:500;display:flex;justify-content:space-between;align-items:center}
+.sr-cell .k .st{font-size:9.5px;font-weight:600;padding:2px 7px;border-radius:100px;text-transform:uppercase;letter-spacing:.04em;opacity:0;transition:opacity .4s}
+.sr-cell.live .k .st{opacity:1}
+.sr-cell .val{font-family:'Space Grotesk';font-size:25px;font-weight:700;margin-top:6px}
+.sr-cell .val small{font-size:12px;color:var(--text-faint);font-weight:500;margin-left:3px}
+.scan-disc{font-size:11.5px;color:var(--text-faint);margin-top:6px}
+
+/* ---- THE SCIENCE ---- */
+.science-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-bottom:26px}
+.sci-stat{padding:26px 24px;border-radius:var(--radius);border:1px solid var(--stroke);background:linear-gradient(180deg,rgba(52,227,255,.06),rgba(10,15,28,.5));text-align:left;transition:.5s var(--ease)}
+.sci-stat:hover{transform:translateY(-7px);border-color:var(--stroke-strong);box-shadow:0 0 48px -16px rgba(52,227,255,.5)}
+.sci-stat .big{font-family:'Space Grotesk';font-size:38px;font-weight:700;line-height:1;background:var(--grad-cyan);-webkit-background-clip:text;background-clip:text;color:transparent}
+.sci-stat .cap{font-size:13.5px;color:var(--text);font-weight:600;margin-top:10px}
+.sci-stat .sub{font-size:12.5px;color:var(--text-faint);margin-top:4px}
+.science-band{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.sci-pt{padding:22px 24px;border-radius:18px;border:1px solid var(--stroke);background:rgba(12,17,30,.5)}
+.sci-pt h4{font-size:16px;margin-bottom:8px;display:flex;align-items:center;gap:9px}
+.sci-pt h4 .ic{width:20px;height:20px;color:var(--cyan);flex:none}
+.sci-pt p{font-size:13.5px;color:var(--text-dim)}
+
+/* ---- TRUST & PRIVACY ---- */
+.priv-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.priv-card{--ac:52,227,255;padding:28px 26px;border-radius:var(--radius);border:1px solid rgba(var(--ac),.24);background:linear-gradient(180deg,rgba(var(--ac),.08),rgba(10,15,28,.5) 60%);transition:.5s var(--ease);position:relative;overflow:hidden}
+.priv-grid .priv-card:nth-child(2){--ac:62,240,162}
+.priv-grid .priv-card:nth-child(3){--ac:139,107,255}
+.priv-card:hover{transform:translateY(-8px);border-color:rgba(var(--ac),.55);box-shadow:0 0 54px -16px rgba(var(--ac),.6)}
+.priv-card .ic{width:46px;height:46px;border-radius:13px;display:flex;align-items:center;justify-content:center;background:rgba(var(--ac),.14);border:1px solid rgba(var(--ac),.3);color:rgb(var(--ac));margin-bottom:18px}
+.priv-card .ic svg{width:24px;height:24px}
+.priv-card h3{font-size:18px;margin-bottom:9px}
+.priv-card p{font-size:14px;color:var(--text-dim)}
+.priv-badges{display:flex;flex-wrap:wrap;gap:10px;margin-top:26px}
+.priv-badges span{font-family:'Space Grotesk';font-size:12px;font-weight:600;letter-spacing:.06em;color:var(--text-dim);padding:8px 15px;border-radius:100px;border:1px solid var(--stroke-strong);background:rgba(255,255,255,.03);display:inline-flex;align-items:center;gap:8px}
+.priv-badges span::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--green);box-shadow:0 0 10px var(--green)}
+
+/* ---- INTEGRATIONS strip ---- */
+.integ-wrap{border:1px solid var(--stroke);border-radius:var(--radius);background:rgba(10,15,28,.4);overflow:hidden;padding:30px 0}
+.integ-row{overflow:hidden;-webkit-mask:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);mask:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent)}
+.integ-track{display:flex;gap:54px;width:max-content;align-items:center;animation:scrollx 32s linear infinite}
+.integ-track.rev{animation-direction:reverse;animation-duration:38s;margin-top:18px}
+.ilogo{display:flex;align-items:center;gap:11px;font-family:'Space Grotesk';font-weight:600;font-size:16px;color:var(--text-dim);white-space:nowrap;opacity:.85;transition:.3s}
+.ilogo:hover{opacity:1;color:var(--text)}
+.ilogo .dot{width:9px;height:9px;border-radius:50%;background:var(--cyan);box-shadow:0 0 10px var(--cyan);flex:none}
+.ilogo:nth-child(3n+2) .dot{background:var(--violet);box-shadow:0 0 10px var(--violet)}
+.ilogo:nth-child(3n) .dot{background:var(--green);box-shadow:0 0 10px var(--green)}
+
+/* ---- ROI CALCULATOR ---- */
+.roi-grid{display:grid;grid-template-columns:.92fr 1.08fr;gap:42px;align-items:stretch}
+.roi-panel{padding:32px 32px 34px}
+.roi-field{margin-bottom:24px}
+.roi-field .rl{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:12px}
+.roi-field .rl label{font-size:14px;color:var(--text-dim);font-weight:500}
+.roi-field .rl b{font-family:'Space Grotesk';font-size:18px;color:var(--cyan)}
+.roi-seg{display:flex;gap:8px;flex-wrap:wrap}
+.roi-seg button{font-family:'Inter';font-size:13px;font-weight:500;color:var(--text-dim);padding:9px 16px;border-radius:100px;border:1px solid var(--stroke);background:rgba(255,255,255,.03);cursor:pointer;transition:.25s}
+.roi-seg button.on{color:#05070d;background:var(--grad-cyan);border-color:transparent;font-weight:600}
+input[type=range].roi-range{-webkit-appearance:none;appearance:none;width:100%;height:6px;border-radius:100px;background:linear-gradient(90deg,var(--cyan) 0%,var(--cyan) var(--p,40%),rgba(255,255,255,.1) var(--p,40%));outline:none}
+input[type=range].roi-range::-webkit-slider-thumb{-webkit-appearance:none;width:20px;height:20px;border-radius:50%;background:#eaf6ff;border:3px solid var(--cyan);box-shadow:0 0 16px rgba(52,227,255,.7);cursor:pointer}
+input[type=range].roi-range::-moz-range-thumb{width:18px;height:18px;border-radius:50%;background:#eaf6ff;border:3px solid var(--cyan);box-shadow:0 0 16px rgba(52,227,255,.7);cursor:pointer}
+.roi-out{padding:34px 34px;border-radius:var(--radius);border:1px solid var(--stroke-strong);background:radial-gradient(130% 120% at 80% 0%,rgba(52,227,255,.12),rgba(10,15,28,.6) 55%);display:flex;flex-direction:column;justify-content:center;gap:20px;position:relative;overflow:hidden}
+.roi-out .roi-eyebrow{font-family:'Space Grotesk';font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--cyan)}
+.roi-big{font-family:'Space Grotesk';font-size:clamp(40px,6vw,64px);font-weight:700;line-height:1;background:var(--grad-hero);-webkit-background-clip:text;background-clip:text;color:transparent}
+.roi-big-l{font-size:14px;color:var(--text-dim);margin-top:-6px}
+.roi-rows{display:flex;flex-direction:column;gap:12px;border-top:1px solid var(--stroke);padding-top:20px}
+.roi-rows .rr{display:flex;justify-content:space-between;align-items:center;font-size:14px}
+.roi-rows .rr span{color:var(--text-dim)}
+.roi-rows .rr b{font-family:'Space Grotesk';font-size:18px;font-weight:600}
+
+/* ---- SOCIAL PROOF ---- */
+.proof-logos{display:flex;flex-wrap:wrap;justify-content:center;gap:16px 40px;margin-bottom:46px;padding:26px 0;border-top:1px solid var(--stroke);border-bottom:1px solid var(--stroke)}
+.proof-logos .pl{font-family:'Space Grotesk';font-weight:600;font-size:17px;color:var(--text-faint);letter-spacing:.02em;opacity:.8;display:flex;align-items:center;gap:10px;transition:.3s}
+.proof-logos .pl:hover{opacity:1;color:var(--text-dim)}
+.proof-logos .pl svg{width:20px;height:20px;flex:none;color:var(--cyan);opacity:.8}
+.testi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.testi{padding:30px 28px;display:flex;flex-direction:column;gap:18px}
+.testi .quote{font-size:15px;color:var(--text);line-height:1.55;flex:1}
+.testi .quote::before{content:"\201C";font-family:'Space Grotesk';font-size:46px;color:var(--cyan);line-height:0;display:block;height:18px;opacity:.7}
+.testi .who{display:flex;align-items:center;gap:12px}
+.testi .who .av{width:42px;height:42px;border-radius:50%;flex:none;display:flex;align-items:center;justify-content:center;font-family:'Space Grotesk';font-weight:700;font-size:15px;color:#05070d;background:var(--grad-cyan)}
+.testi .who:nth-child(1) .av{background:var(--grad-violet)}
+.testi .who .nm{font-weight:600;font-size:14px}
+.testi .who .ro{font-size:12.5px;color:var(--text-faint)}
+
+/* ---- TEAM ---- */
+.team-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;margin-bottom:24px}
+.tmember{padding:28px 24px;text-align:center;transition:.5s var(--ease)}
+.tmember:hover{transform:translateY(-7px);box-shadow:var(--shadow-soft),var(--shadow-glow)}
+.tmember .av{width:84px;height:84px;border-radius:50%;margin:0 auto 18px;display:flex;align-items:center;justify-content:center;font-family:'Space Grotesk';font-weight:700;font-size:28px;color:#05070d;background:var(--grad-hero);box-shadow:0 0 34px -8px rgba(139,107,255,.7)}
+.tmember:nth-child(2) .av{background:var(--grad-cyan)}
+.tmember:nth-child(3) .av{background:linear-gradient(120deg,var(--green),var(--cyan))}
+.tmember:nth-child(4) .av{background:linear-gradient(120deg,var(--amber),var(--pink))}
+.tmember .nm{font-family:'Space Grotesk';font-weight:600;font-size:17px}
+.tmember .ro{font-size:13px;color:var(--cyan);margin:5px 0 11px;font-weight:500}
+.tmember p{font-size:13px;color:var(--text-dim)}
+
+/* ---- ROADMAP ---- */
+.road{position:relative;display:grid;grid-template-columns:repeat(4,1fr);gap:22px;margin-top:8px}
+.road::before{content:"";position:absolute;left:4%;right:4%;top:30px;height:2px;background:linear-gradient(90deg,var(--cyan),var(--violet),var(--pink));opacity:.4}
+.rphase{position:relative;padding-top:64px}
+.rphase .node{position:absolute;top:21px;left:0;width:20px;height:20px;border-radius:50%;background:var(--bg);border:2px solid var(--cyan);box-shadow:0 0 16px rgba(52,227,255,.7)}
+.rphase:nth-child(2) .node{border-color:var(--violet);box-shadow:0 0 16px rgba(139,107,255,.7)}
+.rphase:nth-child(3) .node{border-color:#a78bff}
+.rphase:nth-child(4) .node{border-color:var(--pink);box-shadow:0 0 16px rgba(255,95,168,.6)}
+.rphase.now .node{background:var(--cyan)}
+.rphase .ph{font-family:'Space Grotesk';font-size:12.5px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--cyan);margin-bottom:8px}
+.rphase.now .ph::after{content:"NOW";margin-left:9px;font-size:9.5px;background:var(--cyan);color:#05070d;padding:2px 7px;border-radius:100px;letter-spacing:.06em}
+.rphase h4{font-size:18px;margin-bottom:10px}
+.rphase ul{list-style:none;display:flex;flex-direction:column;gap:7px}
+.rphase li{font-size:13px;color:var(--text-dim);padding-left:16px;position:relative}
+.rphase li::before{content:"";position:absolute;left:0;top:8px;width:6px;height:6px;border-radius:50%;background:var(--stroke-strong);border:1px solid var(--cyan)}
+
+/* ---- LEAD FORM (in CTA) ---- */
+.lead-form{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:26px;text-align:left}
+.lf-field{display:flex;flex-direction:column;gap:7px}
+.lf-field.full{grid-column:1/-1}
+.lf-field label{font-size:12.5px;color:var(--text-dim);font-weight:500;letter-spacing:.02em}
+.lf-field input,.lf-field textarea,.lf-field select{font-family:'Inter';font-size:14.5px;color:var(--text);background:rgba(8,12,22,.7);border:1px solid var(--stroke);border-radius:12px;padding:13px 15px;outline:none;transition:.25s;width:100%}
+.lf-field textarea{resize:vertical;min-height:84px}
+.lf-field input:focus,.lf-field textarea:focus,.lf-field select:focus{border-color:var(--cyan);box-shadow:0 0 0 3px rgba(52,227,255,.14)}
+.lf-field input::placeholder,.lf-field textarea::placeholder{color:var(--text-faint)}
+.lf-actions{grid-column:1/-1;display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin-top:4px}
+.lf-note{font-size:12px;color:var(--text-faint)}
+.lf-success{display:none;grid-column:1/-1;align-items:center;gap:14px;padding:20px 22px;border-radius:16px;border:1px solid rgba(62,240,162,.4);background:rgba(62,240,162,.08);text-align:left}
+.lf-success.show{display:flex}
+.lf-success svg{width:30px;height:30px;color:var(--green);flex:none}
+.lf-success b{font-family:'Space Grotesk';font-size:16px}
+.lf-success p{font-size:13.5px;color:var(--text-dim);margin-top:2px}
+
+/* ---- NEW MODULES · responsive ---- */
+@media(max-width:900px){
+  .trydemo-grid,.roi-grid{grid-template-columns:1fr;gap:30px}
+  .science-grid{grid-template-columns:repeat(2,1fr)}
+  .science-band,.priv-grid,.testi-grid{grid-template-columns:1fr}
+  .team-grid{grid-template-columns:repeat(2,1fr)}
+  .road{grid-template-columns:1fr;gap:0}
+  .road::before{left:9px;right:auto;top:0;bottom:0;width:2px;height:auto}
+  .rphase{padding-top:0;padding-left:34px;padding-bottom:30px}
+  .rphase .node{top:3px;left:0}
+}
+@media(max-width:640px){
+  .impact-grid{grid-template-columns:repeat(2,1fr);gap:26px 14px}
+  .imetric:nth-child(3)::before,.imetric:nth-child(2n+1)::before{display:none}
+  .science-grid,.sr-grid{grid-template-columns:1fr 1fr}
+  .team-grid{grid-template-columns:1fr 1fr}
+  .lead-form{grid-template-columns:1fr}
+  .roi-panel,.roi-out{padding:24px 22px}
+}
 </style>
 </head>
 <body>
@@ -696,10 +887,10 @@ footer{border-top:1px solid var(--stroke);padding:70px 0 40px;background:var(--b
     </a>
     <nav class="nav-links">
       <a href="#platform">Platform</a>
-      <a href="#solutions">Solutions</a>
-      <a href="#how">How it works</a>
+      <a href="#trydemo">Try Scan</a>
       <a href="#capabilities">Capabilities</a>
-      <a href="#developers">Developers</a>
+      <a href="#solutions">Solutions</a>
+      <a href="#security">Security</a>
       <a href="#pricing">Pricing</a>
     </nav>
     <div class="nav-cta">
@@ -773,6 +964,18 @@ footer{border-top:1px solid var(--stroke);padding:70px 0 40px;background:var(--b
   <div class="trust-track">
     <span>FHIR / HL7 Native<span></span>HIPAA Compliant<span></span>GDPR Ready<span></span>On-Device AI<span></span>OJK · Indonesia<span></span>ISO 13485 Roadmap<span></span>50+ Health Markers<span></span>Transformer Architecture<span></span></span>
     <span>FHIR / HL7 Native<span></span>HIPAA Compliant<span></span>GDPR Ready<span></span>On-Device AI<span></span>OJK · Indonesia<span></span>ISO 13485 Roadmap<span></span>50+ Health Markers<span></span>Transformer Architecture<span></span></span>
+  </div>
+</div>
+
+<!-- ============ IMPACT COUNTERS ============ -->
+<div class="impact">
+  <div class="wrap">
+    <div class="impact-grid">
+      <div class="imetric reveal"><div class="n"><span data-count="50" data-suffix="+">0</span></div><div class="l">Health Markers / Scan</div></div>
+      <div class="imetric reveal d1"><div class="n"><span data-count="30" data-suffix="s">0</span></div><div class="l">Seconds Per Scan</div></div>
+      <div class="imetric reveal d2"><div class="n"><span data-count="95" data-suffix="%">0</span></div><div class="l">Signal Quality Target</div></div>
+      <div class="imetric reveal d3"><div class="n">$0</div><div class="l">Hardware Per User</div></div>
+    </div>
   </div>
 </div>
 
@@ -1098,6 +1301,46 @@ footer{border-top:1px solid var(--stroke);padding:70px 0 40px;background:var(--b
   </div>
 </section>
 
+<!-- ============ TRY A LIVE SCAN ============ -->
+<section id="trydemo">
+  <div class="wrap">
+    <div class="sec-head reveal" style="text-align:center;max-width:720px;margin:0 auto 50px">
+      <span class="eyebrow"><span class="dot"></span>Live Demo · In-Browser</span>
+      <h2>Don't take our word for it. <span class="grad-text">Run a scan.</span></h2>
+      <p class="lede" style="margin:0 auto">Point your camera, hold still for a few seconds, and watch Salvion surface live signals — a preview of the real scan experience, running entirely on your device.</p>
+    </div>
+    <div class="trydemo-grid reveal d1">
+      <div class="scanbox idle" id="scanbox">
+        <img class="scan-still" src="assets/face.jpg" alt="" aria-hidden="true" decoding="async" />
+        <video class="scan-live" id="scanCam" muted playsinline autoplay aria-hidden="true"></video>
+        <div class="scrim"></div>
+        <div class="scan-prog"><i id="scanBar"></i></div>
+        <div class="scan-chip"><span class="d"></span><span id="scanChipTxt">Acquiring signal…</span></div>
+        <div class="recticle"><div class="face-oval"></div></div>
+        <div class="dscan"></div>
+        <div class="scan-cta-wrap" id="scanCtaWrap">
+          <button class="btn btn-primary" id="scanBtn">Start Live Scan
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <div class="scan-hint" id="scanHint">Runs locally in your browser · nothing is uploaded or stored</div>
+        </div>
+      </div>
+      <div class="scan-readout">
+        <span class="eyebrow"><span class="dot"></span>Signal Readout</span>
+        <h2>Your live vitals,<br>decoded from light.</h2>
+        <p class="lede">Salvion's models read micro-changes in skin colour invisible to the eye, reconstructing your pulse waveform and the 50+ markers that flow from it.</p>
+        <div class="sr-grid" id="srGrid">
+          <div class="sr-cell" data-m="hr"><div class="k">Heart Rate <span class="st tag-ok">Normal</span></div><div class="val"><span class="num">--</span><small>bpm</small></div></div>
+          <div class="sr-cell" data-m="bp"><div class="k">Blood Pressure <span class="st tag-ok">Normal</span></div><div class="val"><span class="num">--</span><small>mmHg</small></div></div>
+          <div class="sr-cell" data-m="spo2"><div class="k">SpO₂ <span class="st tag-ok">Normal</span></div><div class="val"><span class="num">--</span><small>%</small></div></div>
+          <div class="sr-cell" data-m="hrv"><div class="k">HRV <span class="st tag-ok">Healthy</span></div><div class="val"><span class="num">--</span><small>ms</small></div></div>
+        </div>
+        <div class="scan-disc">Preview values are illustrative and generated locally — not a medical measurement.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- ============ CAPABILITIES ============ -->
 <section id="capabilities">
   <div class="wrap">
@@ -1195,6 +1438,29 @@ footer{border-top:1px solid var(--stroke);padding:70px 0 40px;background:var(--b
   </div>
 </section>
 
+<!-- ============ THE SCIENCE ============ -->
+<section id="science">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow"><span class="dot"></span>The Science</span>
+      <h2>Validated against <span class="grad-text-cyan">the gold standard.</span></h2>
+      <p class="lede">Camera-based sensing only matters if it holds up next to the cuff, the pulse-oximeter and the ECG. Here's how Salvion's signal stacks up.</p>
+    </div>
+    <div class="science-grid">
+      <div class="sci-stat reveal"><div class="big">±3.4<small style="font-size:18px"> mmHg</small></div><div class="cap">Blood-pressure agreement</div><div class="sub">vs. validated arm cuff</div></div>
+      <div class="sci-stat reveal d1"><div class="big">0.94</div><div class="cap">Correlation to ECG</div><div class="sub">heart-rate &amp; HRV</div></div>
+      <div class="sci-stat reveal d2"><div class="big">±1.6<small style="font-size:18px"> %</small></div><div class="cap">SpO₂ deviation</div><div class="sub">vs. clinical oximeter</div></div>
+      <div class="sci-stat reveal d3"><div class="big">12.4<small style="font-size:18px">k</small></div><div class="cap">Scans in validation</div><div class="sub">across skin tones &amp; ages</div></div>
+    </div>
+    <div class="science-band">
+      <div class="sci-pt reveal"><h4><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4" stroke-linecap="round" stroke-linejoin="round"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" stroke-linecap="round"/></svg>Built on peer-reviewed rPPG</h4><p>Remote photoplethysmography is an established field with hundreds of published studies. Salvion advances it with a transformer architecture trained on a diverse, multi-site dataset.</p></div>
+      <div class="sci-pt reveal d1"><h4><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2" stroke-linecap="round" stroke-linejoin="round"/></svg>Tested across diversity</h4><p>Models are evaluated across Fitzpatrick skin types, age bands and lighting conditions to reduce the demographic bias that has historically plagued optical sensing.</p></div>
+      <div class="sci-pt reveal d2"><h4><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2 4 6v6c0 5 3.5 8 8 10 4.5-2 8-5 8-10V6l-8-4Z" stroke-linejoin="round"/></svg>Regulatory pathway</h4><p>On an ISO 13485 quality-management roadmap, with regional clearances pursued market-by-market as clinical validation completes.</p></div>
+    </div>
+    <span class="illus">Validation figures are representative targets from ongoing studies — replace with cleared, citable results before public use.</span>
+  </div>
+</section>
+
 <!-- ============ SIGNAL COVERAGE ============ -->
 <section id="signal">
   <div class="wrap">
@@ -1213,6 +1479,38 @@ footer{border-top:1px solid var(--stroke);padding:70px 0 40px;background:var(--b
       <div class="sig glass reveal d3"><video class="sig-bg step-vid" muted loop playsinline preload="none" disablepictureinpicture aria-hidden="true"><source src="assets/sig7.mp4" type="video/mp4" /></video><div class="sig-tint"></div><div class="label">Glucose</div><div class="v" data-live="glu">94<small>mg/dL</small></div><canvas data-wave="7"></canvas></div>
       <div class="sig glass roll reveal d4"><img loading="lazy" decoding="async" class="sig-bg" src="assets/sig8.jpg" alt="" aria-hidden="true" /><div class="sig-tint"></div><div class="label">Health Score</div><div class="v" data-live="score" style="color:var(--green)">87<small>/100</small></div><canvas data-wave="8"></canvas></div>
     </div>
+  </div>
+</section>
+
+<!-- ============ TRUST & PRIVACY ============ -->
+<section id="security">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow"><span class="dot"></span>Trust &amp; Privacy</span>
+      <h2>Your face never <span class="grad-text">leaves your device.</span></h2>
+      <p class="lede">Health data is the most personal data there is. Salvion is engineered so the most sensitive part of the scan — your face — is processed locally and never stored.</p>
+    </div>
+    <div class="priv-grid">
+      <div class="priv-card reveal">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4" stroke-linecap="round"/></svg></div>
+        <h3>On-device by design</h3>
+        <p>The scan runs in the browser or app. Raw video frames are processed on-device and discarded — only the resulting signals can ever be transmitted, and only with consent.</p>
+      </div>
+      <div class="priv-card reveal d1">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2 4 6v6c0 5 3.5 8 8 10 4.5-2 8-5 8-10V6l-8-4Z" stroke-linejoin="round"/><path d="M9 12l2 2 4-4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <h3>Encrypted &amp; compliant</h3>
+        <p>Data in transit and at rest is encrypted. Architecture is aligned to HIPAA and GDPR, with consent, audit logging and a right-to-delete built into the platform.</p>
+      </div>
+      <div class="priv-card reveal d2">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.2 4.2l2.8 2.8M17 17l2.8 2.8M1 12h4M19 12h4M4.2 19.8 7 17M17 7l2.8-2.8" stroke-linecap="round"/></svg></div>
+        <h3>You stay in control</h3>
+        <p>No biometric profile is built without permission. Users can revoke access and delete their data at any time — privacy is a default, not a setting.</p>
+      </div>
+    </div>
+    <div class="priv-badges reveal d1">
+      <span>HIPAA-aligned</span><span>GDPR-ready</span><span>On-device inference</span><span>End-to-end encryption</span><span>Consent &amp; audit logging</span><span>ISO 13485 roadmap</span>
+    </div>
+    <span class="illus">Compliance posture reflects platform design intent — confirm certifications &amp; legal review before publishing.</span>
   </div>
 </section>
 
@@ -1241,6 +1539,32 @@ footer{border-top:1px solid var(--stroke);padding:70px 0 40px;background:var(--b
         <p>SLA-backed routing with HIPAA / GDPR audit logs, federated-learning roadmap and white-label control.</p>
       </div>
     </div>
+  </div>
+</section>
+
+<!-- ============ INTEGRATIONS ============ -->
+<section id="integrations">
+  <div class="wrap">
+    <div class="sec-head reveal" style="text-align:center;max-width:680px;margin:0 auto 40px">
+      <span class="eyebrow"><span class="dot"></span>Works With Your Stack</span>
+      <h2>Drops into the tools <span class="grad-text-cyan">you already run.</span></h2>
+      <p class="lede" style="margin:0 auto">Native data standards and SDKs mean Salvion fits your EHR, telehealth and consumer-health stack without re-platforming.</p>
+    </div>
+    <div class="integ-wrap reveal d1">
+      <div class="integ-row">
+        <div class="integ-track">
+          <span class="ilogo"><span class="dot"></span>FHIR / HL7</span><span class="ilogo"><span class="dot"></span>Epic</span><span class="ilogo"><span class="dot"></span>Cerner</span><span class="ilogo"><span class="dot"></span>Apple HealthKit</span><span class="ilogo"><span class="dot"></span>Google Health Connect</span><span class="ilogo"><span class="dot"></span>Twilio Video</span><span class="ilogo"><span class="dot"></span>Salesforce Health Cloud</span>
+          <span class="ilogo"><span class="dot"></span>FHIR / HL7</span><span class="ilogo"><span class="dot"></span>Epic</span><span class="ilogo"><span class="dot"></span>Cerner</span><span class="ilogo"><span class="dot"></span>Apple HealthKit</span><span class="ilogo"><span class="dot"></span>Google Health Connect</span><span class="ilogo"><span class="dot"></span>Twilio Video</span><span class="ilogo"><span class="dot"></span>Salesforce Health Cloud</span>
+        </div>
+      </div>
+      <div class="integ-row">
+        <div class="integ-track rev">
+          <span class="ilogo"><span class="dot"></span>iOS &amp; Android SDK</span><span class="ilogo"><span class="dot"></span>Web / WASM</span><span class="ilogo"><span class="dot"></span>REST &amp; Webhooks</span><span class="ilogo"><span class="dot"></span>React Native</span><span class="ilogo"><span class="dot"></span>Flutter</span><span class="ilogo"><span class="dot"></span>Zoom SDK</span><span class="ilogo"><span class="dot"></span>AWS / GCP / Azure</span>
+          <span class="ilogo"><span class="dot"></span>iOS &amp; Android SDK</span><span class="ilogo"><span class="dot"></span>Web / WASM</span><span class="ilogo"><span class="dot"></span>REST &amp; Webhooks</span><span class="ilogo"><span class="dot"></span>React Native</span><span class="ilogo"><span class="dot"></span>Flutter</span><span class="ilogo"><span class="dot"></span>Zoom SDK</span><span class="ilogo"><span class="dot"></span>AWS / GCP / Azure</span>
+        </div>
+      </div>
+    </div>
+    <span class="illus" style="display:block;text-align:center">Representative integration targets — confirm partnerships &amp; certifications before publishing logos.</span>
   </div>
 </section>
 
@@ -1283,6 +1607,54 @@ footer{border-top:1px solid var(--stroke);padding:70px 0 40px;background:var(--b
   </div>
 </section>
 
+<!-- ============ ROI CALCULATOR ============ -->
+<section id="roi">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow"><span class="dot"></span>ROI Calculator</span>
+      <h2>What it's worth <span class="grad-text">to your business.</span></h2>
+      <p class="lede">Every scan is earlier detection, smarter triage and a more engaged user. Move the sliders to see the impact at your scale.</p>
+    </div>
+    <div class="roi-grid reveal d1">
+      <div class="roi-panel glass">
+        <div class="roi-field">
+          <div class="rl"><label>Your sector</label></div>
+          <div class="roi-seg" id="roiSeg">
+            <button type="button" data-v="12" class="on">Telehealth</button>
+            <button type="button" data-v="9">Insurance</button>
+            <button type="button" data-v="6">Pharmacy / Retail</button>
+            <button type="button" data-v="4">Corporate Wellness</button>
+          </div>
+        </div>
+        <div class="roi-field">
+          <div class="rl"><label>Scans per month</label><b id="roiScansLbl">25,000</b></div>
+          <input type="range" class="roi-range" id="roiScans" min="1000" max="500000" step="1000" value="25000" />
+        </div>
+        <div class="roi-field">
+          <div class="rl"><label>Value captured per scan</label><b id="roiValLbl">$12</b></div>
+          <input type="range" class="roi-range" id="roiVal" min="1" max="40" step="1" value="12" />
+        </div>
+        <div class="scan-disc" style="margin-top:2px">Illustrative model — value per scan reflects earlier detection, triage deflection, engagement lift and underwriting accuracy. Platform cost assumed at $0.39 / scan.</div>
+      </div>
+      <div class="roi-out">
+        <div>
+          <div class="roi-eyebrow">Estimated annual net impact</div>
+          <div class="roi-big" id="roiNet">$0</div>
+          <div class="roi-big-l">value created, minus platform cost</div>
+        </div>
+        <div class="roi-rows">
+          <div class="rr"><span>Scans / year</span><b id="roiScansYr">0</b></div>
+          <div class="rr"><span>Value created</span><b id="roiValue">$0</b></div>
+          <div class="rr"><span>Salvion platform cost</span><b id="roiCost">$0</b></div>
+        </div>
+        <a href="#cta" class="btn btn-primary" style="align-self:flex-start">Model this for your org
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- ============ COMPARE ============ -->
 <section id="compare">
   <div class="wrap">
@@ -1300,6 +1672,38 @@ footer{border-top:1px solid var(--stroke);padding:70px 0 40px;background:var(--b
       <div class="cmp-row"><div class="feat">Privacy</div><div class="old">Cloud-dependent processing</div><div class="salv"><span class="check">✓</span> On-device by default · hybrid optional · federated-learning roadmap</div></div>
       <div class="cmp-row"><div class="feat">Compliance</div><div class="old">Generic data policy</div><div class="salv"><span class="check">✓</span> HIPAA · GDPR · FHIR · OJK · PDPI · ISO 13485 roadmap</div></div>
     </div>
+  </div>
+</section>
+
+<!-- ============ SOCIAL PROOF ============ -->
+<section id="proof">
+  <div class="wrap">
+    <div class="sec-head reveal" style="text-align:center;max-width:680px;margin:0 auto 30px">
+      <span class="eyebrow"><span class="dot"></span>Trusted Signal</span>
+      <h2>Backed by the people <span class="grad-text-cyan">building the future of care.</span></h2>
+    </div>
+    <div class="proof-logos reveal d1">
+      <span class="pl"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"/></svg>NorthBridge Health</span>
+      <span class="pl"><svg viewBox="0 0 24 24" fill="currentColor"><rect x="3" y="3" width="18" height="18" rx="5"/></svg>Meridian Insurance</span>
+      <span class="pl"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2 2 22h20L12 2Z"/></svg>Apex Telecare</span>
+      <span class="pl"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3 7h7l-5.5 4 2 7L12 17l-6.5 3 2-7L2 9h7z"/></svg>Vitale Pharmacy</span>
+      <span class="pl"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"/></svg>Lumen Ventures</span>
+    </div>
+    <div class="testi-grid">
+      <div class="testi glass reveal">
+        <p class="quote">A 30-second scan replacing a whole intake workflow is the kind of leap telehealth has been waiting for. The accuracy genuinely surprised our clinical team.</p>
+        <div class="who"><span class="av">DK</span><div><div class="nm">Dr. Dana Khoury</div><div class="ro">Chief Medical Officer · Regional Telehealth Network</div></div></div>
+      </div>
+      <div class="testi glass reveal d1">
+        <p class="quote">We screen hundreds of thousands of applicants. Contactless vitals from any camera changes the economics of underwriting overnight.</p>
+        <div class="who"><span class="av">MR</span><div><div class="nm">Marcus Reyes</div><div class="ro">VP, Underwriting · Life &amp; Health Insurer</div></div></div>
+      </div>
+      <div class="testi glass reveal d2">
+        <p class="quote">The SDK was live in our app in under a week. It's rare to see this much science wrapped in something engineers can actually ship.</p>
+        <div class="who"><span class="av">AT</span><div><div class="nm">Aria Tan</div><div class="ro">Head of Product · Consumer Health App</div></div></div>
+      </div>
+    </div>
+    <span class="illus" style="display:block;text-align:center">Logos &amp; testimonials are illustrative placeholders — swap in real partners, pilots &amp; quotes (with permission) before launch.</span>
   </div>
 </section>
 
@@ -1342,6 +1746,24 @@ footer{border-top:1px solid var(--stroke);padding:70px 0 40px;background:var(--b
         <div class="dm-tag"><span class="d"></span>Built on Salvion</div>
       </div>
     </div>
+  </div>
+</section>
+
+<!-- ============ TEAM ============ -->
+<section id="team">
+  <div class="wrap">
+    <div class="sec-head reveal" style="text-align:center;max-width:680px;margin:0 auto 50px">
+      <span class="eyebrow"><span class="dot"></span>The Team</span>
+      <h2>Clinicians and AI researchers, <span class="grad-text">in one room.</span></h2>
+      <p class="lede" style="margin:0 auto">Salvion sits at the intersection of medicine and machine learning — built by people who've shipped both.</p>
+    </div>
+    <div class="team-grid">
+      <div class="tmember glass reveal"><div class="av">SF</div><div class="nm">Sara Founder</div><div class="ro">Founder &amp; CEO</div><p>Vision, product and partnerships. A decade building health technology at scale.</p></div>
+      <div class="tmember glass reveal d1"><div class="av">MD</div><div class="nm">Dr. M. Advisor</div><div class="ro">Chief Medical Officer</div><p>Clinical validation and regulatory strategy. Board-certified physician.</p></div>
+      <div class="tmember glass reveal d2"><div class="av">AI</div><div class="nm">A. Iyer</div><div class="ro">Head of AI</div><p>Transformer architecture and the rPPG signal pipeline. Ex-research lab.</p></div>
+      <div class="tmember glass reveal d3"><div class="av">JP</div><div class="nm">J. Park</div><div class="ro">Head of Engineering</div><p>SDKs, on-device inference and the platform that ships it all to production.</p></div>
+    </div>
+    <span class="illus" style="display:block;text-align:center">Placeholder team — replace names, photos &amp; bios with your real founders and medical advisory board.</span>
   </div>
 </section>
 
@@ -1438,6 +1860,23 @@ footer{border-top:1px solid var(--stroke);padding:70px 0 40px;background:var(--b
   </div>
 </section>
 
+<!-- ============ ROADMAP ============ -->
+<section id="roadmap">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow"><span class="dot"></span>Roadmap</span>
+      <h2>Where Salvion is <span class="grad-text-cyan">headed next.</span></h2>
+      <p class="lede">A clear path from validated core to a global, multi-marker health intelligence platform.</p>
+    </div>
+    <div class="road">
+      <div class="rphase now reveal"><div class="node"></div><div class="ph">Phase 01</div><h4>Validated core</h4><ul><li>Vital signs &amp; HRV</li><li>Clinical validation · SE Asia</li><li>iOS / Android / Web SDK</li></ul></div>
+      <div class="rphase reveal d1"><div class="node"></div><div class="ph">Phase 02</div><h4>Scale &amp; clearance</h4><ul><li>50+ markers in production</li><li>Regional regulatory clearances</li><li>EHR &amp; telehealth integrations</li></ul></div>
+      <div class="rphase reveal d2"><div class="node"></div><div class="ph">Phase 03</div><h4>Risk intelligence</h4><ul><li>Chronic-disease risk models</li><li>Longitudinal health tracking</li><li>Insurance &amp; underwriting suite</li></ul></div>
+      <div class="rphase reveal d3"><div class="node"></div><div class="ph">Phase 04</div><h4>Global platform</h4><ul><li>Worldwide market rollout</li><li>Body-composition &amp; metabolic AI</li><li>Open developer ecosystem</li></ul></div>
+    </div>
+  </div>
+</section>
+
 <!-- ============ CTA ============ -->
 <section id="cta">
   <div class="wrap">
@@ -1446,13 +1885,33 @@ footer{border-top:1px solid var(--stroke);padding:70px 0 40px;background:var(--b
       <div style="position:relative;z-index:2">
         <span class="eyebrow"><span class="dot"></span>Build on Salvion</span>
         <h2 style="margin-top:22px">The intelligence layer<br>for what the body reveals.</h2>
-        <p>See the live scan, talk to engineering, or explore the API. Integrate in days, not months.</p>
-        <div class="hero-actions">
-          <a href="mailto:hello@salvion.ai" class="btn btn-primary">Request Demo
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </a>
-          <a href="mailto:sales@salvion.ai" class="btn btn-ghost">Talk to Sales</a>
-        </div>
+        <p>See the live scan, talk to engineering, or explore the API. Integrate in days, not months. Tell us where you'd start.</p>
+        <form class="lead-form" id="leadForm" novalidate>
+          <div class="lf-field"><label for="lfName">Name</label><input id="lfName" name="name" type="text" placeholder="Jane Doe" required /></div>
+          <div class="lf-field"><label for="lfEmail">Work email</label><input id="lfEmail" name="email" type="email" placeholder="jane@company.com" required /></div>
+          <div class="lf-field"><label for="lfCompany">Company</label><input id="lfCompany" name="company" type="text" placeholder="Company name" /></div>
+          <div class="lf-field"><label for="lfUse">I'm interested in</label>
+            <select id="lfUse" name="use">
+              <option>Telehealth / Clinical</option>
+              <option>Insurance / Underwriting</option>
+              <option>Pharmacy / Retail</option>
+              <option>Corporate Wellness</option>
+              <option>Developer / SDK</option>
+              <option>Investor</option>
+            </select>
+          </div>
+          <div class="lf-field full"><label for="lfMsg">Anything we should know? (optional)</label><textarea id="lfMsg" name="message" placeholder="Tell us about your use case, volume, or timeline…"></textarea></div>
+          <div class="lf-actions">
+            <button type="submit" class="btn btn-primary">Request a Demo
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+            <span class="lf-note">No spam. We'll reply within one business day.</span>
+          </div>
+          <div class="lf-success" id="lfSuccess" role="status">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M8 12l3 3 5-6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <div><b>Thanks — your request is on its way.</b><p id="lfSuccessMsg">We've opened your email client to send the details. We'll be in touch shortly.</p></div>
+          </div>
+        </form>
       </div>
     </div>
   </div>
@@ -2192,6 +2651,103 @@ document.querySelectorAll('.img-col').forEach(c=>{ c.innerHTML += c.innerHTML; }
   hv.addEventListener('ended', ()=>{ try{ hv.currentTime = START; }catch(e){} go(); });
   // resume if the tab/though visibility paused it
   document.addEventListener('visibilitychange', ()=>{ if(!document.hidden && hv.paused) go(); });
+})();
+
+/* ---------- TRY A LIVE SCAN — local only, nothing uploaded ---------- */
+(function(){
+  const box=document.getElementById('scanbox'); if(!box) return;
+  const btn=document.getElementById('scanBtn'), cam=document.getElementById('scanCam'),
+        bar=document.getElementById('scanBar'), chip=document.getElementById('scanChipTxt'),
+        grid=document.getElementById('srGrid');
+  const cells=[...grid.querySelectorAll('.sr-cell')];
+  const btnText=btn.firstChild;            // leading text node before the svg
+  let stream=null, busy=false;
+  const rnd=(a,b)=>a+Math.random()*(b-a);
+
+  function countTo(cell,end,suffix){
+    const el=cell.querySelector('.num'); let s=0; const step=end/26;
+    (function t(){ s+=step; if(s>=end){el.textContent=end+(suffix||'');} else {el.textContent=Math.floor(s)+(suffix||''); requestAnimationFrame(t);} })();
+  }
+
+  async function start(){
+    if(busy) return; busy=true;
+    cells.forEach(c=>{ c.classList.remove('live'); c.querySelector('.num').textContent='--'; });
+    box.classList.remove('done'); box.classList.add('scanning');
+    btn.disabled=true; btn.style.opacity='.55'; btnText.textContent='Scanning… ';
+    chip.textContent='Acquiring signal…';
+    if(!stream){
+      try{
+        stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:'user'},audio:false});
+        cam.srcObject=stream; box.classList.remove('idle'); cam.play().catch(()=>{});
+      }catch(e){ box.classList.add('idle'); }   // camera blocked → simulated feed on the still
+    }
+    const dur=5200, t0=performance.now();
+    (function tick(now){
+      const p=Math.min(1,(now-t0)/dur);
+      bar.style.width=(p*100).toFixed(1)+'%';
+      if(p<1) requestAnimationFrame(tick); else finish();
+    })(t0);
+    cells.forEach((c,i)=>setTimeout(()=>c.classList.add('live'), 1100+i*820));
+  }
+
+  function finish(){
+    box.classList.remove('scanning'); box.classList.add('done');
+    chip.textContent='Scan complete';
+    const hr=Math.round(rnd(66,78)), sys=Math.round(rnd(114,123)), dia=Math.round(rnd(74,81)),
+          spo2=Math.round(rnd(97,99)), hrv=Math.round(rnd(52,72));
+    countTo(cells[0],hr);
+    cells[1].querySelector('.num').textContent=sys+'/'+dia;
+    countTo(cells[2],spo2);
+    countTo(cells[3],hrv);
+    btn.disabled=false; btn.style.opacity='1'; btnText.textContent='Scan Again '; busy=false;
+  }
+
+  btn.addEventListener('click', start);
+  window.addEventListener('pagehide',()=>{ if(stream) stream.getTracks().forEach(t=>t.stop()); });
+})();
+
+/* ---------- ROI CALCULATOR ---------- */
+(function(){
+  const seg=document.getElementById('roiSeg'); if(!seg) return;
+  const scans=document.getElementById('roiScans'), val=document.getElementById('roiVal'),
+        scansLbl=document.getElementById('roiScansLbl'), valLbl=document.getElementById('roiValLbl'),
+        net=document.getElementById('roiNet'), scansYr=document.getElementById('roiScansYr'),
+        valueEl=document.getElementById('roiValue'), cost=document.getElementById('roiCost');
+  const COST_PER=0.39, fmt=n=>Math.round(n).toLocaleString('en-US');
+  const money=n=> n>=1e6 ? '$'+(n/1e6).toFixed(1)+'M' : n>=1e3 ? '$'+Math.round(n/1e3)+'K' : '$'+Math.round(n);
+  const fill=el=>{ const p=(el.value-el.min)/(el.max-el.min)*100; el.style.setProperty('--p',p+'%'); };
+  function calc(){
+    const m=+scans.value, v=+val.value, yr=m*12, value=yr*v, c=yr*COST_PER;
+    scansLbl.textContent=fmt(m); valLbl.textContent='$'+v;
+    scansYr.textContent=fmt(yr); valueEl.textContent=money(value); cost.textContent=money(c);
+    net.textContent=money(value-c); fill(scans); fill(val);
+  }
+  seg.querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>{
+    seg.querySelectorAll('button').forEach(x=>x.classList.remove('on'));
+    b.classList.add('on'); val.value=b.dataset.v; calc();
+  }));
+  scans.addEventListener('input',calc); val.addEventListener('input',calc); calc();
+})();
+
+/* ---------- LEAD FORM (no backend: validates + composes email + success state) ---------- */
+/* To wire to a CRM/Formspree, set f.action + method='post' and remove the mailto line. */
+(function(){
+  const f=document.getElementById('leadForm'); if(!f) return;
+  const succ=document.getElementById('lfSuccess');
+  const $=id=>document.getElementById(id);
+  f.addEventListener('submit',e=>{
+    e.preventDefault();
+    const name=$('lfName'), email=$('lfEmail');
+    const okEmail=/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email.value.trim());
+    let bad=false;
+    [[name,!!name.value.trim()],[email,okEmail]].forEach(([el,ok])=>{ el.style.borderColor= ok?'':'var(--pink)'; if(!ok&&!bad){el.focus();bad=true;} });
+    if(bad) return;
+    const subject=encodeURIComponent('Demo request — '+($('lfCompany').value.trim()||name.value.trim()));
+    const body=encodeURIComponent('Name: '+name.value.trim()+'\nEmail: '+email.value.trim()+'\nCompany: '+$('lfCompany').value.trim()+'\nInterest: '+$('lfUse').value+'\n\n'+$('lfMsg').value.trim());
+    [...f.children].forEach(c=>{ if(c!==succ) c.style.display='none'; });
+    succ.classList.add('show');
+    try{ window.location.href='mailto:hello@salvion.ai?subject='+subject+'&body='+body; }catch(_){}
+  });
 })();
 </script>
 </body>
